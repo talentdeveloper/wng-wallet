@@ -1,22 +1,25 @@
 import React, { PropTypes } from 'react'
+import { Grid, Row } from 'react-flexbox-grid'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import '../../styles/core.scss'
 
-// Note: Stateless/function components *will not* hot reload!
-// react-transform *only* works on component classes.
-//
-// Since layouts rarely change, they are a good place to
-// leverage React's new Stateless Functions:
-// https://facebook.github.io/react/docs/reusable-components.html#stateless-functions
-//
-// CoreLayout is a pure function of its props, so we can
-// define it with a plain javascript function...
+import Header from './Header'
+import SideBar from './SideBar'
+
 function CoreLayout ({ children }) {
   return (
-    <div className='page-container'>
-      <div className='view-container'>
-        {children}
-      </div>
-    </div>
+    <MuiThemeProvider muiTheme={getMuiTheme()}>
+      <Grid>
+        <Row>
+          <Header />
+        </Row>
+        <Row>
+          <SideBar />
+          {children}
+        </Row>
+      </Grid>
+    </MuiThemeProvider>
   )
 }
 
