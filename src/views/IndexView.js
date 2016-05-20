@@ -1,10 +1,10 @@
 import React from 'react'
-import { RaisedButton } from 'material-ui'
+import { Row } from 'react-flexbox-grid'
 
 class IndexView extends React.Component {
   render () {
     return (
-      <RaisedButton>Test</RaisedButton>
+      <Row></Row>
     )
   }
 }

@@ -1,32 +1,36 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { AppBar } from 'material-ui/'
+import { injectIntl } from 'react-intl'
+import AppBar from 'material-ui/AppBar'
 
 import {
   openSidebar
 } from 'redux/modules/site'
 
 class Header extends React.Component {
-  _onLeftIconTouchTap = () => {
+  _onLeftIconButtonTouchTap = () => {
     const { closeSidebar } = this.props
     closeSidebar()
   }
 
   render () {
+    const { intl: { formatMessage } } = this.props
+
     return (
       <AppBar
-        title='Title'
+        title={formatMessage({ id: 'website_name' })}
         iconClassNameRight='muidocs-icon-navigation-expand-more'
-        onLeftIconButtonTouchTap={this._onLeftIconTouchTap} />
+        onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap} />
     )
   }
 }
 
 Header.propTypes = {
+  intl: PropTypes.object.isRequired,
   closeSidebar: PropTypes.func.isRequired
 }
 
-export default connect((state) => {
+export default injectIntl(connect((state) => {
   return state
 }, (dispatch) => {
   return {
@@ -34,4 +38,4 @@ export default connect((state) => {
       dispatch(openSidebar())
     }
   }
-})(Header)
+})(Header))
