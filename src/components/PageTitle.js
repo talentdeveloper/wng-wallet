@@ -5,7 +5,8 @@ import DocumentTitle from 'react-document-title'
 class PageTitle extends React.Component {
   render () {
     const {
-      pageName, intl: {
+      pageName,
+      intl: {
         formatMessage
       }
     } = this.props
@@ -24,6 +25,10 @@ PageTitle.propTypes = {
   children: PropTypes.object.isRequired,
   intl: PropTypes.object.isRequired,
   pageName: PropTypes.string.isRequired
+}
+
+PageTitle.defaultProps = {
+  pageName: 'home'
 }
 
 export default injectIntl(PageTitle)
