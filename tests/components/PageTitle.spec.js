@@ -1,7 +1,7 @@
 import React from 'react'
 import PageTitle from 'components/PageTitle'
 
-import { mountWithIntl } from '../../helpers/intl'
+import { mountWithIntl } from '../helpers/intl'
 
 describe('(Component) PageTitle', () => {
   beforeEach(() => {

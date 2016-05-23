@@ -1,11 +1,23 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import { Route } from 'react-router'
 
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 import IndexView from 'views/IndexView'
+import LoginView from 'views/LoginView'
 
-export default (store) => (
-  <Route path='/' component={CoreLayout}>
-    <IndexRoute component={IndexView} />
-  </Route>
-)
+export default (store) => {
+  const onEnter = (nextState, replace) => {
+    const loggedIn = store.getState().auth.secretPhrase !== ''
+
+    if (!loggedIn) {
+      replace('/login')
+    }
+  }
+
+  return (
+    <Route component={CoreLayout}>
+      <Route path='/' component={IndexView} onEnter={onEnter} />
+      <Route path='/login' component={LoginView} />
+    </Route>
+  )
+}
