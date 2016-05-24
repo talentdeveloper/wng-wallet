@@ -10,13 +10,20 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import PageTitle from 'components/PageTitle'
 
+const theme = getMuiTheme({
+  palette: {
+    primary1Color: '#2196F3',
+    primary2Color: '#1976D2'
+  }
+})
+
 function CoreLayout ({ children }) {
   return (
-    <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <MuiThemeProvider muiTheme={theme}>
       <PageTitle pageName='home'>
         <div>
           <Header />
-          <Grid fluid style={{ paddingTop: 20 }}>
+          <Grid fluid style={{ paddingTop: 40 }}>
             <Row>
               <Sidebar />
               {children}
