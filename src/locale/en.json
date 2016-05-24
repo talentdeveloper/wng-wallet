@@ -1,5 +1,7 @@
 {
   "website_name": "NXT Web Wallet",
   "home": "Home",
-  "test": "Test"
+  "test": "Test",
+  "login": "Login",
+  "register": "Register"
 }

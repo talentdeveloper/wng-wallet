@@ -15,14 +15,19 @@ class PageTitle extends React.Component {
 
     return (
       <DocumentTitle title={`${formatMessage({ id: pageName })} | ${siteName}`}>
-        {this.props.children}
+        <div>
+          {this.props.children}
+        </div>
       </DocumentTitle>
     )
   }
 }
 
 PageTitle.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
   intl: PropTypes.object.isRequired,
   pageName: PropTypes.string.isRequired
 }
