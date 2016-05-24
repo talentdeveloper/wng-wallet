@@ -15,7 +15,7 @@ class PageTitle extends React.Component {
 
     return (
       <DocumentTitle title={`${formatMessage({ id: pageName })} | ${siteName}`}>
-        <div>
+        <div style={{ width: '100%', height: '100%' }}>
           {this.props.children}
         </div>
       </DocumentTitle>

@@ -16,7 +16,7 @@ function CoreLayout ({ children }) {
       <PageTitle pageName='home'>
         <div>
           <Header />
-          <Grid fluid>
+          <Grid fluid style={{ paddingTop: 20 }}>
             <Row>
               <Sidebar />
               {children}
