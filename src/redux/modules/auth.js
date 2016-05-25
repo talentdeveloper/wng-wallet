@@ -4,6 +4,10 @@ import {
   encrypt,
   decrypt
 } from 'redux/utils/crypto'
+import {
+  storePassphrase,
+  getPassphrase
+} from 'redux/utils/storage'
 
 export const LOGIN = 'LOGIN'
 export const login = createAction(LOGIN)
@@ -14,13 +18,19 @@ export const register = (data) => {
     dispatch(createAction(REGISTER)())
     const passphrase = generatePassphrase()
     const encrypted = encrypt(passphrase, JSON.stringify(data))
-    const decrypted = decrypt(encrypted, JSON.stringify(data))
-    console.log(data)
-    console.log(passphrase)
-    console.log(encrypted)
-    console.log(decrypted)
+    if (storePassphrase(data.username, encrypted)) {
+      dispatch(registerSuccess(passphrase))
+    } else {
+      dispatch(registerError('username_exists'))
+    }
   }
 }
+
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+export const registerSuccess = createAction(REGISTER_SUCCESS)
+
+export const REGISTER_ERROR = 'REGISTER_ERROR'
+export const registerError = createAction(REGISTER_ERROR)
 
 export const initialState = {
   isRegistering: false,
