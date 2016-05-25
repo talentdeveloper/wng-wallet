@@ -3,10 +3,16 @@ import { injectIntl } from 'react-intl'
 import { reduxForm } from 'redux-form'
 import { RaisedButton, TextField } from 'material-ui'
 
+import { register } from 'redux/modules/auth'
+
 export class RegisterForm extends React.Component {
+  constructor () {
+    super()
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
   handleSubmit (data, dispatch) {
-    console.log(data)
-    console.log(dispatch)
+    dispatch(register(data))
   }
 
   render () {

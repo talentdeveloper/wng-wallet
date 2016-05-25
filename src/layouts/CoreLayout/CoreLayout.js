@@ -21,15 +21,13 @@ function CoreLayout ({ children }) {
   return (
     <MuiThemeProvider muiTheme={theme}>
       <PageTitle pageName='home'>
-        <div>
-          <Header />
-          <Grid fluid style={{ paddingTop: 40 }}>
-            <Row>
-              <Sidebar />
-              {children}
-            </Row>
-          </Grid>
-        </div>
+        <Header />
+        <Grid fluid style={{ paddingTop: 40, paddingBottom: 20 }}>
+          <Row>
+            <Sidebar />
+            {children}
+          </Row>
+        </Grid>
       </PageTitle>
     </MuiThemeProvider>
   )

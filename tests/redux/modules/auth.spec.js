@@ -1,6 +1,8 @@
 import {
   LOGIN,
+  REGISTER,
   login,
+  register,
   initialState,
   default as authReducer
 } from 'redux/modules/auth'
@@ -37,5 +39,25 @@ describe('(Redux Module) Auth', () => {
       state = authReducer(state, login('mySecretPhrase'))
       expect(state.secretPhrase).to.equal('mySecretPhrase')
     })
+  })
+
+  describe('(Action Creator) register', () => {
+    it('Should be exported as a function', () => {
+      expect(register).to.be.a('function')
+    })
+
+    it('Should return a functon', () => {
+      expect(register()).to.be.a('function')
+    })
+  })
+
+  describe('(Action Handler) register', () => {
+    let state = authReducer(undefined, {})
+    expect(state).to.deep.equal(initialState)
+    state = authReducer(state, register({
+      username: 'username',
+      email: 'email@email.com',
+      password: 'mypassword'
+    }))
   })
 })
