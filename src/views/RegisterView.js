@@ -2,7 +2,11 @@ import React, { PropTypes } from 'react'
 import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
-import { Card, CardTitle, CardText } from 'material-ui'
+import {
+  Card,
+  CardTitle,
+  CardText
+} from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
 import RegisterForm from 'components/RegisterForm'

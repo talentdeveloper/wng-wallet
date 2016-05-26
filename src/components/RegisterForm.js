@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react'
 import { injectIntl } from 'react-intl'
+import { Link } from 'react-router'
 import { reduxForm } from 'redux-form'
 import { RaisedButton, TextField } from 'material-ui'
+
+import style from './RegisterForm.scss'
 
 import { register } from 'redux/modules/auth'
 
@@ -58,11 +61,16 @@ export class RegisterForm extends React.Component {
           fullWidth
           {...password} />
         <br />
-        <RaisedButton
-          type='submit'
-          primary
-          label={formatMessage({ id: 'submit' })}
-          disabled={Boolean(hasError)} />
+        <div className={style.submitContainer}>
+          <RaisedButton
+            type='submit'
+            primary
+            label={formatMessage({ id: 'submit' })}
+            disabled={Boolean(hasError)} />
+          <Link to='login' className={style.loginButton}>
+            {formatMessage({ id: 'login' })}
+          </Link>
+        </div>
       </form>
     )
   }
