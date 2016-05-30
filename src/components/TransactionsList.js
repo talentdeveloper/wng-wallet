@@ -22,17 +22,21 @@ export class TransactionsList extends React.Component {
 
     const item = (type, fromTo, account, amount) => {
       return <div className={style.item}>
-        <span className={type === 'received' ? style.received : style.sent}>{type}</span>
-        <span className='hidden-xs hidden-sm'>{fromTo}</span>
+        <span className={type === 'received' ? style.received : style.sent}>
+          <FormattedMessage id={type} />
+        </span>
+        <span className='hidden-xs hidden-sm'>
+          <FormattedMessage id={fromTo} />
+        </span>
         <span className='hidden-xs hidden-sm'>{account}</span>
-        <span style={{ float: 'right' }}>{amount}</span>
+        <span style={{ float: 'right' }}>{formatNumber(amount)} <FormattedMessage id='currency_name' /></span>
       </div>
     }
 
     return (
       <List>
         {transactions.map((transaction) => {
-          const amount = formatNumber(convertToNXT(transaction.amountNQT))
+          const amount = convertToNXT(transaction.amountNQT)
           let type = 'received'
           let fromTo = 'from'
           let account = transaction.senderRS
