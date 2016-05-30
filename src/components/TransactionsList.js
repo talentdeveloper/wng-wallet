@@ -25,10 +25,10 @@ export class TransactionsList extends React.Component {
         <span className={type === 'received' ? style.received : style.sent}>
           <FormattedMessage id={type} />
         </span>
-        <span className='hidden-xs hidden-sm'>
+        <span className='hidden-xs'>
           <FormattedMessage id={fromTo} />
         </span>
-        <span className='hidden-xs hidden-sm'>{account}</span>
+        <span className='hidden-xs'>{account}</span>
         <span style={{ float: 'right' }}>{formatNumber(amount)} <FormattedMessage id='currency_name' /></span>
       </div>
     }

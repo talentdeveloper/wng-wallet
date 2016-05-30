@@ -23,6 +23,6 @@
   "Sent": "Received",
   "from": "From",
   "to": "To",
-  "received_currency": "Received {amount} NXT from {sender}",
-  "sent_currency": "Sent {amount} NXT to {recipient}"
+  "receive_currency": "Receive NXT",
+  "send_currency": "Send NXT"
 }

@@ -54,15 +54,19 @@ export class IndexView extends React.Component {
                   </h4>
                   <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
                     <RaisedButton
-                      label={accountRS}
+                      label={formatMessage({ id: 'receive_currency' })}
                       secondary />
                   </CopyToClipboard>
                   {copySuccess
-                    ? <div style={{ marginLeft: 8, color: 'green' }}>
+                    ? <div style={{ color: 'green' }}>
                       <FormattedMessage id='copied_account' />
                     </div>
                     : null}
                 </div>
+                <RaisedButton
+                  label={formatMessage({ id: 'send_currency' })}
+                  primary
+                  style={{ marginTop: 8 }} />
               </CardText>
             </Card>
           </Col>
