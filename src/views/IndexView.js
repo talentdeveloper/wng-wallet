@@ -16,13 +16,13 @@ export class IndexView extends React.Component {
   constructor () {
     super()
     this.state = {
-      showCopiedToolTip: false
+      copySuccess: false
     }
   }
 
   _onCopy = () => {
     this.setState({
-      showCopiedToolTip: true
+      copySuccess: true
     })
   }
 
@@ -34,7 +34,7 @@ export class IndexView extends React.Component {
       accountRS
     } = this.props
 
-    const { showCopiedToolTip } = this.state
+    const { copySuccess } = this.state
 
     return (
       <PageTitle pageName='home'>
@@ -45,13 +45,18 @@ export class IndexView extends React.Component {
                 title={formatMessage({ id: 'website_name' })}
                 subtitle={formatMessage({ id: 'website_subtitle' })} />
               <CardText>
-                <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
-                  <RaisedButton
-                    ref='accountRS'
-                    label={accountRS}
-                    secondary />
-                </CopyToClipboard>
-                {showCopiedToolTip && <FormattedMessage id='copied_success' />}
+                <div>
+                  <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
+                    <RaisedButton
+                      label={accountRS}
+                      secondary />
+                  </CopyToClipboard>
+                  {copySuccess
+                    ? <span style={{ marginLeft: 8, color: 'green' }}>
+                      <FormattedMessage id='copied_account' />
+                    </span>
+                    : null}
+                </div>
               </CardText>
             </Card>
           </Col>

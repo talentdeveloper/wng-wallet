@@ -14,7 +14,7 @@ class Header extends React.Component {
 
   render () {
     const {
-      intl: { formatMessage },
+      intl: { formatMessage, formatNumber },
       isLoggedIn,
       balance
     } = this.props
@@ -28,7 +28,9 @@ class Header extends React.Component {
 
       balanceDiv = <div>
         <RaisedButton
-          label={`${balance} ${formatMessage({ id: 'currency_name' })}`}
+          label={`
+            ${formatMessage({ id: 'balance' })}: ${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}
+          `}
           style={style}
           />
       </div>
