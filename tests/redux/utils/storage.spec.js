@@ -1,36 +1,36 @@
 import {
-  storePassphrase,
-  getPassphrase
+  storeSecretPhrase,
+  getSecretPhrase
 } from 'redux/utils/storage'
 
 describe('(Redux Util) Storage', () => {
-  let _passphrase = {
+  let _secretPhrase = {
     nonce: 'mynonce',
     message: 'mymessage'
   }
-  describe('(Function) storePassphrase', () => {
+  describe('(Function) storeSecretPhrase', () => {
     it('Should be a function', () => {
-      expect(storePassphrase).to.be.a('function')
+      expect(storeSecretPhrase).to.be.a('function')
     })
 
-    it('Should store the passphrase', () => {
-      const isStored = storePassphrase('myusername', _passphrase)
+    it('Should store the secretPhrase', () => {
+      const isStored = storeSecretPhrase('myusername', _secretPhrase)
       expect(isStored).to.equal(true)
-      const stored = JSON.parse(localStorage.getItem('myusername_passphrase'))
-      expect(stored).to.deep.equal(_passphrase)
+      const stored = JSON.parse(localStorage.getItem('myusername_secretPhrase'))
+      expect(stored).to.deep.equal(_secretPhrase)
     })
   })
 
-  describe('(Function) getPassphrase', () => {
+  describe('(Function) getSecretPhrase', () => {
     it('Should be a function', () => {
-      expect(getPassphrase).to.be.a('function')
+      expect(getSecretPhrase).to.be.a('function')
     })
 
-    it('Should retrieve passphrase', () => {
-      const stored = getPassphrase('myusername')
-      expect(stored).to.deep.equal(_passphrase)
+    it('Should retrieve secretPhrase', () => {
+      const stored = getSecretPhrase('myusername')
+      expect(stored).to.deep.equal(_secretPhrase)
     })
   })
 
-  localStorage.removeItem('myusername_passphrase')
+  localStorage.removeItem('myusername_secretPhrase')
 })

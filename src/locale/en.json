@@ -3,6 +3,7 @@
   "home": "Home",
   "test": "Test",
   "login": "Login",
+  "login_subtitle": "Login into the NXT Web Wallet now",
   "register": "Register",
   "register_subtitle": "Register now for the NXT Web Wallet",
   "username": "Username",

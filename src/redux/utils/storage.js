@@ -1,4 +1,4 @@
-export function storePassphrase (username, passphrase) {
+export function storeSecretPhrase (username, passphrase) {
   if (localStorage.getItem(`${username}_passphrase`)) {
     return false
   }
@@ -11,7 +11,7 @@ export function storePassphrase (username, passphrase) {
   return true
 }
 
-export function getPassphrase (username) {
+export function getSecretPhrase (username) {
   const passphrase = localStorage.getItem(`${username}_passphrase`)
 
   if (!passphrase) {

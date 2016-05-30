@@ -27,17 +27,8 @@ describe('(Redux Module) Auth', () => {
       expect(login).to.be.a('function')
     })
 
-    it('Should return an action with type "LOGIN".', () => {
-      expect(login()).to.have.property('type', LOGIN)
-    })
-  })
-
-  describe('(Action Handler) login', () => {
-    it('Should set the secretPhrase when logging in', () => {
-      let state = authReducer(undefined, {})
-      expect(state).to.deep.equal(initialState)
-      state = authReducer(state, login('mySecretPhrase'))
-      expect(state.secretPhrase).to.equal('mySecretPhrase')
+    it('Should return a function', () => {
+      expect(login()).to.be.a('function')
     })
   })
 
@@ -49,15 +40,5 @@ describe('(Redux Module) Auth', () => {
     it('Should return a functon', () => {
       expect(register()).to.be.a('function')
     })
-  })
-
-  describe('(Action Handler) register', () => {
-    let state = authReducer(undefined, {})
-    expect(state).to.deep.equal(initialState)
-    state = authReducer(state, register({
-      username: 'username',
-      email: 'email@email.com',
-      password: 'mypassword'
-    }))
   })
 })

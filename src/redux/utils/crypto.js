@@ -3,7 +3,7 @@ import nacl from 'tweetnacl'
 import util from 'tweetnacl-util'
 nacl.util = util
 
-export function generatePassphrase () {
+export function generateSecretPhrase () {
   const bytes = nacl.randomBytes(8) // 64 bytes, 8 * 8
 
   return crypto.createHash('sha256').update(bytes).digest('hex')

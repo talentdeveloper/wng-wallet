@@ -16,7 +16,11 @@
     "__PROD__"     : false,
     "__DEBUG__"    : false,
     "__DEBUG_NEW_WINDOW__" : false,
-    "__BASENAME__" : false
+    "__BASENAME__" : false,
+    "converters": true,
+    "curve25519": true,
+    "curve25519_": true,
+    "NxtAddress": true,
   },
   "rules": {
     "semi" : [2, "never"],

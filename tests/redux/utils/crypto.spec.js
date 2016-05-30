@@ -1,28 +1,28 @@
 import {
-  generatePassphrase,
+  generateSecretPhrase,
   encrypt,
   decrypt
 } from 'redux/utils/crypto'
 
 describe('(Redux Util) Crypto', () => {
-  describe('(Function) generatePassphrase', () => {
-    let _passphrase
+  describe('(Function) generateSecretPhrase', () => {
+    let _secretPhrase
 
     beforeEach(() => {
-      _passphrase = generatePassphrase()
+      _secretPhrase = generateSecretPhrase()
     })
 
     it('Should be a function', () => {
-      expect(generatePassphrase).to.be.a('function')
+      expect(generateSecretPhrase).to.be.a('function')
     })
 
-    it('Should generate a 64 bytes passphrase', () => {
-      expect(_passphrase).to.have.length(64)
+    it('Should generate a 64 bytes secretPhrase', () => {
+      expect(_secretPhrase).to.have.length(64)
     })
   })
 
   describe('Encryption', () => {
-    let _passphrase = generatePassphrase()
+    let _secretPhrase = generateSecretPhrase()
     let _key = JSON.stringify({
       username: 'username',
       email: 'email@email.com',
@@ -37,7 +37,7 @@ describe('(Redux Util) Crypto', () => {
       })
 
       it('Should return an object with nonce and message', () => {
-        _encryptedMessage = encrypt(_passphrase, _key)
+        _encryptedMessage = encrypt(_secretPhrase, _key)
         expect(_encryptedMessage).to.be.a('object')
         expect(_encryptedMessage).to.have.all.keys(['nonce', 'message'])
       })
@@ -50,7 +50,7 @@ describe('(Redux Util) Crypto', () => {
 
       it('Should decrypt the encrypted message', () => {
         _decryptedMessage = decrypt(_encryptedMessage, _key)
-        expect(_decryptedMessage).equal(_passphrase)
+        expect(_decryptedMessage).equal(_secretPhrase)
       })
     })
   })
