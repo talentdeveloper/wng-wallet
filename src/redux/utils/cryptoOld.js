@@ -1,4 +1,4 @@
-import { sendRequest } from './apiOld'
+import { sendRequest } from './api'
 /* eslint-disable */
 /**
  * Encrypt the secretphrase using AES for secure storage

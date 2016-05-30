@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions'
-import { sendRequest } from 'redux/utils/apiOld'
+import { sendRequest } from 'redux/utils/api'
 
 const SEND_MONEY = 'SEND_MONEY'
 export const sendMoney = (data) => {
