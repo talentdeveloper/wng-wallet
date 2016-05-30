@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { AppBar, FlatButton } from 'material-ui'
+import { AppBar, RaisedButton } from 'material-ui'
 
 import { openSidebar } from 'redux/modules/site'
 import { convertToNXT } from 'redux/utils/nrs'
@@ -22,7 +22,16 @@ class Header extends React.Component {
     let balanceDiv = null
 
     if (isLoggedIn) {
-      balanceDiv = <FlatButton label={`${balance} ${formatMessage({ id: 'currency_name' })}`} />
+      const style = {
+        margin: 8
+      }
+
+      balanceDiv = <div>
+        <RaisedButton
+          label={`${balance} ${formatMessage({ id: 'currency_name' })}`}
+          style={style}
+          />
+      </div>
     }
 
     return (

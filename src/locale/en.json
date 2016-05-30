@@ -1,6 +1,7 @@
 {
   "currency_name": "NXT",
   "website_name": "NXT Web Wallet",
+  "website_subtitle": "Send and receive NXT",
   "home": "Home",
   "test": "Test",
   "login": "Login",
@@ -11,5 +12,6 @@
   "email": "Email",
   "password": "Password",
   "submit": "Submit",
-  "required_error": "This field is required"
+  "required_error": "This field is required",
+  "copied_success": "Copied!"
 }
