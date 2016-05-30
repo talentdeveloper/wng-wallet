@@ -51,7 +51,7 @@ export class IndexView extends React.Component {
                     label={accountRS}
                     secondary />
                 </CopyToClipboard>
-                {showCopiedToolTip && <FormattedMessage id='copied_succes' />}
+                {showCopiedToolTip && <FormattedMessage id='copied_success' />}
               </CardText>
             </Card>
           </Col>
