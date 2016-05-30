@@ -12,6 +12,7 @@ import {
   storeSecretPhrase,
   getSecretPhrase
 } from 'redux/utils/storage'
+import { getTransactions } from 'redux/modules/transaction'
 import { sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
@@ -36,6 +37,7 @@ export const login = (data) => {
     dispatch(loginSuccess(accountData))
     dispatch(push('/'))
     dispatch(getAccount(accountData.accountRS))
+    dispatch(getTransactions(accountData.accountRS))
   }
 }
 

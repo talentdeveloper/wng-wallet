@@ -13,6 +13,16 @@
   "password": "Password",
   "submit": "Submit",
   "required_error": "This field is required",
+  "account_number": "Account number",
+  "click_to_copy_account": "Click to copy your account number",
   "copied_account": "Successfully copied account number!",
-  "balance": "Balance"
+  "balance": "Balance",
+  "transactions": "Transactions",
+  "latest_transactions": "Latest transactions",
+  "received": "Received",
+  "Sent": "Received",
+  "from": "From",
+  "to": "To",
+  "received_currency": "Received {amount} NXT from {sender}",
+  "sent_currency": "Sent {amount} NXT to {recipient}"
 }

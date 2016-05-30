@@ -11,6 +11,7 @@ import {
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 import PageTitle from 'components/PageTitle'
+import TransactionsList from 'components/TransactionsList'
 
 export class IndexView extends React.Component {
   constructor () {
@@ -31,7 +32,8 @@ export class IndexView extends React.Component {
       intl: {
         formatMessage
       },
-      accountRS
+      accountRS,
+      transactions
     } = this.props
 
     const { copySuccess } = this.state
@@ -46,17 +48,33 @@ export class IndexView extends React.Component {
                 subtitle={formatMessage({ id: 'website_subtitle' })} />
               <CardText>
                 <div>
+                  <h4>
+                    <FormattedMessage id='account_number' />
+                    <small>&nbsp;<FormattedMessage id='click_to_copy_account' /></small>
+                  </h4>
                   <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
                     <RaisedButton
                       label={accountRS}
                       secondary />
                   </CopyToClipboard>
                   {copySuccess
-                    ? <span style={{ marginLeft: 8, color: 'green' }}>
+                    ? <div style={{ marginLeft: 8, color: 'green' }}>
                       <FormattedMessage id='copied_account' />
-                    </span>
+                    </div>
                     : null}
                 </div>
+              </CardText>
+            </Card>
+          </Col>
+        </Row>
+        <Row style={{ marginTop: 15 }}>
+          <Col xs={12} md={12}>
+            <Card>
+              <CardTitle
+                title={formatMessage({ id: 'transactions' })}
+                subtitle={formatMessage({ id: 'latest_transactions' })} />
+              <CardText>
+                <TransactionsList accountRS={accountRS} transactions={transactions} />
               </CardText>
             </Card>
           </Col>
@@ -68,13 +86,16 @@ export class IndexView extends React.Component {
 
 IndexView.propTypes = {
   intl: PropTypes.object.isRequired,
-  accountRS: PropTypes.string.isRequired
+  accountRS: PropTypes.string.isRequired,
+  transactions: PropTypes.array.isRequired
 }
 
 export default injectIntl(connect((state) => {
   const { accountRS } = state.auth.account
+  const { transactions } = state.transaction
 
   return {
-    accountRS
+    accountRS,
+    transactions
   }
 })(IndexView))
