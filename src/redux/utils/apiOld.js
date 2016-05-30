@@ -1,5 +1,7 @@
 import { getPublicKey, signBytes } from './cryptoOld'
 
+const apiUrl = 'http://otd.sd.otdocs.com:17876'
+
 function _parseData (data) {
   if (!data.secretPhrase) return data
 
@@ -21,7 +23,7 @@ export function sendRequest (requestType, data, async = true) {
   if (!data.secretPhrase) {
     return $.ajax({
       type: 'POST',
-      url: 'http://otd.sd.otdocs.com:17876/nxt?requestType=' + requestType,
+      url: `${apiUrl}/nxt?requestType=${requestType}`,
       data: data,
       async: async
     }).then(function (result) {
@@ -40,7 +42,7 @@ export function sendRequest (requestType, data, async = true) {
 
   return $.ajax({
     type: 'POST',
-    url: 'http://otd.sd.otdocs.com:17876/nxt?requestType=' + requestType,
+    url: `${apiUrl}/nxt?requestType=${requestType}`,
     data: data,
     async: async
   }).then(function (result) {
