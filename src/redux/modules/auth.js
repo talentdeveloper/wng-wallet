@@ -12,6 +12,7 @@ import {
   storeSecretPhrase,
   getSecretPhrase
 } from 'redux/utils/storage'
+import { sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
@@ -27,13 +28,14 @@ export const login = (data) => {
       return dispatch(loginError())
     }
 
-    const account = {
+    const accountData = {
       secretPhrase: decrypted,
       accountRS: getAccountRSFromSecretPhrase(decrypted)
     }
 
-    dispatch(loginSuccess(account))
+    dispatch(loginSuccess(accountData))
     dispatch(push('/'))
+    dispatch(getAccount(accountData.accountRS))
   }
 }
 
@@ -64,19 +66,47 @@ export const registerSuccess = createAction(REGISTER_SUCCESS)
 export const REGISTER_ERROR = 'REGISTER_ERROR'
 export const registerError = createAction(REGISTER_ERROR)
 
+export const GET_ACCOUNT = 'GET_ACCOUNT'
+export const getAccount = (account) => {
+  return dispatch => {
+    dispatch(createAction(GET_ACCOUNT)())
+    sendRequest('getAccount', {
+      account
+    }).then((result) => {
+      console.log(result)
+      dispatch(getAccountSuccess({
+        unconfirmedBalanceNQT: result.unconfirmedBalanceNQT
+      }))
+    })
+  }
+}
+
+export const GET_ACCOUNT_SUCCESS = 'GET_ACCOUNT_SUCCESS'
+export const getAccountSuccess = createAction(GET_ACCOUNT_SUCCESS)
+
+export const GET_ACCOUNT_ERROR = 'GET_ACCOUNT_ERROR'
+export const getAccountError = createAction(GET_ACCOUNT_ERROR)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
-  secretPhrase: '',
-  accountRS: ''
+  isRetrievingAccount: false,
+  account: {
+    secretPhrase: '',
+    accountRS: '',
+    unconfirmedBalanceNQT: 0
+  }
 }
 
 export default handleActions({
   [LOGIN]: state => {
     return {
       ...state,
-      secretPhrase: '',
-      isLoggingIn: true
+      isLoggingIn: true,
+      account: {
+        ...state.account,
+        secretPhrase: ''
+      }
     }
   },
 
@@ -84,8 +114,11 @@ export default handleActions({
     return {
       ...state,
       isLoggingIn: false,
-      secretPhrase: payload.secretPhrase,
-      accountRS: payload.accountRS
+      account: {
+        ...state.account,
+        secretPhrase: payload.secretPhrase,
+        accountRS: payload.accountRS
+      }
     }
   },
 
@@ -114,6 +147,31 @@ export default handleActions({
     return {
       ...state,
       isRegistering: false
+    }
+  },
+
+  [GET_ACCOUNT]: state => {
+    return {
+      ...state,
+      isRetrievingAccount: true
+    }
+  },
+
+  [GET_ACCOUNT_SUCCESS]: (state, { payload }) => {
+    return {
+      ...state,
+      isRetrievingAccount: false,
+      account: {
+        ...state.account,
+        unconfirmedBalanceNQT: payload.unconfirmedBalanceNQT
+      }
+    }
+  },
+
+  [GET_ACCOUNT_ERROR]: state => {
+    return {
+      ...state,
+      isRetrievingAccount: false
     }
   }
 }, initialState)

@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row } from 'react-flexgrid'
+import { Row, Col } from 'react-flexgrid'
 
 export class IndexView extends React.Component {
   render () {
     return (
       <Row>
-        Test
+        <Col md={12}>
+          Test
+        </Col>
       </Row>
     )
   }
