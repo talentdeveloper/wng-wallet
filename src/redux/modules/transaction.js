@@ -2,6 +2,9 @@ import { createAction, handleActions } from 'redux-actions'
 import { sendRequest } from 'redux/utils/api'
 import { convertToNQT } from 'redux/utils/nrs'
 
+export const SET_STEP = 'SET_STEP'
+export const setStep = createAction(SET_STEP)
+
 export const SEND_MONEY = 'SEND_MONEY'
 export const sendMoney = (data) => {
   return (dispatch, getState) => {
@@ -24,8 +27,12 @@ export const sendMoneySuccess = createAction(SEND_MONEY_SUCCESS)
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
 export const getTransactions = (account) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(createAction(GET_TRANSACTIONS)())
+
+    if (!account) {
+      account = getState().auth.account.accountRS
+    }
 
     sendRequest('getBlockchainTransactions', {
       account
@@ -50,6 +57,7 @@ export const hideModal = createAction(HIDE_MODAL)
 const initialState = {
   isSending: false,
   sendSuccess: false,
+  sendStep: 0,
   isRetrievingTransactions: false,
   transactions: [],
   showModal: false,
@@ -57,6 +65,13 @@ const initialState = {
 }
 
 export default handleActions({
+  [SET_STEP]: (state, { payload }) => {
+    return {
+      ...state,
+      sendStep: payload
+    }
+  },
+
   [SEND_MONEY]: state => {
     return {
       ...state,
@@ -98,8 +113,8 @@ export default handleActions({
 
   [HIDE_MODAL]: state => {
     return {
-      ...state,
-      showModal: false
+      ...initialState,
+      transactions: state.transactions
     }
   }
 }, initialState)
