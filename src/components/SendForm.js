@@ -1,7 +1,11 @@
 import React, { PropTypes } from 'react'
 import { injectIntl } from 'react-intl'
 import { reduxForm } from 'redux-form'
-import { FlatButton, RaisedButton, TextField } from 'material-ui'
+import {
+  FlatButton,
+  RaisedButton,
+  TextField
+} from 'material-ui'
 
 import { hideModal, sendMoney } from 'redux/modules/transaction'
 
@@ -32,14 +36,15 @@ export class SendForm extends React.Component {
         recipient,
         amount
       },
-      handleSubmit
+      handleSubmit,
+      isSending
     } = this.props
 
     const error = (field) => {
       return field.touched && field.error ? formatMessage({ id: field.error }) : null
     }
 
-    const hasError = recipient.error || amount.error
+    const disableButton = recipient.error || amount.error || isSending
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -65,7 +70,7 @@ export class SendForm extends React.Component {
             type='submit'
             primary
             label={formatMessage({ id: 'submit' })}
-            disabled={Boolean(hasError)} />
+            disabled={Boolean(disableButton)} />
         </div>
       </form>
     )
@@ -76,7 +81,8 @@ SendForm.propTypes = {
   intl: PropTypes.object.isRequired,
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired
+  hideModal: PropTypes.func.isRequired,
+  isSending: PropTypes.bool.isRequired
 }
 
 const validate = values => {
@@ -99,7 +105,15 @@ export default injectIntl(
     fields: ['recipient', 'amount'],
     validate
   },
-  (state) => state,
+
+  (state) => {
+    const { isSending } = state.transaction
+
+    return {
+      isSending
+    }
+  },
+
   (dispatch) => {
     return {
       hideModal: () => {

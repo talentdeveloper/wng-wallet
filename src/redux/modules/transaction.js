@@ -1,4 +1,3 @@
-
 import { createAction, handleActions } from 'redux-actions'
 import { sendRequest } from 'redux/utils/api'
 import { convertToNQT } from 'redux/utils/nrs'
@@ -15,10 +14,13 @@ export const sendMoney = (data) => {
       secretPhrase
     }).then(function (result) {
       console.log(result)
-      dispatch(hideModal())
+      dispatch(sendMoneySuccess())
     })
   }
 }
+
+export const SEND_MONEY_SUCCESS = 'SEND_MONEY_SUCCESS'
+export const sendMoneySuccess = createAction(SEND_MONEY_SUCCESS)
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
 export const getTransactions = (account) => {
@@ -47,6 +49,7 @@ export const hideModal = createAction(HIDE_MODAL)
 
 const initialState = {
   isSending: false,
+  sendSuccess: false,
   isRetrievingTransactions: false,
   transactions: [],
   showModal: false,
@@ -57,7 +60,16 @@ export default handleActions({
   [SEND_MONEY]: state => {
     return {
       ...state,
-      isSending: true
+      isSending: true,
+      sendSuccess: false
+    }
+  },
+
+  [SEND_MONEY_SUCCESS]: state => {
+    return {
+      ...state,
+      isSending: false,
+      sendSuccess: true
     }
   },
 
