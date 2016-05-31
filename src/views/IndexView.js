@@ -10,7 +10,11 @@ import {
 } from 'material-ui'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
+import { showModal } from 'redux/modules/transaction'
+
 import PageTitle from 'components/PageTitle'
+import SendForm from 'components/SendForm'
+import TransactionModal from 'components/TransactionModal'
 import TransactionsList from 'components/TransactionsList'
 
 export class IndexView extends React.Component {
@@ -27,13 +31,21 @@ export class IndexView extends React.Component {
     })
   }
 
+  _onSendClick = () => {
+    const { onSendClick } = this.props
+
+    onSendClick()
+  }
+
   render () {
     const {
       intl: {
         formatMessage
       },
       accountRS,
-      transactions
+      transactions,
+      showModal,
+      modalTitle
     } = this.props
 
     const { copySuccess } = this.state
@@ -64,6 +76,7 @@ export class IndexView extends React.Component {
                     : null}
                 </div>
                 <RaisedButton
+                  onClick={this._onSendClick}
                   label={formatMessage({ id: 'send_currency' })}
                   primary
                   style={{ marginTop: 8 }} />
@@ -83,6 +96,7 @@ export class IndexView extends React.Component {
             </Card>
           </Col>
         </Row>
+        <TransactionModal show={showModal} title={modalTitle} form={<SendForm />} />
       </PageTitle>
     )
   }
@@ -91,15 +105,30 @@ export class IndexView extends React.Component {
 IndexView.propTypes = {
   intl: PropTypes.object.isRequired,
   accountRS: PropTypes.string.isRequired,
-  transactions: PropTypes.array.isRequired
+  transactions: PropTypes.array.isRequired,
+  modalTitle: PropTypes.string.isRequired,
+  showModal: PropTypes.bool.isRequired,
+  onSendClick: PropTypes.func.isRequired
 }
 
 export default injectIntl(connect((state) => {
   const { accountRS } = state.auth.account
-  const { transactions } = state.transaction
+  const {
+    transactions,
+    showModal,
+    modalTitle
+  } = state.transaction
 
   return {
     accountRS,
-    transactions
+    transactions,
+    showModal,
+    modalTitle
+  }
+}, (dispatch) => {
+  return {
+    onSendClick: () => {
+      dispatch(showModal())
+    }
   }
 })(IndexView))

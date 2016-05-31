@@ -20,9 +20,12 @@
   "transactions": "Transactions",
   "latest_transactions": "Latest transactions",
   "received": "Received",
-  "Sent": "Received",
+  "sent": "Sent",
   "from": "From",
   "to": "To",
   "receive_currency": "Receive NXT",
-  "send_currency": "Send NXT"
+  "send_currency": "Send NXT",
+  "cancel": "Cancel",
+  "recipient": "Recipient",
+  "amount": "Amount"
 }

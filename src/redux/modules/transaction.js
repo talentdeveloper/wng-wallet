@@ -1,5 +1,7 @@
+
 import { createAction, handleActions } from 'redux-actions'
 import { sendRequest } from 'redux/utils/api'
+import { convertToNQT } from 'redux/utils/nrs'
 
 export const SEND_MONEY = 'SEND_MONEY'
 export const sendMoney = (data) => {
@@ -8,11 +10,12 @@ export const sendMoney = (data) => {
     const { secretPhrase } = getState().auth.account
 
     return sendRequest('sendMoney', {
-      recipient: data.recipientRS,
-      amount: 1e8,
+      recipient: data.recipient,
+      amountNQT: convertToNQT(data.amount),
       secretPhrase
     }).then(function (result) {
       console.log(result)
+      dispatch(hideModal())
     })
   }
 }
@@ -36,10 +39,18 @@ export const getTransactionsSuccess = createAction(GET_TRANSACTIONS_SUCCESS)
 export const GET_TRANSACTIONS_ERROR = 'GET_TRANSACTIONS_ERROR'
 export const getTransactionsError = createAction(GET_TRANSACTIONS_ERROR)
 
+export const SHOW_MODAL = 'SHOW_MODAL'
+export const showModal = createAction(SHOW_MODAL)
+
+export const HIDE_MODAL = 'HIDE_MODAL'
+export const hideModal = createAction(HIDE_MODAL)
+
 const initialState = {
   isSending: false,
   isRetrievingTransactions: false,
-  transactions: []
+  transactions: [],
+  showModal: false,
+  modalTitle: 'send_currency'
 }
 
 export default handleActions({
@@ -62,6 +73,21 @@ export default handleActions({
       ...state,
       transactions: payload,
       isRetrievingTransactions: false
+    }
+  },
+
+  [SHOW_MODAL]: (state, { payload }) => {
+    return {
+      ...state,
+      showModal: true,
+      modalTitle: payload || state.modalTitle
+    }
+  },
+
+  [HIDE_MODAL]: state => {
+    return {
+      ...state,
+      showModal: false
     }
   }
 }, initialState)
