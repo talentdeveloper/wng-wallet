@@ -23,6 +23,7 @@
   "balance": "Balance",
   "transactions": "Transactions",
   "latest_transactions": "Latest transactions",
+  "no_transactions": "No transactions yet. Make your first today!",
   "received": "Received",
   "sent": "Sent",
   "from": "From",

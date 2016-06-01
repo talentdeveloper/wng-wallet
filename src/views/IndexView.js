@@ -44,6 +44,7 @@ export class IndexView extends React.Component {
       },
       accountRS,
       transactions,
+      isRetrievingTransactions,
       showModal,
       modalTitle
     } = this.props
@@ -91,7 +92,10 @@ export class IndexView extends React.Component {
                 title={formatMessage({ id: 'transactions' })}
                 subtitle={formatMessage({ id: 'latest_transactions' })} />
               <CardText>
-                <TransactionsList accountRS={accountRS} transactions={transactions} />
+                <TransactionsList
+                  loading={isRetrievingTransactions}
+                  accountRS={accountRS}
+                  transactions={transactions} />
               </CardText>
             </Card>
           </Col>
@@ -108,6 +112,7 @@ IndexView.propTypes = {
   transactions: PropTypes.array.isRequired,
   modalTitle: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
+  isRetrievingTransactions: PropTypes.bool.isRequired,
   onSendClick: PropTypes.func.isRequired
 }
 
@@ -116,14 +121,16 @@ export default injectIntl(connect((state) => {
   const {
     transactions,
     showModal,
-    modalTitle
+    modalTitle,
+    isRetrievingTransactions
   } = state.transaction
 
   return {
     accountRS,
     transactions,
     showModal,
-    modalTitle
+    modalTitle,
+    isRetrievingTransactions
   }
 }, (dispatch) => {
   return {

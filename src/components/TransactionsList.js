@@ -1,6 +1,7 @@
 import React, { PropTypes} from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import {
+  CircularProgress,
   List,
   ListItem
 } from 'material-ui'
@@ -17,8 +18,19 @@ export class TransactionsList extends React.Component {
     const {
       intl: { formatNumber },
       accountRS,
+      loading,
       transactions
     } = this.props
+
+    if (loading) {
+      return <CircularProgress />
+    }
+
+    if (!transactions || !transactions.length) {
+      return <div>
+        <em><FormattedMessage id='no_transactions' /></em>
+      </div>
+    }
 
     const item = (type, fromTo, account, amount) => {
       return <div className={style.item}>
@@ -62,6 +74,7 @@ export class TransactionsList extends React.Component {
 TransactionsList.propTypes = {
   intl: PropTypes.object.isRequired,
   accountRS: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
   transactions: PropTypes.array.isRequired
 }
 
