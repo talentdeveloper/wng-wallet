@@ -23,7 +23,7 @@ export const login = (data) => {
     const handleDecryption = (encrypted) => {
       const decrypted = decrypt(encrypted, JSON.stringify(data))
       if (!decrypted) {
-        return dispatch(loginError())
+        return dispatch(loginError('could_not_decrypt'))
       }
 
       const accountData = {
@@ -45,6 +45,9 @@ export const login = (data) => {
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
       const encrypted = getSecretPhrase(data.username)
+      if (!encrypted) {
+        return dispatch(loginError('could_not_find_secretphrase'))
+      }
       handleDecryption(encrypted)
     })
   }
@@ -110,6 +113,7 @@ export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
   isRetrievingAccount: false,
+  loginError: '',
   account: {
     secretPhrase: '',
     accountRS: '',
@@ -122,6 +126,7 @@ export default handleActions({
     return {
       ...state,
       isLoggingIn: true,
+      loginError: '',
       account: {
         ...state.account,
         secretPhrase: ''
@@ -141,10 +146,11 @@ export default handleActions({
     }
   },
 
-  [LOGIN_ERROR]: state => {
+  [LOGIN_ERROR]: (state, { payload }) => {
     return {
       ...state,
-      isLoggingIn: false
+      isLoggingIn: false,
+      loginError: payload
     }
   },
 

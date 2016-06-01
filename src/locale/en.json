@@ -8,6 +8,8 @@
   "login_subtitle": "Login into the NXT Web Wallet now",
   "register": "Register",
   "register_subtitle": "Register now for the NXT Web Wallet",
+  "could_not_decrypt": "We could not login you in with this information.",
+  "could_not_find_secretphrase": "Your username and / or email doesn't exist, could not find the secretphrase.",
   "username": "Username",
   "email": "Email",
   "password": "Password",

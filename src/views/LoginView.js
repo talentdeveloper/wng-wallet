@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
 import {
@@ -16,7 +16,8 @@ export class LoginView extends React.Component {
     const {
       intl: {
         formatMessage
-      }
+      },
+      loginError
     } = this.props
 
     return (
@@ -28,6 +29,9 @@ export class LoginView extends React.Component {
                 title={formatMessage({ id: 'login' })}
                 subtitle={formatMessage({ id: 'login_subtitle' })} />
               <CardText>
+                {loginError && <div>
+                  <FormattedMessage id={loginError} />
+                </div>}
                 <LoginForm />
               </CardText>
             </Card>
@@ -39,9 +43,14 @@ export class LoginView extends React.Component {
 }
 
 LoginView.propTypes = {
-  intl: PropTypes.object.isRequired
+  intl: PropTypes.object.isRequired,
+  loginError: PropTypes.string.isRequired
 }
 
-export default injectIntl(
-  connect()(LoginView)
-)
+export default injectIntl(connect((state) => {
+  const { loginError } = state.auth
+
+  return {
+    loginError
+  }
+})(LoginView))
