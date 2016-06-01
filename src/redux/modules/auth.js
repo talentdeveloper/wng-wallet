@@ -13,31 +13,40 @@ import {
   getSecretPhrase
 } from 'redux/utils/storage'
 import { getTransactions } from 'redux/modules/transaction'
-import { sendRequest } from 'redux/utils/api'
+import { get, post, sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
   return dispatch => {
     dispatch(createAction(LOGIN)())
-    const encrypted = getSecretPhrase(data.username)
-    if (!encrypted) {
-      return dispatch(loginError())
+
+    const handleDecryption = (encrypted) => {
+      const decrypted = decrypt(encrypted, JSON.stringify(data))
+      if (!decrypted) {
+        return dispatch(loginError())
+      }
+
+      const accountData = {
+        secretPhrase: decrypted,
+        accountRS: getAccountRSFromSecretPhrase(decrypted)
+      }
+
+      dispatch(loginSuccess(accountData))
+      dispatch(push('/'))
+      dispatch(getAccount(accountData.accountRS))
+      dispatch(getTransactions(accountData.accountRS))
     }
 
-    const decrypted = decrypt(encrypted, JSON.stringify(data))
-    if (!decrypted) {
-      return dispatch(loginError())
-    }
-
-    const accountData = {
-      secretPhrase: decrypted,
-      accountRS: getAccountRSFromSecretPhrase(decrypted)
-    }
-
-    dispatch(loginSuccess(accountData))
-    dispatch(push('/'))
-    dispatch(getAccount(accountData.accountRS))
-    dispatch(getTransactions(accountData.accountRS))
+    get('account', {
+      username: data.username,
+      email: data.email
+    }).then((result) => {
+      const encrypted = result.user.secretPhrase
+      handleDecryption(encrypted)
+    }).fail((jqXHR, textStatus, err) => {
+      const encrypted = getSecretPhrase(data.username)
+      handleDecryption(encrypted)
+    })
   }
 }
 
