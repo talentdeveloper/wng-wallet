@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
 import {
@@ -16,7 +16,8 @@ export class RegisterView extends React.Component {
     const {
       intl: {
         formatMessage
-      }
+      },
+      registerError
     } = this.props
 
     return (
@@ -28,6 +29,9 @@ export class RegisterView extends React.Component {
                 title={formatMessage({ id: 'register' })}
                 subtitle={formatMessage({ id: 'register_subtitle' })} />
               <CardText>
+                {registerError && <div>
+                  <FormattedMessage id={registerError} />
+                </div>}
                 <RegisterForm />
               </CardText>
             </Card>
@@ -39,9 +43,14 @@ export class RegisterView extends React.Component {
 }
 
 RegisterView.propTypes = {
-  intl: PropTypes.object.isRequired
+  intl: PropTypes.object.isRequired,
+  registerError: PropTypes.string.isRequired
 }
 
-export default injectIntl(
-  connect()(RegisterView)
-)
+export default injectIntl(connect((state) => {
+  const { registerError } = state.auth
+
+  return {
+    registerError
+  }
+})(RegisterView))

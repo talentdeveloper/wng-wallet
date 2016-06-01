@@ -5,7 +5,8 @@ import { Row, Col } from 'react-flexgrid'
 import {
   Card,
   CardTitle,
-  CardText
+  CardText,
+  Snackbar
 } from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
@@ -17,7 +18,8 @@ export class LoginView extends React.Component {
       intl: {
         formatMessage
       },
-      loginError
+      loginError,
+      registerSuccess
     } = this.props
 
     return (
@@ -32,11 +34,18 @@ export class LoginView extends React.Component {
                 {loginError && <div>
                   <FormattedMessage id={loginError} />
                 </div>}
+                {registerSuccess && <div>
+                  <FormattedMessage id='successfully_registered' />
+                </div>}
                 <LoginForm />
               </CardText>
             </Card>
           </Col>
         </Row>
+        <Snackbar
+          open={registerSuccess}
+          message={formatMessage({ id: 'successfully_registered' })}
+        />
       </PageTitle>
     )
   }
@@ -44,13 +53,15 @@ export class LoginView extends React.Component {
 
 LoginView.propTypes = {
   intl: PropTypes.object.isRequired,
-  loginError: PropTypes.string.isRequired
+  loginError: PropTypes.string.isRequired,
+  registerSuccess: PropTypes.bool.isRequired
 }
 
 export default injectIntl(connect((state) => {
-  const { loginError } = state.auth
+  const { loginError, registerSuccess } = state.auth
 
   return {
-    loginError
+    loginError,
+    registerSuccess
   }
 })(LoginView))

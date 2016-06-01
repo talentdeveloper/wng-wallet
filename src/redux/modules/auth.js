@@ -74,10 +74,10 @@ export const register = (data) => {
         dispatch(registerSuccess(secretPhrase))
         dispatch(push('/login'))
       }).fail((jqXHR, textStatus, err) => {
-        dispatch(registerError(err))
+        dispatch(registerError('username_email_exists'))
       })
     } else {
-      dispatch(registerError('username_exists'))
+      dispatch(registerError('username_email_exists'))
     }
   }
 }
@@ -114,6 +114,8 @@ export const initialState = {
   isRegistering: false,
   isRetrievingAccount: false,
   loginError: '',
+  registerSuccess: false,
+  registerError: '',
   account: {
     secretPhrase: '',
     accountRS: '',
@@ -157,21 +159,24 @@ export default handleActions({
   [REGISTER]: state => {
     return {
       ...state,
-      isRegistering: true
+      isRegistering: true,
+      registerError: ''
     }
   },
 
   [REGISTER_SUCCESS]: state => {
     return {
       ...state,
-      isRegistering: false
+      isRegistering: false,
+      registerSuccess: true
     }
   },
 
-  [REGISTER_ERROR]: state => {
+  [REGISTER_ERROR]: (state, { payload }) => {
     return {
       ...state,
-      isRegistering: false
+      isRegistering: false,
+      registerError: payload
     }
   },
 
