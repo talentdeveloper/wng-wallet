@@ -8,6 +8,8 @@ import {
   CardText,
   RaisedButton
 } from 'material-ui'
+import InputIcon from 'material-ui/svg-icons/file/file-download'
+import OutputIcon from 'material-ui/svg-icons/file/file-upload'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 import { showModal } from 'redux/modules/transaction'
@@ -60,27 +62,25 @@ export class IndexView extends React.Component {
                 title={formatMessage({ id: 'website_name' })}
                 subtitle={formatMessage({ id: 'website_subtitle' })} />
               <CardText>
-                <div>
-                  <h4>
-                    <FormattedMessage id='account_number' />
-                    <small>&nbsp;<FormattedMessage id='click_to_copy_account' /></small>
-                  </h4>
-                  <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
-                    <RaisedButton
-                      label={formatMessage({ id: 'receive_currency' })}
-                      secondary />
-                  </CopyToClipboard>
-                  {copySuccess
-                    ? <div style={{ color: 'green' }}>
-                      <FormattedMessage id='copied_account' />
-                    </div>
-                    : null}
-                </div>
+                {copySuccess
+                  ? <div style={{ color: 'green' }}>
+                    <FormattedMessage id='copied_account' />
+                  </div>
+                  : null}
+                <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
+                  <RaisedButton
+                    icon={<InputIcon />}
+                    label={formatMessage({ id: 'receive_currency' })}
+                    primary
+                    style={{ margin: 10, height: 45 }} />
+                </CopyToClipboard>
                 <RaisedButton
                   onClick={this._onSendClick}
+                  icon={<OutputIcon />}
                   label={formatMessage({ id: 'send_currency' })}
-                  primary
-                  style={{ marginTop: 8 }} />
+                  secondary
+                  labelStyle={{ }}
+                  style={{ margin: 10, height: 45 }} />
               </CardText>
             </Card>
           </Col>
