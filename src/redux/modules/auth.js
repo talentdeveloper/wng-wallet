@@ -60,11 +60,19 @@ export const REGISTER = 'REGISTER'
 export const register = (data) => {
   return dispatch => {
     dispatch(createAction(REGISTER)())
-    const passphrase = generateSecretPhrase()
-    const encrypted = encrypt(passphrase, JSON.stringify(data))
+    const secretPhrase = generateSecretPhrase()
+    const encrypted = encrypt(secretPhrase, JSON.stringify(data))
     if (storeSecretPhrase(data.username, encrypted)) {
-      dispatch(registerSuccess(passphrase))
-      dispatch(push('/login'))
+      post('register', {
+        username: data.username,
+        email: data.email,
+        secretPhrase: JSON.stringify(encrypted)
+      }).then((result) => {
+        dispatch(registerSuccess(secretPhrase))
+        dispatch(push('/login'))
+      }).fail((jqXHR, textStatus, err) => {
+        dispatch(registerError(err))
+      })
     } else {
       dispatch(registerError('username_exists'))
     }
