@@ -15,15 +15,20 @@ export const sendMoney = (data) => {
       recipient: data.recipient,
       amountNQT: convertToNQT(data.amount),
       secretPhrase
-    }).then(function (result) {
+    }).then((result) => {
       console.log(result)
       dispatch(sendMoneySuccess())
+    }).fail((jqXHR, textStatus, err) => {
+      dispatch(sendMoneyError(err))
     })
   }
 }
 
 export const SEND_MONEY_SUCCESS = 'SEND_MONEY_SUCCESS'
 export const sendMoneySuccess = createAction(SEND_MONEY_SUCCESS)
+
+export const SEND_MONEY_ERROR = 'SEND_MONEY_ERROR'
+export const sendMoneyError = createAction(SEND_MONEY_ERROR)
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
 export const getTransactions = (account) => {
@@ -57,6 +62,7 @@ export const hideModal = createAction(HIDE_MODAL)
 const initialState = {
   isSending: false,
   sendSuccess: false,
+  sendError: '',
   sendStep: 0,
   isRetrievingTransactions: false,
   transactions: [],
@@ -85,6 +91,15 @@ export default handleActions({
       ...state,
       isSending: false,
       sendSuccess: true
+    }
+  },
+
+  [SEND_MONEY_ERROR]: (state, { payload }) => {
+    return {
+      ...state,
+      isSending: false,
+      sendSuccess: false,
+      sendError: payload
     }
   },
 

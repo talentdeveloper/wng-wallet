@@ -18,6 +18,13 @@ function _parseData (data) {
   return data
 }
 
+function _parseResult (result, textStatus, jqXHR) {
+  if (result.errorCode || result.errorDescription) {
+    return $.Deferred().reject(jqXHR, textStatus, result.errorDescription)
+  }
+  return result
+}
+
 export function sendRequest (requestType, data, async = true) {
   data = _parseData(data)
 
@@ -34,7 +41,7 @@ export function sendRequest (requestType, data, async = true) {
       } catch (e) {
         return e
       }
-    })
+    }).then(_parseResult)
   }
 
   // sign transactions locally
@@ -47,10 +54,17 @@ export function sendRequest (requestType, data, async = true) {
     url: `${apiUrl}/nxt?requestType=${requestType}`,
     data: data,
     async: async
-  }).then(function (result) {
+  })
+  .then(function (result) {
     try {
-      let data = JSON.parse(result)
-
+      return JSON.parse(result)
+    } catch (e) {
+      return e
+    }
+  })
+  .then(_parseResult)
+  .then(function (result) {
+    try {
       let unsignedTransactionBytes = data.unsignedTransactionBytes
       let signature = signBytes(unsignedTransactionBytes, secretPhrase)
 
@@ -61,7 +75,5 @@ export function sendRequest (requestType, data, async = true) {
     } catch (e) {
       return false
     }
-  }).then(function (data) {
-    return sendRequest('broadcastTransaction', data)
   })
 }

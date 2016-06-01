@@ -64,6 +64,7 @@ export class SendForm extends React.Component {
       handleSubmit,
       isSending,
       sendSuccess,
+      sendError,
       sendStep
     } = this.props
 
@@ -113,11 +114,13 @@ export class SendForm extends React.Component {
           </div>
         </div>}
         {sendStep === 1 && <div>
-          <p>
+          {sendError
+          ? <p>{sendError}</p>
+          : <p>
             <FormattedMessage
               id='confirm_send_money'
               values={{ amount: amount.value, recipient: recipient.value }} />
-          </p>
+          </p>}
           <div className={formStyle.actions}>
             <FlatButton
               onClick={this.onPreviousStep}
@@ -143,6 +146,7 @@ SendForm.propTypes = {
   setStep: PropTypes.func.isRequired,
   isSending: PropTypes.bool.isRequired,
   sendSuccess: PropTypes.bool.isRequired,
+  sendError: PropTypes.string.isRequired,
   sendStep: PropTypes.number.isRequired
 }
 
@@ -171,13 +175,15 @@ export default injectIntl(
     const {
       isSending,
       sendStep,
-      sendSuccess
+      sendSuccess,
+      sendError
     } = state.transaction
 
     return {
       isSending,
       sendStep,
-      sendSuccess
+      sendSuccess,
+      sendError
     }
   },
 
