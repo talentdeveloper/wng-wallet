@@ -6,6 +6,8 @@
   "test": "Test",
   "login": "Login",
   "login_subtitle": "Login into the NXT Web Wallet now",
+  "logout": "Logout",
+  "logout_confirmation": "Are you sure you want to logout?",
   "register": "Register",
   "register_subtitle": "Register now for the NXT Web Wallet",
   "could_not_decrypt": "We could not login you in with this information.",
