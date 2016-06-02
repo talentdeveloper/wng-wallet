@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
 import {
@@ -10,33 +10,27 @@ import {
 } from 'material-ui'
 import InputIcon from 'material-ui/svg-icons/file/file-download'
 import OutputIcon from 'material-ui/svg-icons/file/file-upload'
-import CopyToClipboard from 'react-copy-to-clipboard'
 
 import { showModal } from 'redux/modules/transaction'
+import { showReceiveModal, hideReceiveModal } from 'redux/modules/auth'
 
 import PageTitle from 'components/PageTitle'
 import SendForm from 'components/SendForm'
+import ReceiveModal from 'components/ReceiveModal'
 import TransactionModal from 'components/TransactionModal'
 import TransactionsList from 'components/TransactionsList'
 
 export class IndexView extends React.Component {
-  constructor () {
-    super()
-    this.state = {
-      copySuccess: false
-    }
-  }
-
-  _onCopy = () => {
-    this.setState({
-      copySuccess: true
-    })
-  }
-
   _onSendClick = () => {
     const { onSendClick } = this.props
 
     onSendClick()
+  }
+
+  _onReceiveClick = () => {
+    const { onReceiveClick } = this.props
+
+    onReceiveClick()
   }
 
   render () {
@@ -48,10 +42,10 @@ export class IndexView extends React.Component {
       transactions,
       isRetrievingTransactions,
       showModal,
+      showReceiveModal,
+      handleReceiveClose,
       modalTitle
     } = this.props
-
-    const { copySuccess } = this.state
 
     return (
       <PageTitle pageName='home'>
@@ -62,18 +56,12 @@ export class IndexView extends React.Component {
                 title={formatMessage({ id: 'website_name' })}
                 subtitle={formatMessage({ id: 'website_subtitle' })} />
               <CardText>
-                {copySuccess
-                  ? <div style={{ color: 'green' }}>
-                    <FormattedMessage id='copied_account' />
-                  </div>
-                  : null}
-                <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
-                  <RaisedButton
-                    icon={<InputIcon />}
-                    label={formatMessage({ id: 'receive_currency' })}
-                    primary
-                    style={{ margin: 10, height: 45 }} />
-                </CopyToClipboard>
+                <RaisedButton
+                  onClick={this._onReceiveClick}
+                  icon={<InputIcon />}
+                  label={formatMessage({ id: 'receive_currency' })}
+                  primary
+                  style={{ margin: 10, height: 45 }} />
                 <RaisedButton
                   onClick={this._onSendClick}
                   icon={<OutputIcon />}
@@ -100,6 +88,7 @@ export class IndexView extends React.Component {
             </Card>
           </Col>
         </Row>
+        <ReceiveModal show={showReceiveModal} handleClose={handleReceiveClose} accountRS={accountRS} />
         <TransactionModal show={showModal} title={modalTitle} form={<SendForm />} />
       </PageTitle>
     )
@@ -112,8 +101,11 @@ IndexView.propTypes = {
   transactions: PropTypes.array.isRequired,
   modalTitle: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
+  showReceiveModal: PropTypes.bool.isRequired,
   isRetrievingTransactions: PropTypes.bool.isRequired,
-  onSendClick: PropTypes.func.isRequired
+  onSendClick: PropTypes.func.isRequired,
+  onReceiveClick: PropTypes.func.isRequired,
+  handleReceiveClose: PropTypes.func.isRequired
 }
 
 export default injectIntl(connect((state) => {
@@ -125,10 +117,15 @@ export default injectIntl(connect((state) => {
     isRetrievingTransactions
   } = state.transaction
 
+  const {
+    showReceiveModal
+  } = state.auth
+
   return {
     accountRS,
     transactions,
     showModal,
+    showReceiveModal,
     modalTitle,
     isRetrievingTransactions
   }
@@ -136,6 +133,12 @@ export default injectIntl(connect((state) => {
   return {
     onSendClick: () => {
       dispatch(showModal())
+    },
+    onReceiveClick: () => {
+      dispatch(showReceiveModal())
+    },
+    handleReceiveClose: () => {
+      dispatch(hideReceiveModal())
     }
   }
 })(IndexView))

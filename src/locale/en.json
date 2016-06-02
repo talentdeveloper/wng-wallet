@@ -39,5 +39,6 @@
   "next": "Next",
   "close": "Close",
   "successfully_send": "Successfully send!",
-  "confirm_send_money": "Please confirm that you want to send {amount} NXT to {recipient}"
+  "confirm_send_money": "Please confirm that you want to send {amount} NXT to {recipient}",
+  "cancel": "Cancel"
 }

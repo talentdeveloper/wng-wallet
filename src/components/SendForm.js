@@ -89,14 +89,14 @@ export class SendForm extends React.Component {
       <form onSubmit={handleSubmit(this.handleSubmit)}>
         {sendStep === 0 && <div>
           <TextField
-            hintText={formatMessage({ id: 'recipient' })}
+            hintText='NXT-48BL-AAKR-4NP6-5PVH7'
             floatingLabelText={formatMessage({ id: 'recipient' })}
             errorText={error(recipient)}
             fullWidth
             {...recipient} />
           <br />
           <TextField
-            hintText={formatMessage({ id: 'amount' })}
+            hintText={'100'}
             floatingLabelText={formatMessage({ id: 'amount' })}
             errorText={error(amount)}
             fullWidth

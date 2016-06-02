@@ -109,6 +109,12 @@ export const getAccountSuccess = createAction(GET_ACCOUNT_SUCCESS)
 export const GET_ACCOUNT_ERROR = 'GET_ACCOUNT_ERROR'
 export const getAccountError = createAction(GET_ACCOUNT_ERROR)
 
+export const SHOW_RECEIVE_MODAL = 'SHOW_RECEIVE_MODAL'
+export const showReceiveModal = createAction(SHOW_RECEIVE_MODAL)
+
+export const HIDE_RECEIVE_MODAL = 'HIDE_RECEIVE_MODAL'
+export const hideReceiveModal = createAction(HIDE_RECEIVE_MODAL)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
@@ -116,6 +122,7 @@ export const initialState = {
   loginError: '',
   registerSuccess: false,
   registerError: '',
+  showReceiveModal: false,
   account: {
     secretPhrase: '',
     accountRS: '',
@@ -202,6 +209,20 @@ export default handleActions({
     return {
       ...state,
       isRetrievingAccount: false
+    }
+  },
+
+  [SHOW_RECEIVE_MODAL]: state => {
+    return {
+      ...state,
+      showReceiveModal: true
+    }
+  },
+
+  [HIDE_RECEIVE_MODAL]: state => {
+    return {
+      ...state,
+      showReceiveModal: false
     }
   }
 }, initialState)
