@@ -3,7 +3,10 @@ import { getPublicKey, signBytes } from './cryptoOld'
 // const nrsUrl = 'http://otd.sd.otdocs.com:17876'
 // const nrsUrl = 'http://localhost:6876'
 const nrsUrl = 'http://nrs.scripterron.org:6876'
-const apiUrl = 'http://localhost:3001'
+let apiUrl = 'http://localhost:3001'
+if (process.env.NODE_ENV === 'production') {
+  apiUrl = '/api'
+}
 
 function _parseData (data) {
   if (!data.secretPhrase) return data
