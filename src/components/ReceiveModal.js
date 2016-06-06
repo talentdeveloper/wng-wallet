@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Dialog, FlatButton } from 'material-ui'
+import { Row, Col } from 'react-flexgrid'
 import CopyToClipboard from 'react-copy-to-clipboard'
+import QRCode from 'qrcode.react'
 
 export class ReceiveModal extends React.Component {
   constructor () {
@@ -48,17 +50,23 @@ export class ReceiveModal extends React.Component {
         autoScrollBodyContent
         autoDetectWindowHeight={false}
         onRequestClose={this._handleClose}>
-        <div>
-          Your account number is <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
-            <FlatButton label={accountRS} />
-          </CopyToClipboard> (<FormattedMessage id='click_to_copy_account' />)
-        </div>
-        {copySuccess
-          ? <div style={{ color: 'green' }}>
-            <FormattedMessage id='copied_account' />
-          </div>
-          : null}
-
+        <Row>
+          <Col xs={12} md={8}>
+            <h3><FormattedMessage id='account_number' /></h3>
+            <FormattedMessage id='your_account_number_is' /> <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
+              <FlatButton label={accountRS} />
+            </CopyToClipboard> <br />(<FormattedMessage id='click_to_copy_account' />)
+            {copySuccess
+              ? <div style={{ color: 'green' }}>
+                <FormattedMessage id='copied_account' />
+              </div>
+              : null}
+          </Col>
+          <Col xs={12} md={4}>
+            <h3><FormattedMessage id='scan_qr_code' /></h3>
+            <QRCode value={accountRS} />
+          </Col>
+        </Row>
       </Dialog>
     )
   }

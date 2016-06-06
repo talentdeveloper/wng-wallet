@@ -20,6 +20,7 @@
   "submit": "Submit",
   "required_error": "This field is required",
   "account_number": "Account number",
+  "your_account_number_is": "Your account number is: ",
   "click_to_copy_account": "Click to copy your account number",
   "copied_account": "Successfully copied account number!",
   "balance": "Balance",
@@ -40,5 +41,6 @@
   "close": "Close",
   "successfully_send": "Successfully send!",
   "confirm_send_money": "Please confirm that you want to send {amount} NXT to {recipient}",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "scan_qr_code": "Scan QR code"
 }
