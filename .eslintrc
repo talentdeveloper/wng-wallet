@@ -21,6 +21,8 @@
     "curve25519": true,
     "curve25519_": true,
     "NxtAddress": true,
+    "BigInteger": true,
+    "$": true
   },
   "rules": {
     "semi" : [2, "never"],

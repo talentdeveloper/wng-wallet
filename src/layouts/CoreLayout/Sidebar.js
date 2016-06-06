@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
@@ -13,6 +14,15 @@ class Sidebar extends React.Component {
     closeSidebar()
   }
 
+  _onLogoutClick = () => {
+    const { intl: { formatMessage } } = this.props
+    const logout = confirm(formatMessage({ id: 'logout_confirmation' }))
+
+    if (logout) {
+      window.location.href = '/'
+    }
+  }
+
   render () {
     const { open } = this.props
 
@@ -21,19 +31,19 @@ class Sidebar extends React.Component {
         docked={false}
         open={open}
         onRequestChange={this._onRequestChange}>
-        <MenuItem>Menu Item</MenuItem>
-        <MenuItem>Menu Item 2</MenuItem>
+        <MenuItem onTouchTap={this._onLogoutClick}><FormattedMessage id='logout' /></MenuItem>
       </Drawer>
     )
   }
 }
 
 Sidebar.propTypes = {
+  intl: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   closeSidebar: PropTypes.func.isRequired
 }
 
-export default connect((state) => {
+export default injectIntl(connect((state) => {
   const open = state.site.sidebarOpen
   return {
     open
@@ -44,4 +54,4 @@ export default connect((state) => {
       dispatch(closeSidebar())
     }
   }
-})(Sidebar)
+})(Sidebar))

@@ -26,7 +26,8 @@ export class RegisterForm extends React.Component {
       fields: {
         username,
         email,
-        password
+        password,
+        confirmPassword
       },
       handleSubmit
     } = this.props
@@ -60,6 +61,14 @@ export class RegisterForm extends React.Component {
           errorText={error(password)}
           fullWidth
           {...password} />
+        <br />
+        <TextField
+          type='password'
+          hintText={formatMessage({ id: 'confirm_password' })}
+          floatingLabelText={formatMessage({ id: 'confirm_password' })}
+          errorText={error(confirmPassword)}
+          fullWidth
+          {...confirmPassword} />
         <br />
         <div className={style.submitContainer}>
           <RaisedButton
@@ -97,13 +106,21 @@ const validate = values => {
     errors.password = 'required_error'
   }
 
+  if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = 'passwords_should_equal'
+  }
+
+  if (!values.confirmPassword) {
+    errors.confirmPassword = 'required_error'
+  }
+
   return errors
 }
 
 export default injectIntl(
   reduxForm({
     form: 'login',
-    fields: ['username', 'email', 'password'],
+    fields: ['username', 'email', 'password', 'confirmPassword'],
     validate
   })(RegisterForm)
 )

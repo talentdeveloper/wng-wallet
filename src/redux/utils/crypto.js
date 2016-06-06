@@ -45,6 +45,18 @@ export function encrypt (message, key) {
  * @return {string} decrypted message
  */
 export function decrypt (encrypted, key) {
+  if (typeof encrypted === 'string') {
+    try {
+      encrypted = JSON.parse(encrypted)
+    } catch (e) {
+      return null
+    }
+  }
+
+  if (!encrypted || !encrypted.message) {
+    return null
+  }
+
   // convert message to bytes
   const messageBytes = nacl.util.decodeBase64(encrypted.message)
   // convert key into bytes

@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import AppBar from 'material-ui/AppBar'
+import { AppBar, RaisedButton } from 'material-ui'
 
-import {
-  openSidebar
-} from 'redux/modules/site'
+import { openSidebar } from 'redux/modules/site'
+import { convertToNXT } from 'redux/utils/nrs'
 
 class Header extends React.Component {
   _onLeftIconButtonTouchTap = () => {
@@ -14,12 +13,33 @@ class Header extends React.Component {
   }
 
   render () {
-    const { intl: { formatMessage } } = this.props
+    const {
+      intl: { formatMessage, formatNumber },
+      isLoggedIn,
+      balance
+    } = this.props
+
+    let balanceDiv = null
+
+    if (isLoggedIn) {
+      const style = {
+        margin: 8
+      }
+
+      balanceDiv = <div>
+        <RaisedButton
+          label={`
+            ${formatMessage({ id: 'balance' })}: ${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}
+          `}
+          style={style}
+          />
+      </div>
+    }
 
     return (
       <AppBar
         title={formatMessage({ id: 'website_name' })}
-        iconClassNameRight='muidocs-icon-navigation-expand-more'
+        iconElementRight={balanceDiv}
         onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap} />
     )
   }
@@ -27,11 +47,19 @@ class Header extends React.Component {
 
 Header.propTypes = {
   intl: PropTypes.object.isRequired,
-  closeSidebar: PropTypes.func.isRequired
+  closeSidebar: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  balance: PropTypes.string.isRequired
 }
 
 export default injectIntl(connect((state) => {
-  return state
+  const isLoggedIn = !!state.auth.account.secretPhrase
+  const balance = convertToNXT(state.auth.account.unconfirmedBalanceNQT)
+
+  return {
+    isLoggedIn,
+    balance
+  }
 }, (dispatch) => {
   return {
     closeSidebar: () => {

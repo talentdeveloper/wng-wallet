@@ -8,7 +8,7 @@ import RegisterView from 'views/RegisterView'
 
 export default (store) => {
   const onEnter = (nextState, replace) => {
-    const loggedIn = store.getState().auth.secretPhrase !== ''
+    const loggedIn = store.getState().auth.account.secretPhrase !== ''
 
     if (!loggedIn) {
       replace('/login')

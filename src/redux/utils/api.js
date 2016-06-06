@@ -1,5 +1,14 @@
 import { getPublicKey, signBytes } from './cryptoOld'
 
+// const nrsUrl = 'http://otd.sd.otdocs.com:17876'
+// const nrsUrl = 'http://localhost:6876'
+const nrsUrl = 'http://nrs.scripterron.org:6876'
+let apiUrl = 'http://localhost:3001'
+
+if (process.env.API_URL) {
+  apiUrl = process.env.API_URL
+}
+
 function _parseData (data) {
   if (!data.secretPhrase) return data
 
@@ -14,6 +23,37 @@ function _parseData (data) {
   return data
 }
 
+function _parseResult (result, textStatus, jqXHR) {
+  if (typeof result === 'string') {
+    try {
+      result = JSON.parse(result)
+    } catch (e) {
+      return e
+    }
+  }
+
+  if (result.errorCode || result.errorDescription) {
+    return $.Deferred().reject(jqXHR, textStatus, result.errorDescription)
+  }
+  return result
+}
+
+export function post (url, data) {
+  return $.ajax({
+    type: 'POST',
+    url: `${apiUrl}/${url}`,
+    data
+  }).then(_parseResult)
+}
+
+export function get (url, data) {
+  return $.ajax({
+    type: 'GET',
+    url: `${apiUrl}/${url}`,
+    data
+  }).then(_parseResult)
+}
+
 export function sendRequest (requestType, data, async = true) {
   data = _parseData(data)
 
@@ -21,16 +61,10 @@ export function sendRequest (requestType, data, async = true) {
   if (!data.secretPhrase) {
     return $.ajax({
       type: 'POST',
-      url: 'http://otd.sd.otdocs.com:17876/nxt?requestType=' + requestType,
+      url: `${nrsUrl}/nxt?requestType=${requestType}`,
       data: data,
       async: async
-    }).then(function (result) {
-      try {
-        return JSON.parse(result)
-      } catch (e) {
-        return e
-      }
-    })
+    }).then(_parseResult)
   }
 
   // sign transactions locally
@@ -40,13 +74,13 @@ export function sendRequest (requestType, data, async = true) {
 
   return $.ajax({
     type: 'POST',
-    url: 'http://otd.sd.otdocs.com:17876/nxt?requestType=' + requestType,
+    url: `${nrsUrl}/nxt?requestType=${requestType}`,
     data: data,
     async: async
-  }).then(function (result) {
+  })
+  .then(_parseResult)
+  .then(function (result) {
     try {
-      let data = JSON.parse(result)
-
       let unsignedTransactionBytes = data.unsignedTransactionBytes
       let signature = signBytes(unsignedTransactionBytes, secretPhrase)
 
@@ -57,7 +91,5 @@ export function sendRequest (requestType, data, async = true) {
     } catch (e) {
       return false
     }
-  }).then(function (data) {
-    return sendRequest('broadcastTransaction', data)
   })
 }

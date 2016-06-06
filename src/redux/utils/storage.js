@@ -1,22 +1,22 @@
-export function storeSecretPhrase (username, passphrase) {
-  if (localStorage.getItem(`${username}_passphrase`)) {
+export function storeSecretPhrase (username, secretPhrase) {
+  if (localStorage.getItem(`${username}_secretPhrase`)) {
     return false
   }
 
-  if (typeof passphrase === 'object') {
-    passphrase = JSON.stringify(passphrase)
+  if (typeof secretPhrase === 'object') {
+    secretPhrase = JSON.stringify(secretPhrase)
   }
 
-  localStorage.setItem(`${username}_passphrase`, passphrase)
+  localStorage.setItem(`${username}_secretPhrase`, secretPhrase)
   return true
 }
 
 export function getSecretPhrase (username) {
-  const passphrase = localStorage.getItem(`${username}_passphrase`)
+  const secretPhrase = localStorage.getItem(`${username}_secretPhrase`)
 
-  if (!passphrase) {
+  if (!secretPhrase) {
     return null
   }
 
-  return JSON.parse(passphrase)
+  return JSON.parse(secretPhrase)
 }

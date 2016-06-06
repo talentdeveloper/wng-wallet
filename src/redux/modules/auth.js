@@ -12,28 +12,44 @@ import {
   storeSecretPhrase,
   getSecretPhrase
 } from 'redux/utils/storage'
+import { getTransactions } from 'redux/modules/transaction'
+import { get, post, sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
   return dispatch => {
     dispatch(createAction(LOGIN)())
-    const encrypted = getSecretPhrase(data.username)
-    if (!encrypted) {
-      return dispatch(loginError())
+
+    const handleDecryption = (encrypted) => {
+      const decrypted = decrypt(encrypted, JSON.stringify(data))
+      if (!decrypted) {
+        return dispatch(loginError('could_not_decrypt'))
+      }
+
+      const accountData = {
+        secretPhrase: decrypted,
+        accountRS: getAccountRSFromSecretPhrase(decrypted)
+      }
+
+      dispatch(loginSuccess(accountData))
+      dispatch(push('/'))
+      dispatch(getAccount(accountData.accountRS))
+      dispatch(getTransactions(accountData.accountRS))
     }
 
-    const decrypted = decrypt(encrypted, JSON.stringify(data))
-    if (!decrypted) {
-      return dispatch(loginError())
-    }
-
-    const account = {
-      secretPhrase: decrypted,
-      accountRS: getAccountRSFromSecretPhrase(decrypted)
-    }
-
-    dispatch(loginSuccess(account))
-    dispatch(push('/'))
+    get('account', {
+      username: data.username,
+      email: data.email
+    }).then((result) => {
+      const encrypted = result.user.secretPhrase
+      handleDecryption(encrypted)
+    }).fail((jqXHR, textStatus, err) => {
+      const encrypted = getSecretPhrase(data.username)
+      if (!encrypted) {
+        return dispatch(loginError('could_not_find_secretphrase'))
+      }
+      handleDecryption(encrypted)
+    })
   }
 }
 
@@ -47,13 +63,22 @@ export const REGISTER = 'REGISTER'
 export const register = (data) => {
   return dispatch => {
     dispatch(createAction(REGISTER)())
-    const passphrase = generateSecretPhrase()
-    const encrypted = encrypt(passphrase, JSON.stringify(data))
+    const secretPhrase = generateSecretPhrase()
+    const encrypted = encrypt(secretPhrase, JSON.stringify(data))
     if (storeSecretPhrase(data.username, encrypted)) {
-      dispatch(registerSuccess(passphrase))
-      dispatch(push('/login'))
+      post('register', {
+        username: data.username,
+        email: data.email,
+        secretPhrase: JSON.stringify(encrypted),
+        accountRS: getAccountRSFromSecretPhrase(secretPhrase)
+      }).then((result) => {
+        dispatch(registerSuccess(secretPhrase))
+        dispatch(push('/login'))
+      }).fail((jqXHR, textStatus, err) => {
+        dispatch(registerError('username_email_exists'))
+      })
     } else {
-      dispatch(registerError('username_exists'))
+      dispatch(registerError('username_email_exists'))
     }
   }
 }
@@ -64,19 +89,58 @@ export const registerSuccess = createAction(REGISTER_SUCCESS)
 export const REGISTER_ERROR = 'REGISTER_ERROR'
 export const registerError = createAction(REGISTER_ERROR)
 
+export const GET_ACCOUNT = 'GET_ACCOUNT'
+export const getAccount = (account) => {
+  return dispatch => {
+    dispatch(createAction(GET_ACCOUNT)())
+    sendRequest('getAccount', {
+      account
+    }).then((result) => {
+      console.log(result)
+      dispatch(getAccountSuccess({
+        unconfirmedBalanceNQT: result.unconfirmedBalanceNQT
+      }))
+    })
+  }
+}
+
+export const GET_ACCOUNT_SUCCESS = 'GET_ACCOUNT_SUCCESS'
+export const getAccountSuccess = createAction(GET_ACCOUNT_SUCCESS)
+
+export const GET_ACCOUNT_ERROR = 'GET_ACCOUNT_ERROR'
+export const getAccountError = createAction(GET_ACCOUNT_ERROR)
+
+export const SHOW_RECEIVE_MODAL = 'SHOW_RECEIVE_MODAL'
+export const showReceiveModal = createAction(SHOW_RECEIVE_MODAL)
+
+export const HIDE_RECEIVE_MODAL = 'HIDE_RECEIVE_MODAL'
+export const hideReceiveModal = createAction(HIDE_RECEIVE_MODAL)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
-  secretPhrase: '',
-  accountRS: ''
+  isRetrievingAccount: false,
+  loginError: '',
+  registerSuccess: false,
+  registerError: '',
+  showReceiveModal: false,
+  account: {
+    secretPhrase: '',
+    accountRS: '',
+    unconfirmedBalanceNQT: 0
+  }
 }
 
 export default handleActions({
   [LOGIN]: state => {
     return {
       ...state,
-      secretPhrase: '',
-      isLoggingIn: true
+      isLoggingIn: true,
+      loginError: '',
+      account: {
+        ...state.account,
+        secretPhrase: ''
+      }
     }
   },
 
@@ -84,36 +148,82 @@ export default handleActions({
     return {
       ...state,
       isLoggingIn: false,
-      secretPhrase: payload.secretPhrase,
-      accountRS: payload.accountRS
+      account: {
+        ...state.account,
+        secretPhrase: payload.secretPhrase,
+        accountRS: payload.accountRS
+      }
     }
   },
 
-  [LOGIN_ERROR]: state => {
+  [LOGIN_ERROR]: (state, { payload }) => {
     return {
       ...state,
-      isLoggingIn: false
+      isLoggingIn: false,
+      loginError: payload
     }
   },
 
   [REGISTER]: state => {
     return {
       ...state,
-      isRegistering: true
+      isRegistering: true,
+      registerError: ''
     }
   },
 
   [REGISTER_SUCCESS]: state => {
     return {
       ...state,
-      isRegistering: false
+      isRegistering: false,
+      registerSuccess: true
     }
   },
 
-  [REGISTER_ERROR]: state => {
+  [REGISTER_ERROR]: (state, { payload }) => {
     return {
       ...state,
-      isRegistering: false
+      isRegistering: false,
+      registerError: payload
+    }
+  },
+
+  [GET_ACCOUNT]: state => {
+    return {
+      ...state,
+      isRetrievingAccount: true
+    }
+  },
+
+  [GET_ACCOUNT_SUCCESS]: (state, { payload }) => {
+    return {
+      ...state,
+      isRetrievingAccount: false,
+      account: {
+        ...state.account,
+        unconfirmedBalanceNQT: payload.unconfirmedBalanceNQT
+      }
+    }
+  },
+
+  [GET_ACCOUNT_ERROR]: state => {
+    return {
+      ...state,
+      isRetrievingAccount: false
+    }
+  },
+
+  [SHOW_RECEIVE_MODAL]: state => {
+    return {
+      ...state,
+      showReceiveModal: true
+    }
+  },
+
+  [HIDE_RECEIVE_MODAL]: state => {
+    return {
+      ...state,
+      showReceiveModal: false
     }
   }
 }, initialState)
