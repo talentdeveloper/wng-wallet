@@ -69,7 +69,8 @@ export const register = (data) => {
       post('register', {
         username: data.username,
         email: data.email,
-        secretPhrase: JSON.stringify(encrypted)
+        secretPhrase: JSON.stringify(encrypted),
+        accountRS: getAccountRSFromSecretPhrase(secretPhrase)
       }).then((result) => {
         dispatch(registerSuccess(secretPhrase))
         dispatch(push('/login'))
