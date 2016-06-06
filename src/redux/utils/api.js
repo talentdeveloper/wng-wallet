@@ -4,8 +4,9 @@ import { getPublicKey, signBytes } from './cryptoOld'
 // const nrsUrl = 'http://localhost:6876'
 const nrsUrl = 'http://nrs.scripterron.org:6876'
 let apiUrl = 'http://localhost:3001'
-if (process.env.NODE_ENV === 'production') {
-  apiUrl = '/api'
+
+if (process.env.API_URL) {
+  apiUrl = process.env.API_URL
 }
 
 function _parseData (data) {
