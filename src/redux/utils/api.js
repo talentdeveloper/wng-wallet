@@ -5,8 +5,8 @@ import { getPublicKey, signBytes } from './cryptoOld'
 const nrsUrl = 'http://nrs.scripterron.org:6876'
 let apiUrl = 'http://localhost:3001'
 
-if (process.env.API_URL) {
-  apiUrl = process.env.API_URL
+if (process.env.NODE_ENV === 'production') {
+  apiUrl = 'https://api.wang.coin.cards'
 }
 
 function _parseData (data) {
