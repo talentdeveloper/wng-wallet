@@ -17,6 +17,8 @@
   "username": "Username",
   "email": "Email",
   "password": "Password",
+  "confirm_password": "Confirm Password",
+  "passwords_should_equal": "Passwords should equal",
   "submit": "Submit",
   "required_error": "This field is required",
   "account_number": "Account number",
