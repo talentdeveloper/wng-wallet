@@ -53,7 +53,6 @@ export class ReceiveModal extends React.Component {
         <Row>
           <Col xs={12} md={8}>
             <h3><FormattedMessage id='account_number' /></h3>
-            <FormattedMessage id='account_help_message' /><br />
             <FormattedMessage id='your_account_number_is' /> <CopyToClipboard text={accountRS} onCopy={this._onCopy}>
               <FlatButton label={accountRS} />
             </CopyToClipboard> <br />(<FormattedMessage id='click_to_copy_account' />)
@@ -62,6 +61,7 @@ export class ReceiveModal extends React.Component {
                 <FormattedMessage id='copied_account' />
               </div>
               : null}
+            <p><FormattedMessage id='account_help_message' /></p>
           </Col>
           <Col xs={12} md={4}>
             <h3><FormattedMessage id='scan_qr_code' /></h3>
