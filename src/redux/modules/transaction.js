@@ -39,10 +39,22 @@ export const getTransactions = (account) => {
       account = getState().auth.account.accountRS
     }
 
-    sendRequest('getBlockchainTransactions', {
-      account
-    }).then((result) => {
-      dispatch(getTransactionsSuccess(result.transactions))
+    Promise.all([
+      sendRequest('getUnconfirmedTransactions', {
+        account
+      }),
+      sendRequest('getBlockchainTransactions', {
+        account,
+        firstIndex: 0,
+        lastIndex: 9
+      })
+    ]).then((result) => {
+      const transactions = [
+        ...result[0].unconfirmedTransactions,
+        ...result[1].transactions
+      ]
+
+      dispatch(getTransactionsSuccess(transactions))
     })
   }
 }
