@@ -129,11 +129,11 @@ export class SendForm extends React.Component {
             <FlatButton
               onClick={this.onPreviousStep}
               label={formatMessage({ id: 'previous' })} />
-            <RaisedButton
+            {!sendError && <RaisedButton
               type='submit'
               primary
               label={formatMessage({ id: 'submit' })}
-              disabled={Boolean(disableButton)} />
+              disabled={Boolean(disableButton)} />}
           </div>
         </div>}
       </form>
