@@ -59,7 +59,7 @@ export class TransactionsList extends React.Component {
           }
 
           const style = {}
-          if (transaction.confirmations === 0) {
+          if (!transaction.confirmations) {
             style.fontStyle = 'italic'
           }
 
