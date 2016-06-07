@@ -118,18 +118,22 @@ export class SendForm extends React.Component {
           ? <p>{sendError}</p>
           : <p>
             <FormattedMessage
-              id='confirm_send_money'
-              values={{ amount: amount.value, recipient: recipient.value }} />
+              id='confirm_send_money_amount'
+              values={{ amount: amount.value }} />
+            <br />
+            <FormattedMessage
+              id='confirm_send_money_account'
+              values={{ recipient: recipient.value }} />
           </p>}
           <div className={formStyle.actions}>
             <FlatButton
               onClick={this.onPreviousStep}
               label={formatMessage({ id: 'previous' })} />
-            <RaisedButton
+            {!sendError && <RaisedButton
               type='submit'
               primary
               label={formatMessage({ id: 'submit' })}
-              disabled={Boolean(disableButton)} />
+              disabled={Boolean(disableButton)} />}
           </div>
         </div>}
       </form>

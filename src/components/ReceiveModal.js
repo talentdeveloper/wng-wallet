@@ -61,10 +61,12 @@ export class ReceiveModal extends React.Component {
                 <FormattedMessage id='copied_account' />
               </div>
               : null}
+            <p><FormattedMessage id='account_help_message' /></p>
           </Col>
           <Col xs={12} md={4}>
             <h3><FormattedMessage id='scan_qr_code' /></h3>
             <QRCode value={accountRS} />
+            <p><FormattedMessage id='qr_help_message' /></p>
           </Col>
         </Row>
       </Dialog>

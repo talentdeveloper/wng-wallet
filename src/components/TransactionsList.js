@@ -58,13 +58,19 @@ export class TransactionsList extends React.Component {
             account = transaction.recipientRS
           }
 
+          const style = {}
+          if (!transaction.confirmations) {
+            style.fontStyle = 'italic'
+          }
+
           return <ListItem
             key={transaction.transaction}
             primaryText={item(type, fromTo, account, amount)}
             secondaryText={<div>
               {formatTimestamp(transaction.timestamp).toLocaleString()}
             </div>}
-            secondaryTextLines={2} />
+            secondaryTextLines={2}
+            style={style} />
         })}
       </List>
     )
