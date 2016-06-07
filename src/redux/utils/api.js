@@ -69,7 +69,7 @@ export function sendRequest (requestType, data, async = true) {
 
   // sign transactions locally
   let secretPhrase = data.secretPhrase
-  data.secretPhrase = null
+  delete data.secretPhrase
   data.publicKey = getPublicKey(secretPhrase)
 
   return $.ajax({
@@ -81,15 +81,18 @@ export function sendRequest (requestType, data, async = true) {
   .then(_parseResult)
   .then(function (result) {
     try {
-      let unsignedTransactionBytes = data.unsignedTransactionBytes
-      let signature = signBytes(unsignedTransactionBytes, secretPhrase)
+      const { unsignedTransactionBytes } = result
+      const signature = signBytes(unsignedTransactionBytes, secretPhrase)
 
       return {
         transactionBytes: unsignedTransactionBytes.substr(0, 192) + signature + unsignedTransactionBytes.substr(320),
-        prunableAttachmentJSON: JSON.stringify(data.transactionJSON.attachment)
+        prunableAttachmentJSON: JSON.stringify(result.transactionJSON.attachment)
       }
     } catch (e) {
       return false
     }
+  })
+  .then((result) => {
+    return sendRequest('broadcastTransaction', result)
   })
 }
