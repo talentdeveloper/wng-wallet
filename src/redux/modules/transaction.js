@@ -86,7 +86,9 @@ export default handleActions({
   [SET_STEP]: (state, { payload }) => {
     return {
       ...state,
-      sendStep: payload
+      sendStep: payload,
+      sendSuccess: false,
+      sendError: ''
     }
   },
 
@@ -94,7 +96,8 @@ export default handleActions({
     return {
       ...state,
       isSending: true,
-      sendSuccess: false
+      sendSuccess: false,
+      sendError: ''
     }
   },
 
