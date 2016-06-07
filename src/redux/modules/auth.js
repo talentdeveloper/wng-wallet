@@ -64,7 +64,11 @@ export const register = (data) => {
   return dispatch => {
     dispatch(createAction(REGISTER)())
     const secretPhrase = generateSecretPhrase()
-    const encrypted = encrypt(secretPhrase, JSON.stringify(data))
+    const encrypted = encrypt(secretPhrase, JSON.stringify({
+      username: data.username,
+      email: data.email,
+      password: data.password
+    }))
     if (storeSecretPhrase(data.username, encrypted)) {
       post('register', {
         username: data.username,
