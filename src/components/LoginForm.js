@@ -105,5 +105,10 @@ export default injectIntl(
     form: 'login',
     fields: ['username', 'email', 'password'],
     validate
-  })(LoginForm)
+  }, (state) => ({
+    initialValues: {
+      username: state.auth.username,
+      email: state.auth.email
+    }
+  }))(LoginForm)
 )

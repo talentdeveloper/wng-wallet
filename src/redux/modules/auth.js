@@ -76,7 +76,7 @@ export const register = (data) => {
         secretPhrase: JSON.stringify(encrypted),
         accountRS: getAccountRSFromSecretPhrase(secretPhrase)
       }).then((result) => {
-        dispatch(registerSuccess(secretPhrase))
+        dispatch(registerSuccess(data))
         dispatch(push('/login'))
       }).fail((jqXHR, textStatus, err) => {
         dispatch(registerError('username_email_exists'))
@@ -132,7 +132,8 @@ export const initialState = {
     secretPhrase: '',
     accountRS: '',
     unconfirmedBalanceNQT: 0
-  }
+  },
+  username: ''
 }
 
 export default handleActions({
@@ -176,11 +177,13 @@ export default handleActions({
     }
   },
 
-  [REGISTER_SUCCESS]: state => {
+  [REGISTER_SUCCESS]: (state, { payload }) => {
     return {
       ...state,
       isRegistering: false,
-      registerSuccess: true
+      registerSuccess: true,
+      username: payload.username,
+      email: payload.email
     }
   },
 
