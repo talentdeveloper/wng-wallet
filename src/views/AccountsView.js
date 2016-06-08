@@ -4,8 +4,13 @@ import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
 
 import PageTitle from 'components/PageTitle'
+import AccountsTable from 'components/AccountsTable'
 
-import { getAccounts } from 'redux/modules/account'
+import {
+  getAccounts,
+  nextPage,
+  previousPage
+} from 'redux/modules/account'
 
 export class AccountsView extends React.Component {
   componentDidMount () {
@@ -14,19 +19,11 @@ export class AccountsView extends React.Component {
     getAccounts()
   }
   render () {
-    const {
-      accounts
-    } = this.props
-
     return (
       <PageTitle pageName='admin'>
         <Row>
-          <Col md={12}>
-            {accounts.map((account) => {
-              return <div>
-                {account.username}
-              </div>
-            })}
+          <Col md={12} style={{ width: '100%' }}>
+            <AccountsTable {...this.props} />
           </Col>
         </Row>
       </PageTitle>
@@ -36,6 +33,8 @@ export class AccountsView extends React.Component {
 
 AccountsView.propTypes = {
   getAccounts: PropTypes.func.isRequired,
+  onNextClick: PropTypes.func.isRequired,
+  onPreviousClick: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
   accounts: PropTypes.array.isRequired,
   isRetrievingAccounts: PropTypes.bool.isRequired
@@ -54,5 +53,11 @@ export default injectIntl(connect((state) => {
 }, (dispatch) => ({
   getAccounts: () => {
     dispatch(getAccounts())
+  },
+  onNextClick: () => {
+    dispatch(nextPage())
+  },
+  onPreviousClick: () => {
+    dispatch(previousPage())
   }
 }))(AccountsView))

@@ -23,6 +23,22 @@ export const getAccounts = () => {
 export const GET_ACCOUNTS_SUCCESS = 'GET_ACCOUNTS_SUCCESS'
 export const getAccountsSuccess = createAction(GET_ACCOUNTS_SUCCESS)
 
+export const NEXT_PAGE = 'NEXT_PAGE'
+export const nextPage = () => {
+  return dispatch => {
+    dispatch(createAction(NEXT_PAGE)())
+    dispatch(getAccounts())
+  }
+}
+
+export const PREVIOUS_PAGE = 'PREVIOUS_PAGE'
+export const previousPage = () => {
+  return dispatch => {
+    dispatch(createAction(PREVIOUS_PAGE)())
+    dispatch(getAccounts())
+  }
+}
+
 const initialState = {
   accounts: [],
   isRetrievingAccounts: false,
@@ -43,6 +59,20 @@ export default handleActions({
       ...state,
       accounts: payload.accounts,
       isRetrievingAccounts: false
+    }
+  },
+
+  [NEXT_PAGE]: state => {
+    return {
+      ...state,
+      offset: state.offset + 10
+    }
+  },
+
+  [PREVIOUS_PAGE]: state => {
+    return {
+      ...state,
+      offset: state.offset - 10
     }
   }
 }, initialState)

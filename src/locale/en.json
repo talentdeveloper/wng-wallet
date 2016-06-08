@@ -53,5 +53,6 @@
   "is_not_admin": "This user is not an admin",
   "home": "Home",
   "admin": "Admin",
-  "accounts": "Accounts"
+  "accounts": "Accounts",
+  "creation_date": "Creation date"
 }
