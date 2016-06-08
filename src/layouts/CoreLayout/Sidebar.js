@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
@@ -24,13 +25,19 @@ class Sidebar extends React.Component {
   }
 
   render () {
-    const { open } = this.props
+    const { open, isAdmin } = this.props
 
     return (
       <Drawer
         docked={false}
         open={open}
         onRequestChange={this._onRequestChange}>
+        <MenuItem>
+          <Link to='/'><FormattedMessage id='home' /></Link>
+        </MenuItem>
+        {isAdmin && <MenuItem>
+          <Link to='accounts'><FormattedMessage id='accounts' /></Link>
+        </MenuItem>}
         <MenuItem onTouchTap={this._onLogoutClick}><FormattedMessage id='logout' /></MenuItem>
       </Drawer>
     )
@@ -40,13 +47,17 @@ class Sidebar extends React.Component {
 Sidebar.propTypes = {
   intl: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
   closeSidebar: PropTypes.func.isRequired
 }
 
 export default injectIntl(connect((state) => {
   const open = state.site.sidebarOpen
+  const { isAdmin } = state.auth
+
   return {
-    open
+    open,
+    isAdmin
   }
 }, (dispatch) => {
   return {

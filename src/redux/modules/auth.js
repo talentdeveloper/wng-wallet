@@ -58,7 +58,7 @@ export const login = (data) => {
       username: data.username,
       email: data.email
     }).then((result) => {
-      const encrypted = result.user.secretPhrase
+      const encrypted = result.account.secretPhrase
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
       const encrypted = getSecretPhrase(data.username)

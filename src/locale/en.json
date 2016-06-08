@@ -50,5 +50,8 @@
   "cancel": "Cancel",
   "scan_qr_code": "Scan QR code",
   "qr_help_message": "This QR code contains your account number. Use a QR scanning mobile app in order to access it.",
-  "is_not_admin": "This user is not an admin"
+  "is_not_admin": "This user is not an admin",
+  "home": "Home",
+  "admin": "Admin",
+  "accounts": "Accounts"
 }
