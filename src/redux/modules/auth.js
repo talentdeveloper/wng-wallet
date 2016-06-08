@@ -6,7 +6,8 @@ import {
   decrypt
 } from 'redux/utils/crypto'
 import {
-  getAccountRSFromSecretPhrase
+  getAccountRSFromSecretPhrase,
+  getPublicKey
 } from 'redux/utils/cryptoOld'
 import {
   storeSecretPhrase,
@@ -28,7 +29,8 @@ export const login = (data) => {
 
       const accountData = {
         secretPhrase: decrypted,
-        accountRS: getAccountRSFromSecretPhrase(decrypted)
+        accountRS: getAccountRSFromSecretPhrase(decrypted),
+        publicKey: getPublicKey(decrypted)
       }
 
       dispatch(loginSuccess(accountData))
@@ -131,6 +133,7 @@ export const initialState = {
   account: {
     secretPhrase: '',
     accountRS: '',
+    publicKey: '',
     unconfirmedBalanceNQT: 0
   },
   username: ''
@@ -156,7 +159,8 @@ export default handleActions({
       account: {
         ...state.account,
         secretPhrase: payload.secretPhrase,
-        accountRS: payload.accountRS
+        accountRS: payload.accountRS,
+        publicKey: payload.publicKey
       }
     }
   },
