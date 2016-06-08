@@ -18,6 +18,7 @@ export default (store) => {
   return (
     <Route component={CoreLayout}>
       <Route path='/' component={IndexView} onEnter={onEnter} />
+      <Route path='/admin' component={LoginView} />
       <Route path='/login' component={LoginView} />
       <Route path='/register' component={RegisterView} />
     </Route>

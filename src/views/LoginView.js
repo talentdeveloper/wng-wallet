@@ -22,6 +22,8 @@ export class LoginView extends React.Component {
       registerSuccess
     } = this.props
 
+    const isAdmin = window.location.pathname.includes('/admin')
+
     return (
       <PageTitle pageName='login'>
         <Row>
@@ -37,7 +39,7 @@ export class LoginView extends React.Component {
                 {registerSuccess && <div>
                   <FormattedMessage id='successfully_registered' />
                 </div>}
-                <LoginForm />
+                <LoginForm isAdmin={isAdmin} />
               </CardText>
             </Card>
           </Col>
