@@ -32,11 +32,11 @@ class Sidebar extends React.Component {
         docked={false}
         open={open}
         onRequestChange={this._onRequestChange}>
-        <MenuItem>
-          <Link to='/'><FormattedMessage id='home' /></Link>
+        <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/' />}>
+          <FormattedMessage id='home' />
         </MenuItem>
-        {isAdmin && <MenuItem>
-          <Link to='accounts'><FormattedMessage id='accounts' /></Link>
+        {isAdmin && <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='accounts' />}>
+          <FormattedMessage id='accounts' />
         </MenuItem>}
         <MenuItem onTouchTap={this._onLogoutClick}><FormattedMessage id='logout' /></MenuItem>
       </Drawer>
