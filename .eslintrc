@@ -22,7 +22,8 @@
     "curve25519_": true,
     "NxtAddress": true,
     "BigInteger": true,
-    "$": true
+    "$": true,
+    "generateToken": true
   },
   "rules": {
     "semi" : [2, "never"],

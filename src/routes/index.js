@@ -5,9 +5,10 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 import IndexView from 'views/IndexView'
 import LoginView from 'views/LoginView'
 import RegisterView from 'views/RegisterView'
+import AccountsView from 'views/AccountsView'
 
 export default (store) => {
-  const onEnter = (nextState, replace) => {
+  const isLoggedIn = (nextState, replace) => {
     const loggedIn = store.getState().auth.account.secretPhrase !== ''
 
     if (!loggedIn) {
@@ -15,11 +16,21 @@ export default (store) => {
     }
   }
 
+  const isAdmin = (nextState, replace) => {
+    const { isAdmin } = store.getState().auth
+
+    if (!isAdmin) {
+      replace('/admin')
+    }
+  }
+
   return (
     <Route component={CoreLayout}>
-      <Route path='/' component={IndexView} onEnter={onEnter} />
+      <Route path='/' component={IndexView} onEnter={isLoggedIn} />
+      <Route path='/admin' component={LoginView} />
       <Route path='/login' component={LoginView} />
       <Route path='/register' component={RegisterView} />
+      <Route path='/accounts' component={AccountsView} onEnter={isAdmin} />
     </Route>
   )
 }

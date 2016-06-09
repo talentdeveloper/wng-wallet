@@ -15,6 +15,7 @@ export class LoginForm extends React.Component {
   }
 
   handleSubmit (data, dispatch) {
+    data.isAdmin = this.props.isAdmin
     dispatch(login(data))
   }
 
@@ -79,7 +80,8 @@ export class LoginForm extends React.Component {
 LoginForm.propTypes = {
   intl: PropTypes.object.isRequired,
   fields: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool
 }
 
 const validate = values => {

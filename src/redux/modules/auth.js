@@ -6,7 +6,8 @@ import {
   decrypt
 } from 'redux/utils/crypto'
 import {
-  getAccountRSFromSecretPhrase
+  getAccountRSFromSecretPhrase,
+  getPublicKey
 } from 'redux/utils/cryptoOld'
 import {
   storeSecretPhrase,
@@ -21,27 +22,43 @@ export const login = (data) => {
     dispatch(createAction(LOGIN)())
 
     const handleDecryption = (encrypted) => {
-      const decrypted = decrypt(encrypted, JSON.stringify(data))
+      const decrypted = decrypt(encrypted, JSON.stringify({
+        username: data.username,
+        email: data.email,
+        password: data.password
+      }))
       if (!decrypted) {
         return dispatch(loginError('could_not_decrypt'))
       }
 
       const accountData = {
         secretPhrase: decrypted,
-        accountRS: getAccountRSFromSecretPhrase(decrypted)
+        accountRS: getAccountRSFromSecretPhrase(decrypted),
+        publicKey: getPublicKey(decrypted),
+        isAdmin: data.isAdmin
+      }
+      const dispatchSuccess = (redirect = '/') => {
+        dispatch(loginSuccess(accountData))
+        dispatch(push(redirect))
+        dispatch(getAccount(accountData.accountRS))
+        dispatch(getTransactions(accountData.accountRS))
+      }
+      if (data.isAdmin) {
+        return isAdmin(decrypted)
+          .then(dispatchSuccess.bind(this, '/accounts'))
+          .fail(() => {
+            dispatch(loginError('is_not_admin'))
+          })
       }
 
-      dispatch(loginSuccess(accountData))
-      dispatch(push('/'))
-      dispatch(getAccount(accountData.accountRS))
-      dispatch(getTransactions(accountData.accountRS))
+      dispatchSuccess()
     }
 
     get('account', {
       username: data.username,
       email: data.email
     }).then((result) => {
-      const encrypted = result.user.secretPhrase
+      const encrypted = result.account.secretPhrase
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
       const encrypted = getSecretPhrase(data.username)
@@ -51,6 +68,12 @@ export const login = (data) => {
       handleDecryption(encrypted)
     })
   }
+}
+
+export const isAdmin = (secretPhrase) => {
+  return get('is-admin', {
+    token: generateToken('admin', secretPhrase)
+  })
 }
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -131,9 +154,11 @@ export const initialState = {
   account: {
     secretPhrase: '',
     accountRS: '',
+    publicKey: '',
     unconfirmedBalanceNQT: 0
   },
-  username: ''
+  username: '',
+  isAdmin: false
 }
 
 export default handleActions({
@@ -156,8 +181,10 @@ export default handleActions({
       account: {
         ...state.account,
         secretPhrase: payload.secretPhrase,
-        accountRS: payload.accountRS
-      }
+        accountRS: payload.accountRS,
+        publicKey: payload.publicKey
+      },
+      isAdmin: payload.isAdmin
     }
   },
 

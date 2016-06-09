@@ -49,5 +49,16 @@
   "confirm_send_money_account": "to the following account: {recipient}",
   "cancel": "Cancel",
   "scan_qr_code": "Scan QR code",
-  "qr_help_message": "This QR code contains your account number. Use a QR scanning mobile app in order to access it."
+  "qr_help_message": "This QR code contains your account number. Use a QR scanning mobile app in order to access it.",
+  "is_not_admin": "This user is not an admin",
+  "home": "Home",
+  "admin": "Admin",
+  "admin_login": "Admin login",
+  "number": "Number",
+  "accounts": "Accounts",
+  "accounts_subtitle": "List of registered accounts",
+  "no_accounts_found": "No accounts were found",
+  "creation_date": "Creation date",
+  "previous": "Previous",
+  "next": "Next"
 }

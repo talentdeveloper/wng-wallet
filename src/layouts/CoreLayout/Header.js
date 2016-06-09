@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { AppBar, RaisedButton } from 'material-ui'
 
+import ChangeLocaleMenu from 'components/ChangeLocaleMenu'
+
+import { changeLocale } from 'redux/modules/intl'
 import { openSidebar } from 'redux/modules/site'
 import { convertToNXT } from 'redux/utils/nrs'
 
@@ -16,25 +19,20 @@ class Header extends React.Component {
     const {
       intl: { formatMessage, formatNumber },
       isLoggedIn,
-      balance
+      balance,
+      locale,
+      changeLocale
     } = this.props
 
-    let balanceDiv = null
-
-    if (isLoggedIn) {
-      const style = {
-        margin: 8
-      }
-
-      balanceDiv = <div>
-        <RaisedButton
-          label={`
-            ${formatMessage({ id: 'balance' })}: ${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}
-          `}
-          style={style}
-          />
-      </div>
-    }
+    let balanceDiv = <div>
+      <ChangeLocaleMenu locale={locale} onChange={changeLocale} />
+      {isLoggedIn && <RaisedButton
+        label={`
+          ${formatMessage({ id: 'balance' })}: ${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}
+        `}
+        style={{ margin: 8 }}
+        />}
+    </div>
 
     return (
       <AppBar
@@ -48,6 +46,8 @@ class Header extends React.Component {
 Header.propTypes = {
   intl: PropTypes.object.isRequired,
   closeSidebar: PropTypes.func.isRequired,
+  changeLocale: PropTypes.func.isRequired,
+  locale: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   balance: PropTypes.string.isRequired
 }
@@ -55,15 +55,20 @@ Header.propTypes = {
 export default injectIntl(connect((state) => {
   const isLoggedIn = !!state.auth.account.secretPhrase
   const balance = convertToNXT(state.auth.account.unconfirmedBalanceNQT)
+  const { locale } = state.intl
 
   return {
     isLoggedIn,
-    balance
+    balance,
+    locale
   }
 }, (dispatch) => {
   return {
     closeSidebar: () => {
       dispatch(openSidebar())
+    },
+    changeLocale: (locale) => {
+      dispatch(changeLocale(locale))
     }
   }
 })(Header))

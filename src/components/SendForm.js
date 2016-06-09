@@ -180,14 +180,18 @@ export default injectIntl(
       isSending,
       sendStep,
       sendSuccess,
-      sendError
+      sendError,
+      recipient
     } = state.transaction
 
     return {
       isSending,
       sendStep,
       sendSuccess,
-      sendError
+      sendError,
+      initialValues: {
+        recipient
+      }
     }
   },
 
