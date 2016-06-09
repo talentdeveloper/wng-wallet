@@ -38,7 +38,8 @@ class Header extends React.Component {
       <AppBar
         title={formatMessage({ id: 'website_name' })}
         iconElementRight={balanceDiv}
-        onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap} />
+        onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+        showMenuIconButton={isLoggedIn} />
     )
   }
 }
