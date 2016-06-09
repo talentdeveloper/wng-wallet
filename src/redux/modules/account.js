@@ -41,6 +41,7 @@ export const previousPage = () => {
 
 const initialState = {
   accounts: [],
+  totalAccounts: 0,
   isRetrievingAccounts: false,
   limit: 10,
   offset: 0
@@ -58,6 +59,7 @@ export default handleActions({
     return {
       ...state,
       accounts: payload.accounts,
+      totalAccounts: payload.recordsTotal,
       isRetrievingAccounts: false
     }
   },

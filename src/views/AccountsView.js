@@ -37,18 +37,28 @@ AccountsView.propTypes = {
   onPreviousClick: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
   accounts: PropTypes.array.isRequired,
-  isRetrievingAccounts: PropTypes.bool.isRequired
+  isRetrievingAccounts: PropTypes.bool.isRequired,
+  disableNextButton: PropTypes.bool.isRequired,
+  disablePreviousButton: PropTypes.bool.isRequired
 }
 
 export default injectIntl(connect((state) => {
   const {
     accounts,
-    isRetrievingAccounts
+    totalAccounts,
+    isRetrievingAccounts,
+    offset,
+    limit
   } = state.account
+
+  const disableNextButton = limit + offset >= totalAccounts
+  const disablePreviousButton = offset <= 0
 
   return {
     accounts,
-    isRetrievingAccounts
+    isRetrievingAccounts,
+    disableNextButton,
+    disablePreviousButton
   }
 }, (dispatch) => ({
   getAccounts: () => {

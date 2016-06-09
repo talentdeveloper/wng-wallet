@@ -23,8 +23,11 @@ export class AccountsTable extends React.Component {
 
   render () {
     const {
+      intl: { formatMessage },
       isRetrievingAccounts,
-      accounts
+      accounts,
+      disableNextButton,
+      disablePreviousButton
     } = this.props
 
     if (isRetrievingAccounts) {
@@ -48,6 +51,7 @@ export class AccountsTable extends React.Component {
         style={tableStyle}>
         <TableBody displayRowCheckbox={false}>
           <TableRow>
+            <TableHeaderColumn><FormattedMessage id='number' /></TableHeaderColumn>
             <TableHeaderColumn><FormattedMessage id='username' /></TableHeaderColumn>
             <TableHeaderColumn><FormattedMessage id='email' /></TableHeaderColumn>
             <TableHeaderColumn><FormattedMessage id='account_number' /></TableHeaderColumn>
@@ -61,6 +65,9 @@ export class AccountsTable extends React.Component {
           </TableRow>
           : accounts.map((account) => {
             return <TableRow key={account.id}>
+              <TableRowColumn>
+                {account.id}
+              </TableRowColumn>
               <TableRowColumn>
                 {account.username}
               </TableRowColumn>
@@ -77,8 +84,14 @@ export class AccountsTable extends React.Component {
           })}
           <TableRow>
             <TableRowColumn colSpan='4'>
-              <FlatButton onTouchTap={this._onPreviousClick} label='previous' />
-              <FlatButton onTouchTap={this._onNextClick} label='Next' />
+              <FlatButton
+                onTouchTap={this._onPreviousClick}
+                label={formatMessage({ id: 'previous' })}
+                disabled={disablePreviousButton} />
+              <FlatButton
+                onTouchTap={this._onNextClick}
+                label={formatMessage({ id: 'next' })}
+                disabled={disableNextButton} />
             </TableRowColumn>
           </TableRow>
         </TableBody>
@@ -92,7 +105,9 @@ AccountsTable.propTypes = {
   isRetrievingAccounts: PropTypes.bool.isRequired,
   accounts: PropTypes.array.isRequired,
   onNextClick: PropTypes.func.isRequired,
-  onPreviousClick: PropTypes.func.isRequired
+  onPreviousClick: PropTypes.func.isRequired,
+  disableNextButton: PropTypes.bool.isRequired,
+  disablePreviousButton: PropTypes.bool.isRequired
 }
 
 export default injectIntl(AccountsTable)
