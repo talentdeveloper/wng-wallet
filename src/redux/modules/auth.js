@@ -37,15 +37,15 @@ export const login = (data) => {
         publicKey: getPublicKey(decrypted),
         isAdmin: data.isAdmin
       }
-      const dispatchSuccess = () => {
+      const dispatchSuccess = (redirect = '/') => {
         dispatch(loginSuccess(accountData))
-        dispatch(push('/'))
+        dispatch(push(redirect))
         dispatch(getAccount(accountData.accountRS))
         dispatch(getTransactions(accountData.accountRS))
       }
       if (data.isAdmin) {
         return isAdmin(decrypted)
-          .then(dispatchSuccess)
+          .then(dispatchSuccess.bind(this, '/accounts'))
           .fail(() => {
             dispatch(loginError('is_not_admin'))
           })

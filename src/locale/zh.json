@@ -57,6 +57,7 @@
   "is_not_admin": "This user is not an admin",
   "home": "Home",
   "admin": "Admin",
+  "admin_login": "Admin login",
   "number": "Number",
   "accounts": "Accounts",
   "accounts_subtitle": "List of registered accounts",

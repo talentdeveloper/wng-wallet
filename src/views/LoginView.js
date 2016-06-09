@@ -23,14 +23,15 @@ export class LoginView extends React.Component {
     } = this.props
 
     const isAdmin = window.location.pathname.includes('/admin')
+    const pageName = isAdmin ? 'admin_login' : 'login'
 
     return (
-      <PageTitle pageName='login'>
+      <PageTitle pageName={pageName}>
         <Row>
           <Col xs={12} md={4} mdOffset={4}>
             <Card>
               <CardTitle
-                title={formatMessage({ id: 'login' })}
+                title={formatMessage({ id: pageName })}
                 subtitle={formatMessage({ id: 'login_subtitle' })} />
               <CardText>
                 {loginError && <div>
