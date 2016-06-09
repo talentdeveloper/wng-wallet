@@ -42,6 +42,10 @@ export class AccountsTable extends React.Component {
       overflowX: 'scroll'
     }
 
+    if (!isRetrievingAccounts && !accounts.length) {
+      return <FormattedMessage id='no_accounts_found' />
+    }
+
     return (
       <Table
         selectable={false}

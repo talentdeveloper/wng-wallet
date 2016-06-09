@@ -55,6 +55,7 @@
   "admin": "Admin",
   "number": "Number",
   "accounts": "Accounts",
+  "no_accounts_found": "No accounts were found",
   "creation_date": "Creation date",
   "previous": "Previous",
   "next": "Next"
