@@ -2,6 +2,8 @@ import { createAction, handleActions } from 'redux-actions'
 import { sendRequest } from 'redux/utils/api'
 import { convertToNQT } from 'redux/utils/nrs'
 
+import { getAccount } from 'redux/modules/auth'
+
 export const SET_STEP = 'SET_STEP'
 export const setStep = createAction(SET_STEP)
 
@@ -9,7 +11,7 @@ export const SEND_MONEY = 'SEND_MONEY'
 export const sendMoney = (data) => {
   return (dispatch, getState) => {
     dispatch(createAction(SEND_MONEY)())
-    const { secretPhrase } = getState().auth.account
+    const { secretPhrase, accountRS } = getState().auth.account
 
     return sendRequest('sendMoney', {
       recipient: data.recipient,
@@ -18,6 +20,7 @@ export const sendMoney = (data) => {
     }).then((result) => {
       console.log(result)
       dispatch(sendMoneySuccess())
+      dispatch(getAccount(accountRS))
     }).fail((jqXHR, textStatus, err) => {
       dispatch(sendMoneyError(err))
     })

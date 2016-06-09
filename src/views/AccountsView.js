@@ -2,6 +2,11 @@ import React, { PropTypes } from 'react'
 import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
+import {
+  Card,
+  CardTitle,
+  CardText
+} from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
 import AccountsTable from 'components/AccountsTable'
@@ -24,6 +29,7 @@ export class AccountsView extends React.Component {
 
   render () {
     const {
+      intl: { formatMessage },
       showTransactionModal,
       transactionModalTitle
     } = this.props
@@ -32,7 +38,14 @@ export class AccountsView extends React.Component {
       <PageTitle pageName='admin'>
         <Row>
           <Col md={12} style={{ width: '100%' }}>
-            <AccountsTable {...this.props} />
+            <Card>
+              <CardTitle
+                title={formatMessage({ id: 'accounts' })}
+                subtitle={formatMessage({ id: 'accounts_subtitle' })} />
+              <CardText>
+                <AccountsTable {...this.props} />
+              </CardText>
+            </Card>
           </Col>
         </Row>
         <TransactionModal
