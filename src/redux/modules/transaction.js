@@ -79,7 +79,8 @@ const initialState = {
   isRetrievingTransactions: false,
   transactions: [],
   showModal: false,
-  modalTitle: 'send_currency'
+  modalTitle: 'send_currency',
+  recipient: ''
 }
 
 export default handleActions({
@@ -137,7 +138,8 @@ export default handleActions({
     return {
       ...state,
       showModal: true,
-      modalTitle: payload || state.modalTitle
+      modalTitle: payload && payload.modalTitle ? payload.modalTitle : state.modalTitle,
+      recipient: payload && payload.recipient ? payload.recipient : ''
     }
   },
 

@@ -10,6 +10,25 @@ import {
   TableRowColumn
 } from 'material-ui'
 
+class AccountRSButton extends React.Component {
+  _onClick = () => {
+    const { accountRS, onClick } = this.props
+    onClick(accountRS)
+  }
+
+  render () {
+    const { accountRS } = this.props
+    return <FlatButton
+      label={accountRS}
+      onTouchTap={this._onClick} />
+  }
+}
+
+AccountRSButton.propTypes = {
+  accountRS: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
+}
+
 export class AccountsTable extends React.Component {
   _onPreviousClick = () => {
     const { onPreviousClick } = this.props
@@ -27,7 +46,8 @@ export class AccountsTable extends React.Component {
       isRetrievingAccounts,
       accounts,
       disableNextButton,
-      disablePreviousButton
+      disablePreviousButton,
+      onAccountRSClick
     } = this.props
 
     if (isRetrievingAccounts) {
@@ -79,7 +99,7 @@ export class AccountsTable extends React.Component {
                 {account.email}
               </TableRowColumn>
               <TableRowColumn>
-                {account.accountRS}
+                <AccountRSButton accountRS={account.accountRS} onClick={onAccountRSClick} />
               </TableRowColumn>
               <TableRowColumn>
                 {new Date(account.createdAt).toLocaleString()}
@@ -110,6 +130,7 @@ AccountsTable.propTypes = {
   accounts: PropTypes.array.isRequired,
   onNextClick: PropTypes.func.isRequired,
   onPreviousClick: PropTypes.func.isRequired,
+  onAccountRSClick: PropTypes.func.isRequired,
   disableNextButton: PropTypes.bool.isRequired,
   disablePreviousButton: PropTypes.bool.isRequired
 }
