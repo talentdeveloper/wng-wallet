@@ -50,6 +50,7 @@
   "cancel": "Batal",
   "scan_qr_code": "Mengimbas kod QR",
   "qr_help_message": "Kod QR ini mengandungi nombor akaun anda. Gunakan pengimbas QR yang terdapat pada aplikasi telefon anda untuk menggunakannya.",
+  "invalid_address": "This address is not valid",
   "is_not_admin": "This user is not an admin",
   "home": "Home",
   "admin": "Admin",

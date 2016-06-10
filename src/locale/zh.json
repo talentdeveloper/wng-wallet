@@ -54,6 +54,7 @@
   "cancel": "取消",
   "scan_qr_code": "扫描 QR代 码",
   "qr_help_message": "此QR代码含有您的账号资料。请使用QR扫描移动应用程序打开它。",
+  "invalid_address": "This address is not valid",
   "is_not_admin": "This user is not an admin",
   "home": "Home",
   "admin": "Admin",
