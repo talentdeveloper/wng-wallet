@@ -10,9 +10,9 @@ export const setStep = createAction(SET_STEP)
 export const SEND_MONEY = 'SEND_MONEY'
 export const sendMoney = (data) => {
   return (dispatch, getState) => {
-    dispatch(createAction(SEND_MONEY)())
     const { secretPhrase, accountRS } = getState().auth.account
 
+    dispatch(createAction(SEND_MONEY)())
     return sendRequest('sendMoney', {
       recipient: data.recipient,
       amountNQT: convertToNQT(data.amount),

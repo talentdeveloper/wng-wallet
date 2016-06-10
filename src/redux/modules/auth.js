@@ -200,7 +200,8 @@ export default handleActions({
     return {
       ...state,
       isRegistering: true,
-      registerError: ''
+      registerError: '',
+      loginError: ''
     }
   },
 

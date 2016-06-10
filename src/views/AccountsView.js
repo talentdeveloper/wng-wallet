@@ -5,7 +5,8 @@ import { Row, Col } from 'react-flexgrid'
 import {
   Card,
   CardTitle,
-  CardText
+  CardText,
+  TextField
 } from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
@@ -15,23 +16,40 @@ import SendForm from 'components/SendForm'
 
 import {
   getAccounts,
+  setSearch,
   nextPage,
   previousPage
 } from 'redux/modules/account'
 import { showModal } from 'redux/modules/transaction'
 
 export class AccountsView extends React.Component {
+  constructor () {
+    super()
+    this.searching
+  }
   componentDidMount () {
     const { getAccounts } = this.props
 
     getAccounts()
   }
 
+  _onSearch = (e) => {
+    const { getAccounts, setSearch } = this.props
+    const { value } = e.target
+
+    clearTimeout(this.searching)
+    this.searching = setTimeout(() => {
+      setSearch(value)
+      getAccounts()
+    }, 500)
+  }
+
   render () {
     const {
       intl: { formatMessage },
       showTransactionModal,
-      transactionModalTitle
+      transactionModalTitle,
+      search
     } = this.props
 
     return (
@@ -43,6 +61,14 @@ export class AccountsView extends React.Component {
                 title={formatMessage({ id: 'accounts' })}
                 subtitle={formatMessage({ id: 'accounts_subtitle' })} />
               <CardText>
+                <Col xs={12} md={6}>
+                  <TextField
+                    defaultValue={search}
+                    fullWidth
+                    onChange={this._onSearch}
+                    hintText={formatMessage({ id: 'search_help' })}
+                    floatingLabelText={formatMessage({ id: 'search' })} />
+                </Col>
                 <AccountsTable {...this.props} />
               </CardText>
             </Card>
@@ -59,6 +85,7 @@ export class AccountsView extends React.Component {
 
 AccountsView.propTypes = {
   getAccounts: PropTypes.func.isRequired,
+  setSearch: PropTypes.func.isRequired,
   onNextClick: PropTypes.func.isRequired,
   onPreviousClick: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
@@ -67,7 +94,8 @@ AccountsView.propTypes = {
   disableNextButton: PropTypes.bool.isRequired,
   disablePreviousButton: PropTypes.bool.isRequired,
   showTransactionModal: PropTypes.bool.isRequired,
-  transactionModalTitle: PropTypes.string.isRequired
+  transactionModalTitle: PropTypes.string.isRequired,
+  search: PropTypes.string.isRequired
 }
 
 export default injectIntl(connect((state) => {
@@ -76,7 +104,8 @@ export default injectIntl(connect((state) => {
     totalAccounts,
     isRetrievingAccounts,
     offset,
-    limit
+    limit,
+    search
   } = state.account
 
   const {
@@ -93,11 +122,15 @@ export default injectIntl(connect((state) => {
     disableNextButton,
     disablePreviousButton,
     showTransactionModal: showModal,
-    transactionModalTitle: modalTitle
+    transactionModalTitle: modalTitle,
+    search
   }
 }, (dispatch) => ({
   getAccounts: () => {
     dispatch(getAccounts())
+  },
+  setSearch: (search) => {
+    dispatch(setSearch(search))
   },
   onNextClick: () => {
     dispatch(nextPage())

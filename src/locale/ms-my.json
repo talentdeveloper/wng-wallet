@@ -50,6 +50,7 @@
   "cancel": "Batal",
   "scan_qr_code": "Mengimbas kod QR",
   "qr_help_message": "Kod QR ini mengandungi nombor akaun anda. Gunakan pengimbas QR yang terdapat pada aplikasi telefon anda untuk menggunakannya.",
+  "invalid_address": "This account number is not valid",
   "is_not_admin": "This user is not an admin",
   "home": "Home",
   "admin": "Admin",
@@ -60,5 +61,7 @@
   "no_accounts_found": "No accounts were found",
   "creation_date": "Creation date",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+  "search": "Search",
+  "search_help": "Search for username, email or account number"
 }

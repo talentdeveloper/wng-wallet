@@ -65,6 +65,10 @@ var converters = function() {
 			for (; i < str.length - 1; i += 2)
 				bytes.push((charToNibble[str.charAt(i)] << 4) + charToNibble[str.charAt(i + 1)]);
 
+			if (bytes.length < 5) {
+				bytes.unshift(0)
+			}
+
 			return bytes;
 		},
 		stringToHexString: function(str) {

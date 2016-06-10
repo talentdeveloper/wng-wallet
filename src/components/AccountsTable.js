@@ -63,7 +63,7 @@ export class AccountsTable extends React.Component {
     }
 
     if (!isRetrievingAccounts && !accounts.length) {
-      return <FormattedMessage id='no_accounts_found' />
+      return <div><FormattedMessage id='no_accounts_found' /></div>
     }
 
     return (

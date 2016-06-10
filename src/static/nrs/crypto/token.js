@@ -204,7 +204,6 @@ function parseToken(tokenString, website)
             tokenBytes[j + 2] = part[2];
             tokenBytes[j + 3] = part[1];
             tokenBytes[j + 4] = part[0];
-
         }
 
         if (i != 160) {
@@ -212,6 +211,7 @@ function parseToken(tokenString, website)
         }
         var publicKey = [];
         publicKey = tokenBytes.slice(0, 32);
+
         var timebytes = [tokenBytes[32], tokenBytes[33], tokenBytes[34], tokenBytes[35]];
 
         var timestamp = toIntVal(timebytes);

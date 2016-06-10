@@ -50,6 +50,7 @@
   "cancel": "Cancel",
   "scan_qr_code": "Scan QR code",
   "qr_help_message": "This QR code contains your account number. Use a QR scanning mobile app in order to access it.",
+  "invalid_address": "This account number is not valid",
   "is_not_admin": "This user is not an admin",
   "home": "Home",
   "admin": "Admin",
@@ -60,5 +61,7 @@
   "no_accounts_found": "No accounts were found",
   "creation_date": "Creation date",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+  "search": "Search",
+  "search_help": "Search for username, email or account number"
 }
