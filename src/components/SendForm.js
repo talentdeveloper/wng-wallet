@@ -95,6 +95,7 @@ export class SendForm extends React.Component {
             {...recipient} />
           <br />
           <TextField
+            type='number'
             floatingLabelText={formatMessage({ id: 'amount' })}
             errorText={error(amount)}
             fullWidth

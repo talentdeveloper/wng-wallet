@@ -2,9 +2,15 @@ const EPOCH_BEGINNING = 1385294400000
 const BIG_NXT = new BigInteger(String(1e8))
 
 export function convertToNQT (amount) {
-  const bigAmount = new BigInteger(String(amount))
+  amount = String(amount)
+  const parts = amount.split('.')
+  const bigAmount = new BigInteger(amount).multiply(BIG_NXT)
+  let divide = new BigInteger('1')
+  if (parts[1]) {
+    divide = new BigInteger(String(Math.pow(10, parts[1].length)))
+  }
 
-  return bigAmount.multiply(BIG_NXT).toString()
+  return bigAmount.divide(divide).toString()
 }
 
 export function convertToNXT (amountNQT) {
