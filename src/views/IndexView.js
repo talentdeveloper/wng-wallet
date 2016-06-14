@@ -18,7 +18,7 @@ import PageTitle from 'components/PageTitle'
 import SendForm from 'components/SendForm'
 import ReceiveModal from 'components/ReceiveModal'
 import TransactionModal from 'components/TransactionModal'
-import TransactionsList from 'components/TransactionsList'
+import TransactionsListContainer from 'components/Transaction/TransactionsListContainer'
 
 export class IndexView extends React.Component {
   _onSendClick = () => {
@@ -35,12 +35,8 @@ export class IndexView extends React.Component {
 
   render () {
     const {
-      intl: {
-        formatMessage
-      },
+      intl: { formatMessage },
       accountRS,
-      transactions,
-      isRetrievingTransactions,
       showModal,
       showReceiveModal,
       handleReceiveClose,
@@ -75,17 +71,7 @@ export class IndexView extends React.Component {
         </Row>
         <Row style={{ marginTop: 15 }}>
           <Col xs={12} md={12}>
-            <Card>
-              <CardTitle
-                title={formatMessage({ id: 'transactions' })}
-                subtitle={formatMessage({ id: 'latest_transactions' })} />
-              <CardText>
-                <TransactionsList
-                  loading={isRetrievingTransactions}
-                  accountRS={accountRS}
-                  transactions={transactions} />
-              </CardText>
-            </Card>
+            <TransactionsListContainer />
           </Col>
         </Row>
         <ReceiveModal show={showReceiveModal} handleClose={handleReceiveClose} accountRS={accountRS} />
@@ -98,11 +84,9 @@ export class IndexView extends React.Component {
 IndexView.propTypes = {
   intl: PropTypes.object.isRequired,
   accountRS: PropTypes.string.isRequired,
-  transactions: PropTypes.array.isRequired,
   modalTitle: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
   showReceiveModal: PropTypes.bool.isRequired,
-  isRetrievingTransactions: PropTypes.bool.isRequired,
   onSendClick: PropTypes.func.isRequired,
   onReceiveClick: PropTypes.func.isRequired,
   handleReceiveClose: PropTypes.func.isRequired
@@ -111,10 +95,8 @@ IndexView.propTypes = {
 export default injectIntl(connect((state) => {
   const { accountRS } = state.auth.account
   const {
-    transactions,
     showModal,
-    modalTitle,
-    isRetrievingTransactions
+    modalTitle
   } = state.transaction
 
   const {
@@ -123,11 +105,9 @@ export default injectIntl(connect((state) => {
 
   return {
     accountRS,
-    transactions,
     showModal,
     showReceiveModal,
-    modalTitle,
-    isRetrievingTransactions
+    modalTitle
   }
 }, (dispatch) => {
   return {

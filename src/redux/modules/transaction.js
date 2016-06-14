@@ -42,22 +42,39 @@ export const getTransactions = (account) => {
       account = getState().auth.account.accountRS
     }
 
-    Promise.all([
-      sendRequest('getUnconfirmedTransactions', {
-        account
-      }),
+    const { limit, offset } = getState().transaction
+
+    const requests = [
       sendRequest('getBlockchainTransactions', {
         account,
-        firstIndex: 0,
-        lastIndex: 9
+        firstIndex: offset,
+        lastIndex: (offset + limit - 1)
       })
-    ]).then((result) => {
-      const transactions = [
-        ...result[0].unconfirmedTransactions,
-        ...result[1].transactions
-      ]
+    ]
 
-      dispatch(getTransactionsSuccess(transactions))
+    if (offset === 0) {
+      requests.push(sendRequest('getUnconfirmedTransactions', {
+        account
+      }))
+    }
+
+    Promise.all(requests).then((result) => {
+      let transactions = []
+      if (result[0] && result[0].transactions) {
+        transactions = [
+          ...transactions,
+          ...result[0].transactions
+        ]
+      }
+
+      if (result[1] && result[1].unconfirmedTransactions) {
+        transactions = [
+          ...result[1].unconfirmedTransactions,
+          ...transactions
+        ]
+      }
+
+      dispatch(getTransactionsSuccess(transactions.slice(0, 10)))
     })
   }
 }
@@ -67,6 +84,12 @@ export const getTransactionsSuccess = createAction(GET_TRANSACTIONS_SUCCESS)
 
 export const GET_TRANSACTIONS_ERROR = 'GET_TRANSACTIONS_ERROR'
 export const getTransactionsError = createAction(GET_TRANSACTIONS_ERROR)
+
+export const NEXT_PAGE = 'NEXT_PAGE'
+export const nextPage = createAction(NEXT_PAGE)
+
+export const PREVIOUS_PAGE = 'PREVIOUS_PAGE'
+export const previousPage = createAction(PREVIOUS_PAGE)
 
 export const SHOW_MODAL = 'SHOW_MODAL'
 export const showModal = createAction(SHOW_MODAL)
@@ -83,7 +106,9 @@ const initialState = {
   transactions: [],
   showModal: false,
   modalTitle: 'send_currency',
-  recipient: ''
+  recipient: '',
+  limit: 10,
+  offset: 0
 }
 
 export default handleActions({
@@ -134,6 +159,20 @@ export default handleActions({
       ...state,
       transactions: payload,
       isRetrievingTransactions: false
+    }
+  },
+
+  [NEXT_PAGE]: state => {
+    return {
+      ...state,
+      offset: state.offset + state.limit
+    }
+  },
+
+  [PREVIOUS_PAGE]: state => {
+    return {
+      ...state,
+      offset: state.offset - state.limit
     }
   },
 
