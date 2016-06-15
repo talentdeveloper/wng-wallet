@@ -23,11 +23,20 @@ export const login = (data) => {
     dispatch(createAction(LOGIN)())
 
     const handleDecryption = (encrypted) => {
-      const decrypted = decrypt(encrypted, JSON.stringify({
+      let decrypted = decrypt(encrypted, JSON.stringify({
         username: data.username,
         email: data.email,
         password: data.password
       }))
+
+      if (!decrypted) {
+        decrypted = decrypt(encrypted, JSON.stringify({
+          username: data.username.toLowerCase(),
+          email: data.email.toLowerCase(),
+          password: data.password
+        }))
+      }
+
       if (!decrypted) {
         return dispatch(loginError('could_not_decrypt'))
       }
@@ -89,14 +98,14 @@ export const register = (data) => {
     dispatch(createAction(REGISTER)())
     const secretPhrase = generateSecretPhrase()
     const encrypted = encrypt(secretPhrase, JSON.stringify({
-      username: data.username,
-      email: data.email,
+      username: data.username.toLowerCase(),
+      email: data.email.toLowerCase(),
       password: data.password
     }))
     if (storeSecretPhrase(data.username, encrypted)) {
       post('register', {
-        username: data.username,
-        email: data.email,
+        username: data.username.toLowerCase(),
+        email: data.email.toLowerCase(),
         secretPhrase: JSON.stringify(encrypted),
         accountRS: getAccountRSFromSecretPhrase(secretPhrase)
       }).then((result) => {
