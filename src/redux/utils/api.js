@@ -1,6 +1,6 @@
 import { getPublicKey, signBytes } from './cryptoOld'
 
-import config from '../../../config.json'
+import config from '../../../wallet.config.json'
 
 const nrsUrl = config.nrsUrl
 let apiUrl = config.apiUrl

@@ -3,7 +3,7 @@
 
     Version: 1.0, license: Public Domain, coder: NxtChg (admin@nxtchg.com).
 */
-import { coin } from '../../../config.json'
+import { coin } from '../../../wallet.config.json'
 
 export default function NxtAddress() {
 	var codeword = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
