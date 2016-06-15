@@ -13,6 +13,7 @@ import {
   sendMoney,
   getTransactions
 } from 'redux/modules/transaction'
+import NxtAddress from 'redux/utils/nxtAddress'
 
 import formStyle from './Form.scss'
 
