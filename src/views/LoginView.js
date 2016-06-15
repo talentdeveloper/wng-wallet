@@ -19,11 +19,20 @@ export class LoginView extends React.Component {
         formatMessage
       },
       loginError,
-      registerSuccess
+      registerSuccess,
+      connectionError
     } = this.props
 
     const isAdmin = window.location.pathname.includes('/admin')
     const pageName = isAdmin ? 'admin_login' : 'login'
+
+    const openSnackbar = registerSuccess || connectionError
+    let snackbarMessage
+    if (registerSuccess) {
+      snackbarMessage = formatMessage({ id: 'successfully_registered' })
+    } else {
+      snackbarMessage = formatMessage({ id: 'connection_error' })
+    }
 
     return (
       <PageTitle pageName={pageName}>
@@ -46,8 +55,8 @@ export class LoginView extends React.Component {
           </Col>
         </Row>
         <Snackbar
-          open={registerSuccess}
-          message={formatMessage({ id: 'successfully_registered' })}
+          open={openSnackbar}
+          message={snackbarMessage}
         />
       </PageTitle>
     )
@@ -57,14 +66,17 @@ export class LoginView extends React.Component {
 LoginView.propTypes = {
   intl: PropTypes.object.isRequired,
   loginError: PropTypes.string.isRequired,
-  registerSuccess: PropTypes.bool.isRequired
+  registerSuccess: PropTypes.bool.isRequired,
+  connectionError: PropTypes.bool.isRequired
 }
 
 export default injectIntl(connect((state) => {
   const { loginError, registerSuccess } = state.auth
+  const { connectionError } = state.site
 
   return {
     loginError,
-    registerSuccess
+    registerSuccess,
+    connectionError
   }
 })(LoginView))

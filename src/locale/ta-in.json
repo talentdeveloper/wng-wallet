@@ -63,5 +63,6 @@
   "previous": "முந்தைய",
   "next": "அடுத்த",
   "search": "தேடல்",
-  "search_help": "பயனர் பெயர், மின்னஞ்சல் அல்லது சுயவிவர எண் தேடல்"
+  "search_help": "பயனர் பெயர், மின்னஞ்சல் அல்லது சுயவிவர எண் தேடல்",
+  "connection_error": "Could not connect. Please try again later"
 }

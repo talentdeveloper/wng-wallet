@@ -63,5 +63,6 @@
   "previous": "Previous",
   "next": "Next",
   "search": "Search",
-  "search_help": "Search for username, email or account number"
+  "search_help": "Search for username, email or account number",
+  "connection_error": "Could not connect. Please try again later"
 }

@@ -63,5 +63,6 @@
   "previous": "Sebelumnya",
   "next": "Seterusnya",
   "search": "Cari",
-  "search_help": "Cari username, email or number akaun"
+  "search_help": "Cari username, email or number akaun",
+  "connection_error": "Could not connect. Please try again later"
 }

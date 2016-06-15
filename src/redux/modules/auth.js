@@ -14,6 +14,7 @@ import {
   getSecretPhrase
 } from 'redux/utils/storage'
 import { getTransactions } from 'redux/modules/transaction'
+import { connectionError } from 'redux/modules/site'
 import { get, post, sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
@@ -127,6 +128,9 @@ export const getAccount = (account) => {
       dispatch(getAccountSuccess({
         unconfirmedBalanceNQT: result.unconfirmedBalanceNQT
       }))
+    }).fail(() => {
+      dispatch(push('/login'))
+      dispatch(connectionError())
     })
   }
 }
