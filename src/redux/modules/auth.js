@@ -19,8 +19,10 @@ import { get, post, sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(createAction(LOGIN)())
+
+    const { importBackup, backupFile } = getState().auth
 
     const handleDecryption = (encrypted) => {
       let decrypted = decrypt(encrypted, JSON.stringify({
@@ -63,6 +65,10 @@ export const login = (data) => {
       }
 
       dispatchSuccess()
+    }
+
+    if (importBackup && backupFile) {
+      return handleDecryption(backupFile)
     }
 
     get('account', {
@@ -157,6 +163,12 @@ export const showReceiveModal = createAction(SHOW_RECEIVE_MODAL)
 export const HIDE_RECEIVE_MODAL = 'HIDE_RECEIVE_MODAL'
 export const hideReceiveModal = createAction(HIDE_RECEIVE_MODAL)
 
+export const TOGGLE_IMPORT_BACKUP = 'TOGGLE_IMPORT_BACKUP'
+export const toggleImportBackup = createAction(TOGGLE_IMPORT_BACKUP)
+
+export const SET_BACKUP_FILE = 'SET_BACKUP_FILE'
+export const setBackupFile = createAction(SET_BACKUP_FILE)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
@@ -173,6 +185,8 @@ export const initialState = {
     unconfirmedBalanceNQT: 0
   },
   username: '',
+  importBackup: false,
+  backupFile: '',
   isAdmin: false
 }
 
@@ -275,6 +289,20 @@ export default handleActions({
     return {
       ...state,
       showReceiveModal: false
+    }
+  },
+
+  [TOGGLE_IMPORT_BACKUP]: state => {
+    return {
+      ...state,
+      importBackup: !state.importBackup
+    }
+  },
+
+  [SET_BACKUP_FILE]: (state, { payload }) => {
+    return {
+      ...state,
+      backupFile: payload
     }
   }
 }, initialState)

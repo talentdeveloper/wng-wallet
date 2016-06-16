@@ -9,8 +9,9 @@ import {
   RaisedButton
 } from 'material-ui'
 import { saveAs } from 'file-saver'
-console.log(saveAs)
+
 import PageTitle from 'components/PageTitle'
+
 export class SettingsView extends React.Component {
   _onDownloadBackupClick = () => {
     const { encryptedSecretPhrase } = this.props

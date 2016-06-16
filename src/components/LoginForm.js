@@ -2,16 +2,43 @@ import React, { PropTypes } from 'react'
 import { injectIntl } from 'react-intl'
 import { Link } from 'react-router'
 import { reduxForm } from 'redux-form'
-import { RaisedButton, TextField } from 'material-ui'
+import {
+  Checkbox,
+  RaisedButton,
+  TextField
+} from 'material-ui'
 
 import style from './LoginForm.scss'
 
-import { login } from 'redux/modules/auth'
+import { login, toggleImportBackup, setBackupFile } from 'redux/modules/auth'
 
 export class LoginForm extends React.Component {
   constructor () {
     super()
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  _handleFile = (e) => {
+    try {
+      const { setBackupFile } = this.props
+      const file = e.target.files[0]
+      const reader = new FileReader()
+
+      reader.onloadend = (e) => {
+        const { result } = e.target
+        try {
+          const parsed = JSON.parse(result)
+          setBackupFile(parsed)
+        } catch (e) {}
+      }
+
+      reader.readAsText(file)
+    } catch (e) {}
+  }
+
+  _onImportCheck = () => {
+    const { toggleImportBackup } = this.props
+    toggleImportBackup()
   }
 
   handleSubmit (data, dispatch) {
@@ -29,6 +56,7 @@ export class LoginForm extends React.Component {
         email,
         password
       },
+      importBackup,
       handleSubmit
     } = this.props
 
@@ -62,6 +90,13 @@ export class LoginForm extends React.Component {
           fullWidth
           {...password} />
         <br />
+        <br />
+        <Checkbox
+          label={formatMessage({ id: 'import_backup' })}
+          defaultChecked={importBackup}
+          onCheck={this._onImportCheck} />
+        <br />
+        {importBackup && <input accept='application/json' type='file' onChange={this._handleFile} />}
         <div className={style.submitContainer}>
           <RaisedButton
             type='submit'
@@ -81,6 +116,9 @@ LoginForm.propTypes = {
   intl: PropTypes.object.isRequired,
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  toggleImportBackup: PropTypes.func.isRequired,
+  setBackupFile: PropTypes.func.isRequired,
+  importBackup: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool
 }
 
@@ -111,6 +149,14 @@ export default injectIntl(
     initialValues: {
       username: state.auth.username,
       email: state.auth.email
+    },
+    importBackup: state.auth.importBackup
+  }), (dispatch) => ({
+    toggleImportBackup: () => {
+      dispatch(toggleImportBackup())
+    },
+    setBackupFile: (file) => {
+      dispatch(setBackupFile(file))
     }
   }))(LoginForm)
 )
