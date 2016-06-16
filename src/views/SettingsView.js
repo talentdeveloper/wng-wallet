@@ -16,7 +16,7 @@ export class SettingsView extends React.Component {
   _onDownloadBackupClick = () => {
     const { encryptedSecretPhrase } = this.props
     const blob = new Blob([encryptedSecretPhrase], {type: 'text/plain;charset=utf-8'})
-    saveAs(blob, 'backup.json')
+    saveAs(blob, 'wallet.json')
   }
 
   render () {
