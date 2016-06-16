@@ -42,6 +42,7 @@ export const login = (data) => {
       }
 
       const accountData = {
+        encryptedSecretPhrase: encrypted,
         secretPhrase: decrypted,
         accountRS: getAccountRSFromSecretPhrase(decrypted),
         publicKey: getPublicKey(decrypted),
@@ -165,6 +166,7 @@ export const initialState = {
   registerError: '',
   showReceiveModal: false,
   account: {
+    encryptedSecretPhrase: '',
     secretPhrase: '',
     accountRS: '',
     publicKey: '',
@@ -193,6 +195,7 @@ export default handleActions({
       isLoggingIn: false,
       account: {
         ...state.account,
+        encryptedSecretPhrase: payload.encryptedSecretPhrase,
         secretPhrase: payload.secretPhrase,
         accountRS: payload.accountRS,
         publicKey: payload.publicKey
