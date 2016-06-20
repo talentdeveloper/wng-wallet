@@ -69,6 +69,6 @@
   "settings_subtitle": "Manage your account settings",
   "download_backup": "Download Wallet",
   "download_backup_help": "By choosing 'Download Wallet', you will download an encrypted backup of your wallet to your current device. You can restore your backup file on our login page by choosing the 'Restore Wallet' option and providing your login and password. Backups are not synchronised between devices.",
-  "download_backup_safari_help": "When using the Safari browser after clicking the download button you need to save the page as type Page Source and name it \"wallet.json\".",
+  "download_backup_safari_help": "When using the Safari browser, after clicking the download button you need to save the page (press CMD + S) as type \"Page Source\" and name it \"wallet.json\".",
   "import_backup": "Restore wallet"
 }
