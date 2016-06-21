@@ -14,24 +14,37 @@ import {
   getSecretPhrase
 } from 'redux/utils/storage'
 import { getTransactions } from 'redux/modules/transaction'
+import { connectionError } from 'redux/modules/site'
 import { get, post, sendRequest } from 'redux/utils/api'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(createAction(LOGIN)())
 
+    const { importBackup, backupFile } = getState().auth
+
     const handleDecryption = (encrypted) => {
-      const decrypted = decrypt(encrypted, JSON.stringify({
+      let decrypted = decrypt(encrypted, JSON.stringify({
         username: data.username,
         email: data.email,
         password: data.password
       }))
+
+      if (!decrypted) {
+        decrypted = decrypt(encrypted, JSON.stringify({
+          username: data.username.toLowerCase(),
+          email: data.email.toLowerCase(),
+          password: data.password
+        }))
+      }
+
       if (!decrypted) {
         return dispatch(loginError('could_not_decrypt'))
       }
 
       const accountData = {
+        encryptedSecretPhrase: encrypted,
         secretPhrase: decrypted,
         accountRS: getAccountRSFromSecretPhrase(decrypted),
         publicKey: getPublicKey(decrypted),
@@ -52,6 +65,10 @@ export const login = (data) => {
       }
 
       dispatchSuccess()
+    }
+
+    if (importBackup && backupFile) {
+      return handleDecryption(backupFile)
     }
 
     get('account', {
@@ -88,14 +105,14 @@ export const register = (data) => {
     dispatch(createAction(REGISTER)())
     const secretPhrase = generateSecretPhrase()
     const encrypted = encrypt(secretPhrase, JSON.stringify({
-      username: data.username,
-      email: data.email,
+      username: data.username.toLowerCase(),
+      email: data.email.toLowerCase(),
       password: data.password
     }))
     if (storeSecretPhrase(data.username, encrypted)) {
       post('register', {
-        username: data.username,
-        email: data.email,
+        username: data.username.toLowerCase(),
+        email: data.email.toLowerCase(),
         secretPhrase: JSON.stringify(encrypted),
         accountRS: getAccountRSFromSecretPhrase(secretPhrase)
       }).then((result) => {
@@ -127,6 +144,9 @@ export const getAccount = (account) => {
       dispatch(getAccountSuccess({
         unconfirmedBalanceNQT: result.unconfirmedBalanceNQT
       }))
+    }).fail(() => {
+      dispatch(push('/login'))
+      dispatch(connectionError())
     })
   }
 }
@@ -143,6 +163,12 @@ export const showReceiveModal = createAction(SHOW_RECEIVE_MODAL)
 export const HIDE_RECEIVE_MODAL = 'HIDE_RECEIVE_MODAL'
 export const hideReceiveModal = createAction(HIDE_RECEIVE_MODAL)
 
+export const TOGGLE_IMPORT_BACKUP = 'TOGGLE_IMPORT_BACKUP'
+export const toggleImportBackup = createAction(TOGGLE_IMPORT_BACKUP)
+
+export const SET_BACKUP_FILE = 'SET_BACKUP_FILE'
+export const setBackupFile = createAction(SET_BACKUP_FILE)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
@@ -152,12 +178,15 @@ export const initialState = {
   registerError: '',
   showReceiveModal: false,
   account: {
+    encryptedSecretPhrase: '',
     secretPhrase: '',
     accountRS: '',
     publicKey: '',
     unconfirmedBalanceNQT: 0
   },
   username: '',
+  importBackup: false,
+  backupFile: '',
   isAdmin: false
 }
 
@@ -180,6 +209,7 @@ export default handleActions({
       isLoggingIn: false,
       account: {
         ...state.account,
+        encryptedSecretPhrase: payload.encryptedSecretPhrase,
         secretPhrase: payload.secretPhrase,
         accountRS: payload.accountRS,
         publicKey: payload.publicKey
@@ -259,6 +289,20 @@ export default handleActions({
     return {
       ...state,
       showReceiveModal: false
+    }
+  },
+
+  [TOGGLE_IMPORT_BACKUP]: state => {
+    return {
+      ...state,
+      importBackup: !state.importBackup
+    }
+  },
+
+  [SET_BACKUP_FILE]: (state, { payload }) => {
+    return {
+      ...state,
+      backupFile: payload
     }
   }
 }, initialState)

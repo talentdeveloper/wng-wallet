@@ -63,5 +63,12 @@
   "previous": "Sebelumnya",
   "next": "Seterusnya",
   "search": "Cari",
-  "search_help": "Cari username, email or number akaun"
+  "search_help": "Cari username, email or number akaun",
+  "download_backup": "Muat turun Wallet",
+  "download_backup_help": "Dengan memilih ‘Muat turun Wallet’, anda juga akan memuat turun salinan wallet disulitkan anda ke alat peranti yang anda gunakan sekarang. Anda boleh mengembalikan salinan fail anda dihalaman daftar masuk kami dgn memilih ‘Memulihkan Wallet’ dan menyediakan ID daftar masuk serta kata laluan anda. Fail salinan tidak disegerakan diantara alat peranti.",
+  "download_backup_safari_help": "Apabila menggunakan pelayar Safari, selepas anda klik butang muat turun, anda perlu menyimpan halaman (tekan CMD + s) sebagai jenis \"Page Source\" dan dinamakan sebagai \"wallet.json\".",
+  "import_backup": "Memulihkan wallet",
+  "connection_error": "Could not connect. Please try again later",
+  "settings": "Settings",
+  "settings_subtitle": "Manage your account settings"
 }

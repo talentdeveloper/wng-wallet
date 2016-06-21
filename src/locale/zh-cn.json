@@ -67,5 +67,12 @@
   "previous": "上一个",
   "next": "下一个",
   "search": "搜索",
-  "search_help": "搜索用户名，邮箱或账号"
+  "search_help": "搜索用户名，邮箱或账号",
+  "download_backup": "下载钱包",
+  "download_backup_help": "通过选择 ‘下载钱包’, 您将下载加密备份钱包到当前设备. 您可以在登录页通过选择‘恢复钱包’选项和输入登录信息与密码，恢复备份文件. 设备与设备之间备份是非同步的.",
+  "download_backup_safari_help": "当用Safari浏览器时, 点击下载键后，您必需保存这一页（按CMD+S）为 \"Page Source\" 类型和命名 \"wallet.json\".",
+  "import_backup": "恢复钱包",
+  "connection_error": "Could not connect. Please try again later",
+  "settings": "Settings",
+  "settings_subtitle": "Manage your account settings"
 }

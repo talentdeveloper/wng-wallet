@@ -1,4 +1,6 @@
 import { sendRequest } from './api'
+import NxtAddress from './nxtAddress'
+
 /* eslint-disable */
 /**
  * Encrypt the secretphrase using AES for secure storage

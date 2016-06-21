@@ -3,8 +3,9 @@
 
     Version: 1.0, license: Public Domain, coder: NxtChg (admin@nxtchg.com).
 */
+import { coin } from '../../../wallet.config.json'
 
-function NxtAddress() {
+export default function NxtAddress() {
 	var codeword = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	var syndrome = [0, 0, 0, 0, 0];
 
@@ -256,7 +257,7 @@ function NxtAddress() {
 	} //__________________________
 
 	this.toString = function() {
-		var out = 'NXT-';
+		var out = coin + '-';
 
 		for (var i = 0; i < 17; i++) {
 			out += alphabet[codeword[cwmap[i]]];
@@ -311,7 +312,7 @@ function NxtAddress() {
 
 		adr = adr.replace(/(^\s+)|(\s+$)/g, '').toUpperCase();
 
-		if (adr.indexOf('NXT-') == 0) adr = adr.substr(4);
+		if (adr.indexOf(coin + '-') == 0) adr = adr.substr(4);
 
 		if (adr.match(/^\d{1,20}$/g)) // account id
 		{

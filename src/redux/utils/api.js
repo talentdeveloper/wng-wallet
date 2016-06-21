@@ -1,9 +1,9 @@
 import { getPublicKey, signBytes } from './cryptoOld'
 
-// const nrsUrl = 'http://otd.sd.otdocs.com:17876'
-// const nrsUrl = 'http://localhost:6876'
-const nrsUrl = 'https://wang.coin.cards:16876'
-let apiUrl = 'http://localhost:3001'
+import config from '../../../wallet.config.json'
+
+const nrsUrl = config.nrsUrl
+let apiUrl = config.apiUrl
 
 if (process.env.NODE_ENV === 'production') {
   apiUrl = 'https://api.wang.coin.cards'

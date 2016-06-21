@@ -15,6 +15,7 @@ import {
 } from 'redux/modules/transaction'
 
 import TransactionsList from 'components/Transaction/TransactionsList'
+import TransactionsTable from 'components/Transaction/TransactionsTable'
 
 export class TransactionsListContainer extends React.Component {
   _onNextClick = () => {
@@ -43,7 +44,7 @@ export class TransactionsListContainer extends React.Component {
           title={formatMessage({ id: 'transactions' })}
           subtitle={formatMessage({ id: 'latest_transactions' })} />
         <CardText>
-          <TransactionsList
+          <TransactionsTable
             loading={isRetrievingTransactions}
             accountRS={accountRS}
             transactions={transactions} />

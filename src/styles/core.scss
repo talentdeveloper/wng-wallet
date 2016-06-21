@@ -33,4 +33,11 @@
       display: none;
     }
   }
+
+  .container-fluid {
+    @media screen and (max-width: 992px) {
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+  }
 }
