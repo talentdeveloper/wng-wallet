@@ -59,7 +59,7 @@ export class AccountsTable extends React.Component {
     }
 
     const tableBodyStyle = {
-      overflowX: 'scroll'
+      overflowX: 'auto'
     }
 
     if (!isRetrievingAccounts && !accounts.length) {
