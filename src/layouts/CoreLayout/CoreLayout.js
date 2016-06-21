@@ -3,8 +3,8 @@ import { Grid, Row } from 'react-flexgrid'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-import '../../styles/core.scss'
 import 'react-flexgrid/lib/flexgrid.css'
+import '../../styles/core.scss'
 
 import Header from './Header'
 import Sidebar from './Sidebar'

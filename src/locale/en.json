@@ -70,5 +70,9 @@
   "import_backup": "Restore wallet",
   "connection_error": "Could not connect. Please try again later",
   "settings": "Settings",
-  "settings_subtitle": "Manage your account settings"
+  "settings_subtitle": "Manage your account settings",
+  "type": "Type",
+  "date": "Date",
+  "account": "Account",
+  "fee": "Fee"
 }
