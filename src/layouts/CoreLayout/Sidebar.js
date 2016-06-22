@@ -25,12 +25,13 @@ class Sidebar extends React.Component {
   }
 
   render () {
-    const { open, isAdmin } = this.props
+    const { open, isAdmin, isBigScreen, isLoggedIn } = this.props
 
     return (
       <Drawer
-        docked={false}
-        open={open}
+        width={isBigScreen ? 180 : 250}
+        docked={isBigScreen}
+        open={open || isBigScreen}
         onRequestChange={this._onRequestChange}>
         <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/' />}>
           <FormattedMessage id='home' />
@@ -38,10 +39,12 @@ class Sidebar extends React.Component {
         {isAdmin && <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='accounts' />}>
           <FormattedMessage id='accounts' />
         </MenuItem>}
-        <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/settings' />}>
+        {isLoggedIn && <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/settings' />}>
           <FormattedMessage id='settings' />
-        </MenuItem>
-        <MenuItem onTouchTap={this._onLogoutClick}><FormattedMessage id='logout' /></MenuItem>
+        </MenuItem>}
+        {isLoggedIn && <MenuItem onTouchTap={this._onLogoutClick}>
+          <FormattedMessage id='logout' />
+        </MenuItem>}
       </Drawer>
     )
   }
@@ -49,18 +52,24 @@ class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
   intl: PropTypes.object.isRequired,
+  isBigScreen: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   closeSidebar: PropTypes.func.isRequired
 }
 
 export default injectIntl(connect((state) => {
   const open = state.site.sidebarOpen
   const { isAdmin } = state.auth
+  const isLoggedIn = state.auth.account.secretPhrase
+  const isBigScreen = state.browser.greaterThan.medium
 
   return {
     open,
-    isAdmin
+    isAdmin,
+    isLoggedIn,
+    isBigScreen
   }
 }, (dispatch) => {
   return {
