@@ -21,7 +21,8 @@ class Header extends React.Component {
       isLoggedIn,
       balance,
       locale,
-      changeLocale
+      changeLocale,
+      isBigScreen
     } = this.props
 
     let balanceDiv = <div>
@@ -39,13 +40,14 @@ class Header extends React.Component {
         title={formatMessage({ id: 'website_name' })}
         iconElementRight={balanceDiv}
         onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
-        showMenuIconButton={isLoggedIn} />
+        showMenuIconButton={isLoggedIn && !isBigScreen} />
     )
   }
 }
 
 Header.propTypes = {
   intl: PropTypes.object.isRequired,
+  isBigScreen: PropTypes.bool.isRequired,
   closeSidebar: PropTypes.func.isRequired,
   changeLocale: PropTypes.func.isRequired,
   locale: PropTypes.string.isRequired,
@@ -57,11 +59,13 @@ export default injectIntl(connect((state) => {
   const isLoggedIn = !!state.auth.account.secretPhrase
   const balance = convertToNXT(state.auth.account.unconfirmedBalanceNQT)
   const { locale } = state.intl
+  const isBigScreen = state.browser.greaterThan.medium
 
   return {
     isLoggedIn,
     balance,
-    locale
+    locale,
+    isBigScreen
   }
 }, (dispatch) => {
   return {

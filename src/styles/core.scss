@@ -40,4 +40,10 @@
       padding-left: 1rem;
     }
   }
+
+  #root {
+    @media screen and (min-width: 993px) {
+      padding-left: 180px;
+    }
+  }
 }
