@@ -32,9 +32,6 @@ function _parseResult (result, textStatus, jqXHR) {
     }
   }
 
-  if (result.errorCode || result.errorDescription) {
-    return $.Deferred().reject(jqXHR, textStatus, result.errorDescription)
-  }
   return result
 }
 
