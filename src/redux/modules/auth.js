@@ -90,6 +90,11 @@ export const login = (data) => {
 export const isAdmin = (secretPhrase) => {
   return get('is-admin', {
     token: generateToken('admin', secretPhrase)
+  }).then((result, textStatus, jqXHR) => {
+    if (result.errorCode || result.errorDescription) {
+      return $.Deferred().reject(jqXHR, textStatus, result.errorDescription)
+    }
+    return result
   })
 }
 
