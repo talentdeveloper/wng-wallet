@@ -44,6 +44,7 @@ class ChangeLocaleMenu extends React.Component {
           <MenuItem value='zh' primaryText='中文' />
           <MenuItem value='my' primaryText='Bahasa Melayu' />
           <MenuItem value='ta' primaryText='தமிழ்' />
+          <MenuItem value='it' primaryText='Italiano' />
         </DropDownMenu>
       </div>
     )
