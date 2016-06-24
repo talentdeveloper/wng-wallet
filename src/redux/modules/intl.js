@@ -3,15 +3,18 @@ import { addLocaleData } from 'react-intl'
 import zhLocaleData from 'react-intl/locale-data/zh'
 import myLocaleData from 'react-intl/locale-data/my'
 import taLocaleData from 'react-intl/locale-data/ta'
+import itLocaleData from 'react-intl/locale-data/it'
 import en from '../../locale/en'
 import my from '../../locale/ms-my'
 import zh from '../../locale/zh-cn'
 import ta from '../../locale/ta-in'
+import it from '../../locale/it'
 
 addLocaleData([
   ...zhLocaleData,
   ...myLocaleData,
-  ...taLocaleData
+  ...taLocaleData,
+  ...itLocaleData
 ])
 
 let locale = 'en'
@@ -19,7 +22,8 @@ let messages = {
   en,
   my,
   zh,
-  ta
+  ta,
+  it
 }
 
 const language = localStorage.getItem('wallet_locale') ||
