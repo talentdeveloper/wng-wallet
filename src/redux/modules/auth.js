@@ -142,7 +142,7 @@ export const getAccount = (account) => {
     }).then((result) => {
       console.log(result)
       dispatch(getAccountSuccess({
-        unconfirmedBalanceNQT: result.unconfirmedBalanceNQT
+        unconfirmedBalanceNQT: result.unconfirmedBalanceNQT || 0
       }))
     }).fail(() => {
       dispatch(push('/login'))
