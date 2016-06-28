@@ -20,10 +20,10 @@ addLocaleData([
 let locale = 'en'
 let messages = {
   en,
-  my,
-  zh,
-  ta,
-  it
+  my: { ...en, ...my },
+  zh: { ...en, ...zh },
+  ta: { ...en, ...ta },
+  it: { ...en, ...it }
 }
 
 const language = localStorage.getItem('wallet_locale') ||
