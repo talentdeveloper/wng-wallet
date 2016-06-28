@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { createAction, handleActions } from 'redux-actions'
 import { push } from 'react-router-redux'
 import {
@@ -71,14 +72,16 @@ export const login = (data) => {
       return handleDecryption(backupFile)
     }
 
+    const username = crypto.createHash('sha256').update(data.username).digest('hex')
+
     get('account', {
-      username: data.username,
+      username,
       email: data.email
     }).then((result) => {
       const encrypted = result.account.secretPhrase
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
-      const encrypted = getSecretPhrase(data.username)
+      const encrypted = getSecretPhrase(username)
       if (!encrypted) {
         return dispatch(loginError('could_not_find_secretphrase'))
       }
@@ -114,9 +117,10 @@ export const register = (data) => {
       email: data.email.toLowerCase(),
       password: data.password
     }))
-    if (storeSecretPhrase(data.username, encrypted)) {
+    const username = crypto.createHash('sha256').update(data.username).digest('hex')
+    if (storeSecretPhrase(username, encrypted)) {
       post('register', {
-        username: data.username.toLowerCase(),
+        username: username,
         email: data.email.toLowerCase(),
         secretPhrase: JSON.stringify(encrypted),
         accountRS: getAccountRSFromSecretPhrase(secretPhrase)
