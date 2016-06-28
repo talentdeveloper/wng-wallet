@@ -76,7 +76,6 @@ export class AccountsTable extends React.Component {
         <TableBody displayRowCheckbox={false}>
           <TableRow>
             <TableHeaderColumn><FormattedMessage id='number' /></TableHeaderColumn>
-            <TableHeaderColumn><FormattedMessage id='username' /></TableHeaderColumn>
             <TableHeaderColumn><FormattedMessage id='email' /></TableHeaderColumn>
             <TableHeaderColumn><FormattedMessage id='account_number' /></TableHeaderColumn>
             <TableHeaderColumn><FormattedMessage id='creation_date' /></TableHeaderColumn>
@@ -91,9 +90,6 @@ export class AccountsTable extends React.Component {
             return <TableRow key={account.id}>
               <TableRowColumn>
                 {account.id}
-              </TableRowColumn>
-              <TableRowColumn>
-                {account.username}
               </TableRowColumn>
               <TableRowColumn>
                 {account.email}
