@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { createAction, handleActions } from 'redux-actions'
 import { push } from 'react-router-redux'
 import {
@@ -71,14 +72,16 @@ export const login = (data) => {
       return handleDecryption(backupFile)
     }
 
+    const username = crypto.createHash('sha256').update(data.username).digest('hex')
+
     get('account', {
-      username: data.username,
+      username,
       email: data.email
     }).then((result) => {
       const encrypted = result.account.secretPhrase
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
-      const encrypted = getSecretPhrase(data.username)
+      const encrypted = getSecretPhrase(username)
       if (!encrypted) {
         return dispatch(loginError('could_not_find_secretphrase'))
       }
@@ -114,9 +117,10 @@ export const register = (data) => {
       email: data.email.toLowerCase(),
       password: data.password
     }))
-    if (storeSecretPhrase(data.username, encrypted)) {
+    const username = crypto.createHash('sha256').update(data.username).digest('hex')
+    if (storeSecretPhrase(username, encrypted)) {
       post('register', {
-        username: data.username.toLowerCase(),
+        username: username,
         email: data.email.toLowerCase(),
         secretPhrase: JSON.stringify(encrypted),
         accountRS: getAccountRSFromSecretPhrase(secretPhrase)
@@ -174,6 +178,9 @@ export const toggleImportBackup = createAction(TOGGLE_IMPORT_BACKUP)
 export const SET_BACKUP_FILE = 'SET_BACKUP_FILE'
 export const setBackupFile = createAction(SET_BACKUP_FILE)
 
+export const SET_PASSWORD_STRENGTH = 'SET_PASSWORD_STRENGTH'
+export const setPasswordStrength = createAction(SET_PASSWORD_STRENGTH)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
@@ -192,7 +199,8 @@ export const initialState = {
   username: '',
   importBackup: false,
   backupFile: '',
-  isAdmin: false
+  isAdmin: false,
+  passwordStrength: 0
 }
 
 export default handleActions({
@@ -308,6 +316,13 @@ export default handleActions({
     return {
       ...state,
       backupFile: payload
+    }
+  },
+
+  [SET_PASSWORD_STRENGTH]: (state, { payload }) => {
+    return {
+      ...state,
+      passwordStrength: payload
     }
   }
 }, initialState)

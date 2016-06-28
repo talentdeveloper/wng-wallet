@@ -11,6 +11,7 @@ import {
 import { saveAs } from 'file-saver'
 
 import PageTitle from 'components/PageTitle'
+import ForgingContainer from 'components/Forging/ForgingContainer'
 
 export class SettingsView extends React.Component {
   _onDownloadBackupClick = () => {
@@ -29,7 +30,7 @@ export class SettingsView extends React.Component {
     return (
       <PageTitle pageName='settings'>
         <Row>
-          <Col md={12}>
+          <Col xs={12} md={12}>
             <Card>
               <CardTitle
                 title={formatMessage({ id: 'settings' })}
@@ -44,6 +45,11 @@ export class SettingsView extends React.Component {
                 </p>}
               </CardText>
             </Card>
+          </Col>
+        </Row>
+        <Row style={{ marginTop: 15 }}>
+          <Col xs={12} md={12}>
+            <ForgingContainer />
           </Col>
         </Row>
       </PageTitle>

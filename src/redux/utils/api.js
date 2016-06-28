@@ -1,13 +1,7 @@
 import { getPublicKey, signBytes } from './cryptoOld'
 
 import config from '../../../wallet.config.json'
-
-const nrsUrl = config.nrsUrl
-let apiUrl = config.apiUrl
-
-if (process.env.NODE_ENV === 'production') {
-  apiUrl = 'https://api.wang.coin.cards'
-}
+export const { nrsUrl, apiUrl, coin } = config
 
 function _parseData (data) {
   if (!data.secretPhrase) return data
@@ -51,6 +45,15 @@ export function get (url, data) {
   }).then(_parseResult)
 }
 
+export function insecureSendRequest (nrsUrl, requestType, data, async = true) {
+  return $.ajax({
+    type: 'POST',
+    url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}`,
+    data: data,
+    async: async
+  }).then(_parseResult)
+}
+
 export function sendRequest (requestType, data, async = true) {
   data = _parseData(data)
 
@@ -58,7 +61,7 @@ export function sendRequest (requestType, data, async = true) {
   if (!data.secretPhrase) {
     return $.ajax({
       type: 'POST',
-      url: `${nrsUrl}/nxt?requestType=${requestType}`,
+      url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}`,
       data: data,
       async: async
     }).then(_parseResult)
@@ -71,7 +74,7 @@ export function sendRequest (requestType, data, async = true) {
 
   return $.ajax({
     type: 'POST',
-    url: `${nrsUrl}/nxt?requestType=${requestType}`,
+    url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}`,
     data: data,
     async: async
   })

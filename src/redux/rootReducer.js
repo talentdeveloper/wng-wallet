@@ -8,6 +8,7 @@ import account from './modules/account'
 import auth from './modules/auth'
 import site from './modules/site'
 import transaction from './modules/transaction'
+import forging from './modules/forging'
 
 export default combineReducers({
   form: formReducer,
@@ -17,5 +18,6 @@ export default combineReducers({
   browser,
   account,
   auth,
-  transaction
+  transaction,
+  forging
 })
