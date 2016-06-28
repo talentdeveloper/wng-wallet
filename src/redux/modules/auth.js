@@ -178,6 +178,9 @@ export const toggleImportBackup = createAction(TOGGLE_IMPORT_BACKUP)
 export const SET_BACKUP_FILE = 'SET_BACKUP_FILE'
 export const setBackupFile = createAction(SET_BACKUP_FILE)
 
+export const SET_PASSWORD_STRENGTH = 'SET_PASSWORD_STRENGTH'
+export const setPasswordStrength = createAction(SET_PASSWORD_STRENGTH)
+
 export const initialState = {
   isLoggingIn: false,
   isRegistering: false,
@@ -196,7 +199,8 @@ export const initialState = {
   username: '',
   importBackup: false,
   backupFile: '',
-  isAdmin: false
+  isAdmin: false,
+  passwordStrength: 0
 }
 
 export default handleActions({
@@ -312,6 +316,13 @@ export default handleActions({
     return {
       ...state,
       backupFile: payload
+    }
+  },
+
+  [SET_PASSWORD_STRENGTH]: (state, { payload }) => {
+    return {
+      ...state,
+      passwordStrength: payload
     }
   }
 }, initialState)

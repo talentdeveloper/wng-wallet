@@ -1,17 +1,33 @@
 import React, { PropTypes } from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { Link } from 'react-router'
 import { reduxForm } from 'redux-form'
-import { RaisedButton, TextField } from 'material-ui'
+import { RaisedButton, TextField, LinearProgress } from 'material-ui'
 
 import style from './RegisterForm.scss'
 
-import { register } from 'redux/modules/auth'
+import { register, setPasswordStrength } from 'redux/modules/auth'
 
 export class RegisterForm extends React.Component {
   constructor () {
     super()
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentWillMount () {
+    const script = document.createElement('script')
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.3.0/zxcvbn.js'
+    script.async = true
+
+    document.body.appendChild(script)
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    try {
+      const { setPasswordStrength } = this.props
+      const { value } = nextProps.fields.password
+      setPasswordStrength(zxcvbn(value).score) // eslint-disable-line
+    } catch (e) {}
   }
 
   handleSubmit (data, dispatch) {
@@ -29,7 +45,8 @@ export class RegisterForm extends React.Component {
         password,
         confirmPassword
       },
-      handleSubmit
+      handleSubmit,
+      passwordStrength
     } = this.props
 
     const error = (field) => {
@@ -37,6 +54,20 @@ export class RegisterForm extends React.Component {
     }
 
     const hasError = username.error || email.error || password.error
+
+    const getPasswordStrengthColor = (strength) => {
+      switch (strength) {
+        case 0:
+          return 'red'
+        case 1:
+          return 'orange'
+        case 2:
+        case 3:
+        case 4:
+        default:
+          return 'green'
+      }
+    }
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -60,7 +91,16 @@ export class RegisterForm extends React.Component {
           floatingLabelText={formatMessage({ id: 'password' })}
           errorText={error(password)}
           fullWidth
+          onChange={this._onPasswordChange}
           {...password} />
+        <LinearProgress
+          mode='determinate'
+          value={Number(passwordStrength * 25)}
+          color={getPasswordStrengthColor(passwordStrength)} />
+        <small>
+          <FormattedMessage id='strength' />
+          <FormattedMessage id={`password_strength_${passwordStrength}`} />
+        </small>
         <br />
         <TextField
           type='password'
@@ -88,7 +128,9 @@ export class RegisterForm extends React.Component {
 RegisterForm.propTypes = {
   intl: PropTypes.object.isRequired,
   fields: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  setPasswordStrength: PropTypes.func.isRequired,
+  passwordStrength: PropTypes.number.isRequired
 }
 
 const validate = values => {
@@ -122,5 +164,11 @@ export default injectIntl(
     form: 'login',
     fields: ['username', 'email', 'password', 'confirmPassword'],
     validate
-  })(RegisterForm)
+  }, (state) => ({
+    passwordStrength: state.auth.passwordStrength
+  }), (dispatch) => ({
+    setPasswordStrength: (strength) => {
+      dispatch(setPasswordStrength(strength))
+    }
+  }))(RegisterForm)
 )
