@@ -59,7 +59,7 @@ export default injectIntl(connect(state => {
     node
   }
 }, (dispatch) => ({
-  getForging: () => {
-    dispatch(getForging())
+  getForging: (node) => {
+    dispatch(getForging(node))
   }
 }))(ForgingContainer))
