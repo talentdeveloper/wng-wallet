@@ -77,7 +77,11 @@ export const login = (data) => {
     get('account', {
       username,
       email: data.email
-    }).then((result) => {
+    }).then((result, textStatus, jqXHR) => {
+      if (result && result.errorDescription) {
+        return $.Deferred().reject(jqXHR, textStatus, result.errorDescription)
+      }
+
       const encrypted = result.account.secretPhrase
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
