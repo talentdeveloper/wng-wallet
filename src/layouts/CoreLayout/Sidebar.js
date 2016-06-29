@@ -62,7 +62,7 @@ Sidebar.propTypes = {
 export default injectIntl(connect((state) => {
   const open = state.site.sidebarOpen
   const { isAdmin } = state.auth
-  const isLoggedIn = state.auth.account.secretPhrase
+  const isLoggedIn = !!state.auth.account.secretPhrase
   const isBigScreen = state.browser.greaterThan.medium
 
   return {
