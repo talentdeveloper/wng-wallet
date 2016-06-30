@@ -80,6 +80,7 @@
   "start_forging": "Start Forging",
   "stop_forging": "Stop Forging",
   "warning": "WARNING: ",
+  "forging_explanation": "Forging is used to validate transactions. Each time you forge you create a new block which allows you to collect all transaction fees in this block. If there are no transactions in a block you will get no fees. The more NXT you have, the higher chance of forging a block. To forge you must have had a minimum of 2,000 NXT in your account for at least 1 day.",
   "forging_help": "Submitting this form will send your private key to the specified node.",
   "node_url": "Node URL",
   "forging_status": "Forging status: ",

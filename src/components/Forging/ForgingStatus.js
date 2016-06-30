@@ -34,7 +34,7 @@ class ForgingStatus extends React.Component {
 
     return (
       <div>
-        <FormattedMessage id='forging_status' />
+        <strong><FormattedMessage id='forging_status' /></strong>
         <span style={style}>
           <FormattedMessage id={status} />
         </span>
