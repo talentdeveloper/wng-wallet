@@ -30,6 +30,7 @@ export class ForgingContainer extends React.Component {
           <Row>
             <Col xs={12} md={6}>
               <ForgingStatus status={status} node={node} getForging={getForging} />
+              <FormattedMessage id='forging_explanation' />
               <p style={{ color: 'red' }}>
                 <FormattedMessage id='warning' />
                 <FormattedMessage id='forging_help' />
