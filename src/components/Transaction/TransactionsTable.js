@@ -77,7 +77,7 @@ export class TransactionsTable extends React.Component {
               style.fontStyle = 'italic'
             }
 
-            return <TableRow key={transaction.transaction}>
+            return <TableRow key={transaction.transaction} style={style}>
               <TableRowColumn>
                 <span style={{ color: type === 'received' ? 'green' : 'red' }}>
                   <FormattedMessage id={type} /> {formatMessage({ id: fromTo }).toLowerCase()}
