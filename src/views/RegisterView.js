@@ -29,7 +29,7 @@ export class RegisterView extends React.Component {
                 title={formatMessage({ id: 'register' })}
                 subtitle={formatMessage({ id: 'register_subtitle' })} />
               <CardText>
-                {registerError && <div>
+                {registerError && <div style={{ color: 'red' }}>
                   <FormattedMessage id={registerError} />
                 </div>}
                 <RegisterForm />
