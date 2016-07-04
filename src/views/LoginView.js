@@ -43,7 +43,7 @@ export class LoginView extends React.Component {
                 title={formatMessage({ id: pageName })}
                 subtitle={formatMessage({ id: 'login_subtitle' })} />
               <CardText>
-                {loginError && <div>
+                {loginError && <div style={{ color: 'red' }}>
                   <FormattedMessage id={loginError} />
                 </div>}
                 {registerSuccess && <div>

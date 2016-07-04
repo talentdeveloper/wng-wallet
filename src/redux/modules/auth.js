@@ -43,14 +43,18 @@ export const login = (data) => {
       if (!decrypted) {
         return dispatch(loginError('could_not_decrypt'))
       }
-
+      const accountRS = getAccountRSFromSecretPhrase(decrypted)
+      const publicKey = getPublicKey(decrypted)
       const accountData = {
         encryptedSecretPhrase: encrypted,
         secretPhrase: decrypted,
-        accountRS: getAccountRSFromSecretPhrase(decrypted),
-        publicKey: getPublicKey(decrypted),
+        accountRS,
+        publicKey,
         isAdmin: data.isAdmin
       }
+
+      console.log(`Logged in account ${accountRS} with publicKey ${publicKey}`)
+
       const dispatchSuccess = (redirect = '/') => {
         dispatch(loginSuccess(accountData))
         dispatch(push(redirect))

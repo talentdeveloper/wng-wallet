@@ -37,6 +37,7 @@ export class IndexView extends React.Component {
     const {
       intl: { formatMessage },
       accountRS,
+      publicKey,
       showModal,
       showReceiveModal,
       handleReceiveClose,
@@ -74,7 +75,11 @@ export class IndexView extends React.Component {
             <TransactionsListContainer />
           </Col>
         </Row>
-        <ReceiveModal show={showReceiveModal} handleClose={handleReceiveClose} accountRS={accountRS} />
+        <ReceiveModal
+          show={showReceiveModal}
+          handleClose={handleReceiveClose}
+          accountRS={accountRS}
+          publicKey={publicKey} />
         <TransactionModal show={showModal} title={modalTitle} form={<SendForm />} />
       </PageTitle>
     )
@@ -84,6 +89,7 @@ export class IndexView extends React.Component {
 IndexView.propTypes = {
   intl: PropTypes.object.isRequired,
   accountRS: PropTypes.string.isRequired,
+  publicKey: PropTypes.string.isRequired,
   modalTitle: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
   showReceiveModal: PropTypes.bool.isRequired,
@@ -93,7 +99,10 @@ IndexView.propTypes = {
 }
 
 export default injectIntl(connect((state) => {
-  const { accountRS } = state.auth.account
+  const {
+    accountRS,
+    publicKey
+  } = state.auth.account
   const {
     showModal,
     modalTitle
@@ -105,6 +114,7 @@ export default injectIntl(connect((state) => {
 
   return {
     accountRS,
+    publicKey,
     showModal,
     showReceiveModal,
     modalTitle
