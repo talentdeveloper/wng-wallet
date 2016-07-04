@@ -31,7 +31,8 @@ export class ReceiveModal extends React.Component {
     const {
       intl: { formatMessage },
       show,
-      accountRS
+      accountRS,
+      publicKey
     } = this.props
 
     const { copySuccess } = this.state
@@ -62,6 +63,10 @@ export class ReceiveModal extends React.Component {
               </div>
               : null}
             <p><FormattedMessage id='account_help_message' /></p>
+            <div>
+              <h3><FormattedMessage id='account_public_key' /></h3> <pre>{publicKey}</pre>
+              <p><FormattedMessage id='public_key_help' /></p>
+            </div>
           </Col>
           <Col xs={12} md={4}>
             <h3><FormattedMessage id='scan_qr_code' /></h3>
@@ -78,6 +83,7 @@ ReceiveModal.propTypes = {
   intl: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
   accountRS: PropTypes.string.isRequired,
+  publicKey: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired
 }
 
