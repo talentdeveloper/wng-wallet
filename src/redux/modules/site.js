@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions'
+import { coin } from '../../../wallet.config.json'
 
 export const OPEN_SIDEBAR = 'OPEN_SIDEBAR'
 export const openSidebar = createAction(OPEN_SIDEBAR)
@@ -11,7 +12,8 @@ export const connectionError = createAction(CONNECTION_ERROR)
 
 const initialState = {
   connectionError: false,
-  sidebarOpen: false
+  sidebarOpen: false,
+  coinName: coin
 }
 
 export default handleActions({

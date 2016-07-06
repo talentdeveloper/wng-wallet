@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, FormattedNumber, injectIntl } from 'react-intl'
 import { reduxForm } from 'redux-form'
 import {
-  FlatButton,
   RaisedButton,
   TextField
 } from 'material-ui'
@@ -37,14 +36,16 @@ export class SendForm extends React.Component {
         node
       },
       handleSubmit,
-      status
+      status,
+      effectiveBalance,
+      coinName
     } = this.props
 
     const error = (field) => {
       return field.touched && field.error ? formatMessage({ id: field.error }) : null
     }
 
-    const disableButton = node.error
+    const disableButton = node.error || effectiveBalance < 2000
     const buttonText = status === 'is_forging'
       ? formatMessage({ id: 'stop_forging' })
       : formatMessage({ id: 'start_forging' })
@@ -57,7 +58,11 @@ export class SendForm extends React.Component {
           fullWidth
           {...node} />
         <br />
+        <br />
         <div className={formStyle.actions}>
+          <span style={{ float: 'left' }}>
+            <FormattedMessage id='forging_balance' /> <FormattedNumber value={effectiveBalance} /> {coinName}
+          </span>
           <RaisedButton
             type='submit'
             primary
@@ -75,7 +80,9 @@ SendForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   startForging: PropTypes.func.isRequired,
   stopForging: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string.isRequired,
+  effectiveBalance: PropTypes.number.isRequired,
+  coinName: PropTypes.string.isRequired
 }
 
 const validate = values => {
@@ -97,7 +104,9 @@ export default injectIntl(reduxForm({
   initialValues: {
     node: state.forging.defaultNode
   },
-  status: state.forging.status
+  status: state.forging.status,
+  effectiveBalance: state.auth.account.effectiveBalance,
+  coinName: state.site.coinName
 }), (dispatch) => ({
   startForging: (data) => {
     dispatch(startForging(data))
