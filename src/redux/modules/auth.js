@@ -17,6 +17,7 @@ import {
 import { getTransactions } from 'redux/modules/transaction'
 import { connectionError } from 'redux/modules/site'
 import { get, post, sendRequest } from 'redux/utils/api'
+import { coin } from '../../../wallet.config.json'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
@@ -155,11 +156,13 @@ export const getAccount = (account) => {
   return dispatch => {
     dispatch(createAction(GET_ACCOUNT)())
     sendRequest('getAccount', {
-      account
+      account,
+      includeEffectiveBalance: true
     }).then((result) => {
       console.log(result)
       dispatch(getAccountSuccess({
-        unconfirmedBalanceNQT: result.unconfirmedBalanceNQT || 0
+        unconfirmedBalanceNQT: result.unconfirmedBalanceNQT || 0,
+        effectiveBalance: result[`effectiveBalance${coin}`] || 0
       }))
     }).fail(() => {
       dispatch(push('/login'))
@@ -287,7 +290,8 @@ export default handleActions({
       isRetrievingAccount: false,
       account: {
         ...state.account,
-        unconfirmedBalanceNQT: payload.unconfirmedBalanceNQT
+        unconfirmedBalanceNQT: payload.unconfirmedBalanceNQT,
+        effectiveBalance: payload.effectiveBalance
       }
     }
   },
