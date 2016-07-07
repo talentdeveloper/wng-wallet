@@ -14,7 +14,6 @@ import {
   previousPage
 } from 'redux/modules/transaction'
 
-import TransactionsList from 'components/Transaction/TransactionsList'
 import TransactionsTable from 'components/Transaction/TransactionsTable'
 
 export class TransactionsListContainer extends React.Component {

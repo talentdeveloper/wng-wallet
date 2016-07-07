@@ -85,10 +85,10 @@ export const getTransactionsSuccess = createAction(GET_TRANSACTIONS_SUCCESS)
 export const GET_TRANSACTIONS_ERROR = 'GET_TRANSACTIONS_ERROR'
 export const getTransactionsError = createAction(GET_TRANSACTIONS_ERROR)
 
-export const NEXT_PAGE = 'NEXT_PAGE'
+export const NEXT_PAGE = 'TRANSACTIONS.NEXT_PAGE'
 export const nextPage = createAction(NEXT_PAGE)
 
-export const PREVIOUS_PAGE = 'PREVIOUS_PAGE'
+export const PREVIOUS_PAGE = 'TRANSACTIONS.PREVIOUS_PAGE'
 export const previousPage = createAction(PREVIOUS_PAGE)
 
 export const SHOW_MODAL = 'SHOW_MODAL'
