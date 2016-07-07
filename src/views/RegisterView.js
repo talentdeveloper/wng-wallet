@@ -23,7 +23,7 @@ export class RegisterView extends React.Component {
     return (
       <PageTitle pageName='register'>
         <Row>
-          <Col xs={12} md={4} mdOffset={4}>
+          <Col xs={12} sm={8} smOffset={2} md={6} mdOffset={3}>
             <Card>
               <CardTitle
                 title={formatMessage({ id: 'register' })}
