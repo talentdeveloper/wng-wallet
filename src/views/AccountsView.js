@@ -18,7 +18,8 @@ import {
   getAccounts,
   setSearch,
   nextPage,
-  previousPage
+  previousPage,
+  resetPagination
 } from 'redux/modules/account'
 import { showModal } from 'redux/modules/transaction'
 
@@ -27,10 +28,16 @@ export class AccountsView extends React.Component {
     super()
     this.searching
   }
-  componentDidMount () {
+
+  componentDidMount = () => {
     const { getAccounts } = this.props
 
     getAccounts()
+  }
+
+  componentWillUnmount = () => {
+    const { resetPagination } = this.props
+    resetPagination()
   }
 
   _onSearch = (e) => {
@@ -88,6 +95,7 @@ AccountsView.propTypes = {
   setSearch: PropTypes.func.isRequired,
   onNextClick: PropTypes.func.isRequired,
   onPreviousClick: PropTypes.func.isRequired,
+  resetPagination: PropTypes.func.isRequired,
   intl: PropTypes.object.isRequired,
   accounts: PropTypes.array.isRequired,
   isRetrievingAccounts: PropTypes.bool.isRequired,
@@ -137,6 +145,9 @@ export default injectIntl(connect((state) => {
   },
   onPreviousClick: () => {
     dispatch(previousPage())
+  },
+  resetPagination: () => {
+    dispatch(resetPagination())
   },
   onAccountRSClick: (accountRS) => {
     dispatch(showModal({ recipient: accountRS }))

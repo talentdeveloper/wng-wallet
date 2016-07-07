@@ -32,7 +32,7 @@ export const getAccountsSuccess = createAction(GET_ACCOUNTS_SUCCESS)
 export const SET_SEARCH = 'SET_SEARCH'
 export const setSearch = createAction(SET_SEARCH)
 
-export const NEXT_PAGE = 'NEXT_PAGE'
+export const NEXT_PAGE = 'ACCOUNTS.NEXT_PAGE'
 export const nextPage = () => {
   return dispatch => {
     dispatch(createAction(NEXT_PAGE)())
@@ -40,13 +40,16 @@ export const nextPage = () => {
   }
 }
 
-export const PREVIOUS_PAGE = 'PREVIOUS_PAGE'
+export const PREVIOUS_PAGE = 'ACCOUNTS.PREVIOUS_PAGE'
 export const previousPage = () => {
   return dispatch => {
     dispatch(createAction(PREVIOUS_PAGE)())
     dispatch(getAccounts())
   }
 }
+
+export const RESET_PAGINATION = 'ACCOUNTS.RESET_PAGINATION'
+export const resetPagination = createAction(RESET_PAGINATION)
 
 const initialState = {
   accounts: [],
@@ -94,6 +97,13 @@ export default handleActions({
     return {
       ...state,
       offset: state.offset - 10
+    }
+  },
+
+  [RESET_PAGINATION]: state => {
+    return {
+      ...state,
+      offset: 0
     }
   }
 }, initialState)

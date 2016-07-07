@@ -10,7 +10,8 @@ export const getForging = (data) => {
 
     insecureSendRequest(node, 'getForging', { secretPhrase })
       .then((result) => {
-        if (result && result.accountRS) {
+        if (result && result.accountRS &&
+          result.hitTime !== 0 && result.deadline !== 0) {
           return dispatch(getForgingSuccess('is_forging'))
         }
         return dispatch(getForgingSuccess('not_forging'))
@@ -30,7 +31,8 @@ export const startForging = (data) => {
     dispatch(createAction(START_FORGING)())
     insecureSendRequest(node, 'startForging', { secretPhrase })
       .then((result) => {
-        if (result && !result.errorDescription) {
+        if (result && !result.errorDescription &&
+          result.hitTime !== 0 && result.deadline !== 0) {
           return dispatch(getForgingSuccess('is_forging'))
         }
         return dispatch(getForgingSuccess('not_forging'))
