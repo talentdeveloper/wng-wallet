@@ -11,12 +11,18 @@ import {
 import {
   getTransactions,
   nextPage,
-  previousPage
+  previousPage,
+  resetPagination
 } from 'redux/modules/transaction'
 
 import TransactionsTable from 'components/Transaction/TransactionsTable'
 
 export class TransactionsListContainer extends React.Component {
+  componentWillUnmount = () => {
+    const { resetPagination } = this.props
+    resetPagination()
+  }
+
   _onNextClick = () => {
     const { onNextClick } = this.props
     onNextClick()
@@ -69,7 +75,8 @@ TransactionsListContainer.propTypes = {
   disableNextButton: PropTypes.bool.isRequired,
   disablePreviousButton: PropTypes.bool.isRequired,
   onNextClick: PropTypes.func.isRequired,
-  onPreviousClick: PropTypes.func.isRequired
+  onPreviousClick: PropTypes.func.isRequired,
+  resetPagination: PropTypes.func.isRequired
 }
 
 export default injectIntl(connect((state) => {
@@ -100,6 +107,9 @@ export default injectIntl(connect((state) => {
     onPreviousClick: () => {
       dispatch(previousPage())
       dispatch(getTransactions())
+    },
+    resetPagination: () => {
+      dispatch(resetPagination())
     }
   }
 })(TransactionsListContainer))

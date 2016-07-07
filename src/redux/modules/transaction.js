@@ -91,6 +91,9 @@ export const nextPage = createAction(NEXT_PAGE)
 export const PREVIOUS_PAGE = 'TRANSACTIONS.PREVIOUS_PAGE'
 export const previousPage = createAction(PREVIOUS_PAGE)
 
+export const RESET_PAGINATION = 'TRANSACTIONS.RESET_PAGINATION'
+export const resetPagination = createAction(RESET_PAGINATION)
+
 export const SHOW_MODAL = 'SHOW_MODAL'
 export const showModal = createAction(SHOW_MODAL)
 
@@ -173,6 +176,13 @@ export default handleActions({
     return {
       ...state,
       offset: state.offset - state.limit
+    }
+  },
+
+  [RESET_PAGINATION]: state => {
+    return {
+      ...state,
+      offset: 0
     }
   },
 

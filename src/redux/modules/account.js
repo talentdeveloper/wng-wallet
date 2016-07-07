@@ -48,6 +48,9 @@ export const previousPage = () => {
   }
 }
 
+export const RESET_PAGINATION = 'ACCOUNTS.RESET_PAGINATION'
+export const resetPagination = createAction(RESET_PAGINATION)
+
 const initialState = {
   accounts: [],
   search: '',
@@ -94,6 +97,13 @@ export default handleActions({
     return {
       ...state,
       offset: state.offset - 10
+    }
+  },
+
+  [RESET_PAGINATION]: state => {
+    return {
+      ...state,
+      offset: 0
     }
   }
 }, initialState)
