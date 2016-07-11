@@ -92,5 +92,11 @@
   "password_strength_1": "சரி",
   "password_strength_2": "நல்லது",
   "password_strength_3": "வலுவானது",
-  "password_strength_4": "மாபெரும்"
+  "password_strength_4": "மாபெரும்",
+  "account_public_key": "பொது விசை சுயவிவர",
+  "public_key": "பொது விசை",
+  "public_key_help": "சில அரிதான சம்பவங்களில் அனுப்புநர் உங்கள் பொது முக்கிய விசை கேட்கலாம். பொதுவாக  இது உங்களுக்கு தேவையில்லை என்று.",
+  "forging_balance": "மோசடி தகுதி தொகை :",
+  "registration_help": "பாதுகாப்பு காரணங்களுக்காக, நீங்கள் தேர்வு பற்றி பயனர் பெயர் மற்றும் இரகசிய வார்த்தைகள் பின்னர் மாற்ற முடியாது, நீங்கள் அவர்களை இழந்தால் மற்றும் திரும்பப்பெற முடியாது ",
+  "screenshot_help": "ஒரு எடுத்து கருத்தில்<a href='http://www.howtogeek.com/205375/how-to-take-screenshots-on-almost-any-device/' target='_blank'>திரை</a>உங்கள் தரவு சமர்ப்பிக்கும் முன் உங்கள் திரை பதிவு."
 }

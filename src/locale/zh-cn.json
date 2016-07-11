@@ -97,5 +97,11 @@
   "password_strength_1": "可以",
   "password_strength_2": "很好",
   "password_strength_3": "强",
-  "password_strength_4": "非常好"
+  "password_strength_4": "非常好",
+  "account_public_key": "账户公钥",
+  "public_key": "公钥",
+  "public_key_help": "一在某些罕见的情况下，发送者可能要求您的公钥.一般您是不需要的.",
+  "forging_balance": "可锻造的合格数额:",
+  "registration_help": "出于安全原因，您将选用的用户名和密码，将来不能再变更，假如您忘了也不能再查找或找回.",
+  "screenshot_help": "考虑采用 <a href='http://www.howtogeek.com/205375/how-to-take-screenshots-on-almost-any-device/' target='_blank'>screenshot</a> 在没提交注册资料前，把您的注册页截图."
 }
