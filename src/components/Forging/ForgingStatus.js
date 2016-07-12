@@ -35,10 +35,10 @@ class ForgingStatus extends React.Component {
     return (
       <div>
         <strong><FormattedMessage id='forging_status' /></strong>
-        <span style={style}>
+        {status !== 'unknown' && <span style={style}>
           <FormattedMessage id={status} />
-        </span>
-        <FlatButton label={formatMessage({ id: 'get_forging_status' })}
+        </span>}
+        <FlatButton label={formatMessage({ id: 'click_here_to_check' })}
           onTouchTap={this._onGetStatusClick}
           disabled={Boolean(disableButton)} />
       </div>

@@ -162,7 +162,8 @@ export const getAccount = (account) => {
       console.log(result)
       dispatch(getAccountSuccess({
         unconfirmedBalanceNQT: result.unconfirmedBalanceNQT || 0,
-        effectiveBalance: result[`effectiveBalance${coin}`] || 0
+        effectiveBalance: result[`effectiveBalance${coin}`] || 0,
+        forgedBalanceNQT: result.forgedBalanceNQT || 0
       }))
     }).fail(() => {
       dispatch(push('/login'))
@@ -291,7 +292,8 @@ export default handleActions({
       account: {
         ...state.account,
         unconfirmedBalanceNQT: payload.unconfirmedBalanceNQT,
-        effectiveBalance: payload.effectiveBalance
+        effectiveBalance: payload.effectiveBalance,
+        forgedBalanceNQT: payload.forgedBalanceNQT
       }
     }
   },
