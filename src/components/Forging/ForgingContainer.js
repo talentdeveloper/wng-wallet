@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { FormattedMessage, FormattedNumber, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexgrid'
 import {
@@ -9,6 +9,7 @@ import {
 } from 'material-ui'
 
 import { getForging } from 'redux/modules/forging'
+import { convertToNXT } from 'redux/utils/nrs'
 
 import ForgingForm from 'components/Forging/ForgingForm'
 import ForgingStatus from 'components/Forging/ForgingStatus'
@@ -19,7 +20,8 @@ export class ForgingContainer extends React.Component {
       intl: { formatMessage },
       status,
       getForging,
-      node
+      node,
+      forgedBalance
     } = this.props
 
     return (
@@ -37,6 +39,12 @@ export class ForgingContainer extends React.Component {
               </p>
               <ForgingForm />
             </Col>
+            <Col xs={12} md={6}>
+              <p>
+                <strong><FormattedMessage id='total_earned_forging' /></strong>
+                <FormattedNumber value={forgedBalance} />&nbsp;<FormattedMessage id='currency_name' />
+              </p>
+            </Col>
           </Row>
         </CardText>
       </Card>
@@ -48,16 +56,19 @@ ForgingContainer.propTypes = {
   intl: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
   node: PropTypes.string.isRequired,
-  getForging: PropTypes.func.isRequired
+  getForging: PropTypes.func.isRequired,
+  forgedBalance: PropTypes.string.isRequired
 }
 
 export default injectIntl(connect(state => {
   const { status } = state.forging
   const node = state.form.forging && state.form.forging.node.value || state.forging.defaultNode
+  const forgedBalance = convertToNXT(state.auth.account.forgedBalanceNQT)
 
   return {
     status,
-    node
+    node,
+    forgedBalance
   }
 }, (dispatch) => ({
   getForging: (node) => {
