@@ -30,20 +30,20 @@ export class ForgingContainer extends React.Component {
           title={formatMessage({ id: 'forging' })} />
         <CardText>
           <Row>
-            <Col xs={12} md={6}>
-              <ForgingStatus status={status} node={node} getForging={getForging} />
-              <FormattedMessage id='forging_explanation' />
-              <p style={{ color: 'red' }}>
-                <FormattedMessage id='warning' />
-                <FormattedMessage id='forging_help' />
-              </p>
-              <ForgingForm />
-            </Col>
-            <Col xs={12} md={6}>
+            <Col xs={12} md={8}>
               <p>
                 <strong><FormattedMessage id='total_earned_forging' /></strong>
                 <FormattedNumber value={forgedBalance} />&nbsp;<FormattedMessage id='currency_name' />
               </p>
+              <ForgingStatus status={status} node={node} getForging={getForging} />
+              <div style={{ marginTop: 10 }}>
+                <FormattedMessage id='forging_explanation' />
+                <p style={{ color: 'red' }}>
+                  <FormattedMessage id='warning' />
+                  <FormattedMessage id='forging_help' />
+                </p>
+              </div>
+              <ForgingForm />
             </Col>
           </Row>
         </CardText>
