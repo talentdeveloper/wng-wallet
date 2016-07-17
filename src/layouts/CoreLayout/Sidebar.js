@@ -39,6 +39,9 @@ class Sidebar extends React.Component {
         {isAdmin && <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='accounts' />}>
           <FormattedMessage id='accounts' />
         </MenuItem>}
+        {isLoggedIn && <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/forging' />}>
+          <FormattedMessage id='forging' />
+        </MenuItem>}
         {isLoggedIn && <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/settings' />}>
           <FormattedMessage id='settings' />
         </MenuItem>}

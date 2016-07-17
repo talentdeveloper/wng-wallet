@@ -32,14 +32,14 @@ export class ForgingContainer extends React.Component {
           <Row>
             <Col xs={12} md={8}>
               <p>
-                <strong><FormattedMessage id='total_earned_forging' /></strong>
+                <strong><FormattedMessage id='total_earned_forging' />&nbsp;</strong>
                 <FormattedNumber value={forgedBalance} />&nbsp;<FormattedMessage id='currency_name' />
               </p>
               <ForgingStatus status={status} node={node} getForging={getForging} />
               <div style={{ marginTop: 10 }}>
                 <FormattedMessage id='forging_explanation' />
                 <p style={{ color: 'red' }}>
-                  <FormattedMessage id='warning' />
+                  <FormattedMessage id='warning' />&nbsp;
                   <FormattedMessage id='forging_help' />
                 </p>
               </div>
