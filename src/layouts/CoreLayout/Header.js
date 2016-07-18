@@ -3,9 +3,6 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { AppBar, RaisedButton } from 'material-ui'
 
-import ChangeLocaleMenu from 'components/ChangeLocaleMenu'
-
-import { changeLocale } from 'redux/modules/intl'
 import { openSidebar } from 'redux/modules/site'
 import { convertToNXT } from 'redux/utils/nrs'
 
@@ -20,13 +17,10 @@ class Header extends React.Component {
       intl: { formatMessage, formatNumber },
       isLoggedIn,
       balance,
-      locale,
-      changeLocale,
       isBigScreen
     } = this.props
 
     let balanceDiv = <div>
-      <ChangeLocaleMenu locale={locale} onChange={changeLocale} />
       {isLoggedIn && <RaisedButton
         label={`
           ${formatMessage({ id: 'balance' })}: ${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}
@@ -40,7 +34,8 @@ class Header extends React.Component {
         title={formatMessage({ id: 'website_name' })}
         iconElementRight={balanceDiv}
         onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
-        showMenuIconButton={isLoggedIn && !isBigScreen} />
+        showMenuIconButton={!isBigScreen}
+        style={{ flex: 'none' }} />
     )
   }
 }
@@ -49,8 +44,6 @@ Header.propTypes = {
   intl: PropTypes.object.isRequired,
   isBigScreen: PropTypes.bool.isRequired,
   closeSidebar: PropTypes.func.isRequired,
-  changeLocale: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   balance: PropTypes.string.isRequired
 }
@@ -71,9 +64,6 @@ export default injectIntl(connect((state) => {
   return {
     closeSidebar: () => {
       dispatch(openSidebar())
-    },
-    changeLocale: (locale) => {
-      dispatch(changeLocale(locale))
     }
   }
 })(Header))

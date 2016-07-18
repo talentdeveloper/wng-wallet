@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { DropDownMenu, MenuItem } from 'material-ui'
+
+import { changeLocale } from 'redux/modules/intl'
 
 class ChangeLocaleMenu extends React.Component {
   _handleChange = (e, index, value) => {
@@ -56,4 +59,12 @@ ChangeLocaleMenu.propTypes = {
   locale: PropTypes.string.isRequired
 }
 
-export default ChangeLocaleMenu
+export default connect((state) => {
+  const { locale } = state.intl
+
+  return {
+    locale
+  }
+}, {
+  onChange: changeLocale
+})(ChangeLocaleMenu)

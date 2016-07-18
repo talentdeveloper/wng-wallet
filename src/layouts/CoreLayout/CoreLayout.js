@@ -8,6 +8,7 @@ import '../../styles/core.scss'
 
 import Header from './Header'
 import Sidebar from './Sidebar'
+import Footer from './Footer'
 import PageTitle from 'components/PageTitle'
 
 const theme = getMuiTheme({
@@ -28,6 +29,7 @@ function CoreLayout ({ children }) {
             {children}
           </Row>
         </Grid>
+        <Footer />
       </PageTitle>
     </MuiThemeProvider>
   )

@@ -35,6 +35,8 @@
   }
 
   .container-fluid {
+    flex: 1 0 auto;
+    width: 100%;
     @media screen and (max-width: 992px) {
       padding-right: 1rem;
       padding-left: 1rem;
