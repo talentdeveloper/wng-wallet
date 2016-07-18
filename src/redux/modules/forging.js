@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions'
-import { nrsUrl, insecureSendRequest } from 'redux/utils/api'
+import { nrsUrl, forgingNodes, insecureSendRequest } from 'redux/utils/api'
 
 export const GET_FORGING = 'GET_FORGING'
 export const getForging = (data) => {
@@ -57,8 +57,12 @@ export const stopForging = (data) => {
   }
 }
 
+export const SET_FORGER_NODE = 'SET_FORGER_NODE'
+export const setForgerNode = createAction(SET_FORGER_NODE)
+
 const initialState = {
   defaultNode: nrsUrl,
+  nodes: forgingNodes,
   status: 'unknown'
 }
 
@@ -67,6 +71,13 @@ export default handleActions({
     return {
       ...state,
       status: payload
+    }
+  },
+
+  [SET_FORGER_NODE]: (state, { payload }) => {
+    return {
+      ...state,
+      defaultNode: payload
     }
   }
 }, initialState)

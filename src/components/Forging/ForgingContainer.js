@@ -30,7 +30,7 @@ export class ForgingContainer extends React.Component {
           title={formatMessage({ id: 'forging' })} />
         <CardText>
           <Row>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={12}>
               <p>
                 <strong><FormattedMessage id='total_earned_forging' />&nbsp;</strong>
                 <FormattedNumber value={forgedBalance} />&nbsp;<FormattedMessage id='currency_name' />
