@@ -1,5 +1,7 @@
 import { createAction, handleActions } from 'redux-actions'
 import { nrsUrl, forgingNodes, insecureSendRequest } from 'redux/utils/api'
+import { actionTypes } from 'redux-form'
+const { CHANGE } = actionTypes
 
 export const GET_FORGING = 'GET_FORGING'
 export const getForging = (data) => {
@@ -83,7 +85,19 @@ export default handleActions({
   [SET_FORGER_NODE]: (state, { payload }) => {
     return {
       ...state,
-      defaultNode: payload
+      defaultNode: payload,
+      status: 'unknown'
+    }
+  },
+
+  [CHANGE]: (state, { field, form, payload }) => {
+    if (field !== 'node' && form !== 'form') {
+      return state
+    }
+
+    return {
+      ...state,
+      status: 'unknown'
     }
   }
 }, initialState)
