@@ -1,7 +1,7 @@
 import { getPublicKey, signBytes } from './cryptoOld'
 
 import config from '../../../wallet.config.json'
-export const { nrsUrl, apiUrl, coin } = config
+export const { nrsUrl, apiUrl, coin, forgingNodes } = config
 
 function _parseData (data) {
   if (!data.secretPhrase) return data

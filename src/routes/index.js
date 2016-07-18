@@ -7,6 +7,7 @@ import LoginView from 'views/LoginView'
 import RegisterView from 'views/RegisterView'
 import AccountsView from 'views/AccountsView'
 import SettingsView from 'views/SettingsView'
+import ForgingView from 'views/ForgingView'
 
 export default (store) => {
   const isLoggedIn = (nextState, replace) => {
@@ -29,6 +30,7 @@ export default (store) => {
     <Route component={CoreLayout}>
       <Route path='/' component={IndexView} onEnter={isLoggedIn} />
       <Route path='/settings' component={SettingsView} onEnter={isLoggedIn} />
+      <Route path='/forging' component={ForgingView} onEnter={isLoggedIn} />
       <Route path='/admin' component={LoginView} />
       <Route path='/login' component={LoginView} />
       <Route path='/register' component={RegisterView} />

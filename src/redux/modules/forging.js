@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions'
-import { nrsUrl, insecureSendRequest } from 'redux/utils/api'
+import { nrsUrl, forgingNodes, insecureSendRequest } from 'redux/utils/api'
 
 export const GET_FORGING = 'GET_FORGING'
 export const getForging = (data) => {
@@ -12,15 +12,18 @@ export const getForging = (data) => {
       .then((result) => {
         if (result && result.accountRS &&
           result.hitTime !== 0 && result.deadline !== 0) {
-          return dispatch(getForgingSuccess('is_forging'))
+          return dispatch(setForgingStatus('is_forging'))
         }
-        return dispatch(getForgingSuccess('not_forging'))
+        return dispatch(setForgingStatus('not_forging'))
+      })
+      .fail((jqXHR, textStatus, err) => {
+        return dispatch(setForgingStatus('not_forging'))
       })
   }
 }
 
-export const GET_FORGING_SUCCESS = 'GET_FORGING_SUCCESS'
-export const getForgingSuccess = createAction(GET_FORGING_SUCCESS)
+export const SET_FORGING_STATUS = 'SET_FORGING_STATUS'
+export const setForgingStatus = createAction(SET_FORGING_STATUS)
 
 export const START_FORGING = 'START_FORGING'
 export const startForging = (data) => {
@@ -33,9 +36,12 @@ export const startForging = (data) => {
       .then((result) => {
         if (result && !result.errorDescription &&
           result.hitTime !== 0 && result.deadline !== 0) {
-          return dispatch(getForgingSuccess('is_forging'))
+          return dispatch(setForgingStatus('is_forging'))
         }
-        return dispatch(getForgingSuccess('not_forging'))
+        return dispatch(setForgingStatus('not_forging'))
+      })
+      .fail((jqXHR, textStatus, err) => {
+        return dispatch(setForgingStatus('not_forging'))
       })
   }
 }
@@ -50,23 +56,34 @@ export const stopForging = (data) => {
     insecureSendRequest(node, 'stopForging', { secretPhrase })
       .then((result) => {
         if (result && result.foundAndStopped) {
-          return dispatch(getForgingSuccess('not_forging'))
+          return dispatch(setForgingStatus('not_forging'))
         }
-        return dispatch(getForgingSuccess('unknown'))
+        return dispatch(setForgingStatus('unknown'))
       })
   }
 }
 
+export const SET_FORGER_NODE = 'SET_FORGER_NODE'
+export const setForgerNode = createAction(SET_FORGER_NODE)
+
 const initialState = {
   defaultNode: nrsUrl,
+  nodes: forgingNodes,
   status: 'unknown'
 }
 
 export default handleActions({
-  [GET_FORGING_SUCCESS]: (state, { payload }) => {
+  [SET_FORGING_STATUS]: (state, { payload }) => {
     return {
       ...state,
       status: payload
+    }
+  },
+
+  [SET_FORGER_NODE]: (state, { payload }) => {
+    return {
+      ...state,
+      defaultNode: payload
     }
   }
 }, initialState)

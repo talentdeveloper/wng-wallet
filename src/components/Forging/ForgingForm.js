@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage, FormattedNumber, injectIntl } from 'react-intl'
 import { reduxForm } from 'redux-form'
+import { Row, Col } from 'react-flexgrid'
 import {
   RaisedButton,
   TextField
@@ -8,8 +9,11 @@ import {
 
 import {
   startForging,
-  stopForging
+  stopForging,
+  setForgerNode
 } from 'redux/modules/forging'
+
+import ForgerNodeMenu from 'components/Forging/ForgerNodeMenu'
 
 import formStyle from 'components/Form.scss'
 
@@ -29,13 +33,11 @@ export class SendForm extends React.Component {
 
   render () {
     const {
-      intl: {
-        formatMessage
-      },
-      fields: {
-        node
-      },
+      intl: { formatMessage },
+      fields: { node },
       handleSubmit,
+      setForgerNode,
+      nodes,
       status,
       effectiveBalance,
       coinName
@@ -52,11 +54,21 @@ export class SendForm extends React.Component {
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
-        <TextField
-          floatingLabelText={formatMessage({ id: 'node_url' })}
-          errorText={error(node)}
-          fullWidth
-          {...node} />
+        <Row>
+          <Col xs={12} md={6}>
+            <ForgerNodeMenu
+              onChange={setForgerNode}
+              selectedNode={node.value}
+              nodes={nodes} />
+          </Col>
+          <Col xs={12} md={6}>
+            <TextField
+              floatingLabelText={formatMessage({ id: 'manual_forging_node' })}
+              errorText={error(node)}
+              fullWidth
+              {...node} />
+          </Col>
+        </Row>
         <br />
         <br />
         <div className={formStyle.actions}>
@@ -80,6 +92,8 @@ SendForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   startForging: PropTypes.func.isRequired,
   stopForging: PropTypes.func.isRequired,
+  setForgerNode: PropTypes.func.isRequired,
+  nodes: PropTypes.array.isRequired,
   status: PropTypes.string.isRequired,
   effectiveBalance: PropTypes.number.isRequired,
   coinName: PropTypes.string.isRequired
@@ -106,12 +120,16 @@ export default injectIntl(reduxForm({
   },
   status: state.forging.status,
   effectiveBalance: state.auth.account.effectiveBalance,
-  coinName: state.site.coinName
+  coinName: state.site.coinName,
+  nodes: state.forging.nodes
 }), (dispatch) => ({
   startForging: (data) => {
     dispatch(startForging(data))
   },
   stopForging: (data) => {
     dispatch(stopForging(data))
+  },
+  setForgerNode: (node) => {
+    dispatch(setForgerNode(node))
   }
 }))(SendForm))
