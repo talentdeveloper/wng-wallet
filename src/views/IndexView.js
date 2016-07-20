@@ -6,6 +6,7 @@ import {
   Card,
   CardTitle,
   CardText,
+  FlatButton,
   RaisedButton
 } from 'material-ui'
 import InputIcon from 'material-ui/svg-icons/file/file-download'
@@ -13,6 +14,7 @@ import OutputIcon from 'material-ui/svg-icons/file/file-upload'
 
 import { showModal } from 'redux/modules/transaction'
 import { showReceiveModal, hideReceiveModal } from 'redux/modules/auth'
+import { convertToNXT } from 'redux/utils/nrs'
 
 import PageTitle from 'components/PageTitle'
 import SendForm from 'components/SendForm'
@@ -35,7 +37,8 @@ export class IndexView extends React.Component {
 
   render () {
     const {
-      intl: { formatMessage },
+      intl: { formatMessage, formatNumber },
+      balance,
       accountRS,
       publicKey,
       showModal,
@@ -44,13 +47,23 @@ export class IndexView extends React.Component {
       modalTitle
     } = this.props
 
+    const buttonStyle = { margin: 10, height: 45 }
+
     return (
       <PageTitle pageName='home'>
         <Row>
           <Col xs={12} md={12}>
             <Card>
               <CardTitle
-                title={formatMessage({ id: 'website_name' })}
+                title={<div>
+                  {formatMessage({ id: 'website_name' })}
+                  <FlatButton
+                    label={`
+                      ${formatMessage({ id: 'balance' })}:
+                      ${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}
+                    `}
+                    style={{ float: 'right', cursor: 'default' }} />
+                </div>}
                 subtitle={formatMessage({ id: 'website_subtitle' })} />
               <CardText>
                 <RaisedButton
@@ -58,14 +71,14 @@ export class IndexView extends React.Component {
                   icon={<InputIcon />}
                   label={formatMessage({ id: 'receive_currency' })}
                   primary
-                  style={{ margin: 10, height: 45 }} />
+                  style={buttonStyle} />
                 <RaisedButton
                   onClick={this._onSendClick}
                   icon={<OutputIcon />}
                   label={formatMessage({ id: 'send_currency' })}
                   secondary
                   labelStyle={{ }}
-                  style={{ margin: 10, height: 45 }} />
+                  style={buttonStyle} />
               </CardText>
             </Card>
           </Col>
@@ -89,6 +102,7 @@ export class IndexView extends React.Component {
 IndexView.propTypes = {
   intl: PropTypes.object.isRequired,
   accountRS: PropTypes.string.isRequired,
+  balance: PropTypes.string.isRequired,
   publicKey: PropTypes.string.isRequired,
   modalTitle: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
@@ -112,8 +126,11 @@ export default injectIntl(connect((state) => {
     showReceiveModal
   } = state.auth
 
+  const balance = convertToNXT(state.auth.account.unconfirmedBalanceNQT)
+
   return {
     accountRS,
+    balance,
     publicKey,
     showModal,
     showReceiveModal,
