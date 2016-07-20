@@ -2,12 +2,11 @@ import React, { PropTypes } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import Drawer from 'material-ui/Drawer'
-import MenuItem from 'material-ui/MenuItem'
+import { Drawer, MenuItem, FlatButton } from 'material-ui'
 
-import {
-  closeSidebar
-} from 'redux/modules/site'
+import { closeSidebar } from 'redux/modules/site'
+
+import { convertToNXT } from 'redux/utils/nrs'
 
 class Sidebar extends React.Component {
   _onRequestChange = () => {
@@ -25,7 +24,18 @@ class Sidebar extends React.Component {
   }
 
   render () {
-    const { open, isAdmin, isBigScreen, isLoggedIn } = this.props
+    const {
+      intl: { formatMessage, formatNumber },
+      balance,
+      open,
+      isAdmin,
+      isBigScreen,
+      isLoggedIn
+    } = this.props
+
+    const balanceDiv = <div style={{ margin: 16 }}>
+      <strong>{`${formatNumber(balance)} ${formatMessage({ id: 'currency_name' })}`}</strong>
+    </div>
 
     return (
       <Drawer
@@ -33,6 +43,7 @@ class Sidebar extends React.Component {
         docked={isBigScreen}
         open={open || isBigScreen}
         onRequestChange={this._onRequestChange}>
+        {isLoggedIn && balanceDiv}
         <MenuItem onTouchTap={this._onRequestChange} containerElement={<Link to='/' />}>
           <FormattedMessage id='home' />
         </MenuItem>
@@ -55,6 +66,7 @@ class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
   intl: PropTypes.object.isRequired,
+  balance: PropTypes.string.isRequired,
   isBigScreen: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
@@ -67,8 +79,10 @@ export default injectIntl(connect((state) => {
   const { isAdmin } = state.auth
   const isLoggedIn = !!state.auth.account.secretPhrase
   const isBigScreen = state.browser.greaterThan.medium
+  const balance = convertToNXT(state.auth.account.unconfirmedBalanceNQT)
 
   return {
+    balance,
     open,
     isAdmin,
     isLoggedIn,
