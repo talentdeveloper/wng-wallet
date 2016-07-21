@@ -17,7 +17,7 @@ import {
 import { getTransactions } from 'redux/modules/transaction'
 import { connectionError } from 'redux/modules/site'
 import { get, post, sendRequest } from 'redux/utils/api'
-import { coin } from '../../../wallet.config.json'
+import { coin, isLocalhost } from '../../../wallet.config.json'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
@@ -25,6 +25,7 @@ export const login = (data) => {
     dispatch(createAction(LOGIN)())
 
     const { importBackup, backupFile } = getState().auth
+    const username = crypto.createHash('sha256').update(data.username).digest('hex')
 
     const handleDecryption = (encrypted) => {
       let decrypted = decrypt(encrypted, JSON.stringify({
@@ -54,7 +55,7 @@ export const login = (data) => {
         isAdmin: data.isAdmin
       }
 
-      storeSecretPhrase(data.username, encrypted)
+      storeSecretPhrase(username, encrypted)
 
       console.log(`Logged in account ${accountRS} with publicKey ${publicKey}`)
 
@@ -74,12 +75,21 @@ export const login = (data) => {
 
       dispatchSuccess()
     }
+    const findLocalWallet = (username) => {
+      const encrypted = getSecretPhrase(username)
+      if (!encrypted) {
+        return dispatch(loginError('could_not_find_secretphrase'))
+      }
+      handleDecryption(encrypted)
+    }
 
     if (importBackup && backupFile) {
       return handleDecryption(backupFile)
     }
 
-    const username = crypto.createHash('sha256').update(data.username).digest('hex')
+    if (isLocalhost) {
+      return findLocalWallet(username)
+    }
 
     get('account', {
       username,
@@ -92,11 +102,7 @@ export const login = (data) => {
       const encrypted = result.account.secretPhrase
       handleDecryption(encrypted)
     }).fail((jqXHR, textStatus, err) => {
-      const encrypted = getSecretPhrase(username)
-      if (!encrypted) {
-        return dispatch(loginError('could_not_find_secretphrase'))
-      }
-      handleDecryption(encrypted)
+      return findLocalWallet(username)
     })
   }
 }
@@ -130,6 +136,10 @@ export const register = (data) => {
     }))
     const username = crypto.createHash('sha256').update(data.username).digest('hex')
     if (storeSecretPhrase(username, encrypted)) {
+      if (isLocalhost) {
+        dispatch(registerSuccess(data))
+        return dispatch(push('/login'))
+      }
       post('register', {
         username: username,
         email: data.email.toLowerCase(),
