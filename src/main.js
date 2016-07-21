@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
+import createMemoryHistory from 'history/lib/createMemoryHistory'
 import { useRouterHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -8,11 +9,16 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 import makeRoutes from './routes'
 import Root from './containers/Root'
 import configureStore from './redux/configureStore'
+import { isLocalhost } from '../wallet.config.json'
 
 injectTapEventPlugin()
 
+const createHistory = isLocalhost
+  ? createMemoryHistory
+  : createBrowserHistory
+
 // Configure history for react-router
-const browserHistory = useRouterHistory(createBrowserHistory)({
+const browserHistory = useRouterHistory(createHistory)({
   basename: __BASENAME__
 })
 

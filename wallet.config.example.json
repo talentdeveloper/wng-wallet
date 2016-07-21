@@ -1,5 +1,6 @@
 {
   "coin": "NXT",
+  "isLocalhost": true,
   "apiUrl": "http://localhost:3001",
   "nrsUrl": "https://wang.coin.cards:16876",
   "forgingNodes": [

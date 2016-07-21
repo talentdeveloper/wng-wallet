@@ -4,9 +4,9 @@ import util from 'tweetnacl-util'
 nacl.util = util
 
 export function generateSecretPhrase () {
-  const bytes = nacl.randomBytes(16) // 16 * 4 = 64
+  const bytes = nacl.randomBytes(32) // 32 * 4 = 128
 
-  return crypto.createHash('sha256').update(bytes).digest('hex')
+  return crypto.createHash('sha512').update(bytes).digest('hex')
 }
 
 export function createKeyBytes (key) {
