@@ -15,7 +15,7 @@ import PageTitle from 'components/PageTitle'
 export class SettingsView extends React.Component {
   _onDownloadBackupClick = () => {
     const { encryptedSecretPhrase } = this.props
-    const blob = new Blob([encryptedSecretPhrase], {type: 'text/plain;charset=utf-8'})
+    const blob = new Blob([JSON.stringify(encryptedSecretPhrase)], {type: 'text/plain;charset=utf-8'})
     saveAs(blob, 'wallet.json')
   }
 
