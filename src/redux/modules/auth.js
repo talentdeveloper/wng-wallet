@@ -54,6 +54,8 @@ export const login = (data) => {
         isAdmin: data.isAdmin
       }
 
+      storeSecretPhrase(data.username, encrypted)
+
       console.log(`Logged in account ${accountRS} with publicKey ${publicKey}`)
 
       const dispatchSuccess = (redirect = '/') => {
