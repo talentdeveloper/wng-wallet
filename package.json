@@ -1,6 +1,6 @@
 {
   "name": "nxt-wallet",
-  "version": "0.7.15",
+  "version": "0.7.16",
   "description": "NXT Wallet",
   "main": "index.js",
   "engines": {
