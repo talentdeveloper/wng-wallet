@@ -17,7 +17,7 @@ import {
 import { getTransactions } from 'redux/modules/transaction'
 import { connectionError } from 'redux/modules/site'
 import { get, post, sendRequest } from 'redux/utils/api'
-import { coin, isLocalhost } from '../../../wallet.config.json'
+import { coin } from '../../../wallet.config.json'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {
@@ -25,6 +25,7 @@ export const login = (data) => {
     dispatch(createAction(LOGIN)())
 
     const { importBackup, backupFile } = getState().auth
+    const { isLocalhost } = getState().site
     const username = crypto.createHash('sha256').update(data.username).digest('hex')
 
     const handleDecryption = (encrypted) => {
@@ -126,8 +127,9 @@ export const loginError = createAction(LOGIN_ERROR)
 
 export const REGISTER = 'REGISTER'
 export const register = (data) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(createAction(REGISTER)())
+    const { isLocalhost } = getState().site
     const secretPhrase = generateSecretPhrase()
     const encrypted = encrypt(secretPhrase, JSON.stringify({
       username: data.username.toLowerCase(),
