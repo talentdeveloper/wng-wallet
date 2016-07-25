@@ -38,8 +38,8 @@ export class GetNewVersionModal extends React.Component {
       <Dialog
         open={show}
         title={formatMessage({ id: 'new_version_available' })}
-        modal
-        actions={actions}>
+        actions={actions}
+        onRequestClose={this._handleClose}>
         <FormattedMessage id='update_wallet_help' />
       </Dialog>
     )
