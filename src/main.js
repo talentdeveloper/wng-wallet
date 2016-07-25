@@ -11,6 +11,8 @@ import Root from './containers/Root'
 import configureStore from './redux/configureStore'
 import { isLocalhost } from '../wallet.config.json'
 
+import { getVersion } from 'redux/modules/site'
+
 injectTapEventPlugin()
 
 const createHistory = isLocalhost
@@ -31,6 +33,11 @@ const store = configureStore(initialState, browserHistory)
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: (state) => state.router
 })
+
+store.dispatch(getVersion())
+setInterval(() => {
+  store.dispatch(getVersion())
+}, 10 * 60 * 1000) // 10 minutes
 
 // Now that we have the Redux store, we can create our routes. We provide
 // the store to the route definitions so that routes have access to it for

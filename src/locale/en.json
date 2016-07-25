@@ -98,5 +98,8 @@
   "click_here_to_check": "Click here to check",
   "forging_balance": "Balance available for forging:",
   "default_forging_node": "Select default node",
-  "manual_forging_node": "Input forging node URL manually"
+  "manual_forging_node": "Input forging node URL manually",
+  "new_version_available": "New version available",
+  "update_now": "Update now",
+  "update_wallet_help": "Updating will refresh the page"
 }
