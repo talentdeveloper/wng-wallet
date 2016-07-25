@@ -5,7 +5,6 @@ import { SelectField, MenuItem } from 'material-ui'
 class ForgerNodeMenu extends React.Component {
   _onChange = (e, index, value) => {
     const { onChange } = this.props
-    console.log(value)
     onChange(value)
   }
 
