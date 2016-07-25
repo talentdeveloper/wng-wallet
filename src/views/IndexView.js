@@ -21,6 +21,7 @@ import SendForm from 'components/SendForm'
 import ReceiveModal from 'components/ReceiveModal'
 import TransactionModal from 'components/TransactionModal'
 import TransactionsListContainer from 'components/Transaction/TransactionsListContainer'
+import GetNewVersionModal from 'components/GetNewVersionModal'
 
 export class IndexView extends React.Component {
   _onSendClick = () => {
@@ -94,6 +95,7 @@ export class IndexView extends React.Component {
           accountRS={accountRS}
           publicKey={publicKey} />
         <TransactionModal show={showModal} title={modalTitle} form={<SendForm />} />
+        <GetNewVersionModal />
       </PageTitle>
     )
   }

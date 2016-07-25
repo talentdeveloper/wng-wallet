@@ -32,7 +32,7 @@ function _parseResult (result, textStatus, jqXHR) {
 export function post (url, data) {
   return $.ajax({
     type: 'POST',
-    url: `${apiUrl}/${url}`,
+    url: `${apiUrl}/${url}?random=${Math.random()}`,
     data
   }).then(_parseResult)
 }
@@ -48,7 +48,7 @@ export function get (url, data) {
 export function insecureSendRequest (nrsUrl, requestType, data, async = true) {
   return $.ajax({
     type: 'POST',
-    url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}`,
+    url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}&random=${Math.random()}`,
     data: data,
     async: async
   }).then(_parseResult)
@@ -61,7 +61,7 @@ export function sendRequest (requestType, data, async = true) {
   if (!data.secretPhrase) {
     return $.ajax({
       type: 'POST',
-      url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}`,
+      url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}&random=${Math.random()}`,
       data: data,
       async: async
     }).then(_parseResult)
@@ -74,7 +74,7 @@ export function sendRequest (requestType, data, async = true) {
 
   return $.ajax({
     type: 'POST',
-    url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}`,
+    url: `${nrsUrl}/${coin.toLowerCase()}?requestType=${requestType}&random=${Math.random()}`,
     data: data,
     async: async
   })
