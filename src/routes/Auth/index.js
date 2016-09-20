@@ -8,6 +8,14 @@ export default (store) => ({
       }, 'login')
     }
   }, {
+    path: 'admin',
+    getComponent (nextState, cb) {
+      require.ensure([], (require) => {
+        const Login = require('./containers/LoginContainer').default
+        cb(null, Login)
+      }, 'admin')
+    }
+  }, {
     path: 'register',
     getComponent (nextState, cb) {
       require.ensure([], (require) => {
