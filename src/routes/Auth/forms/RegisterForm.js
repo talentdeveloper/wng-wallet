@@ -6,7 +6,7 @@ import { RaisedButton, TextField, LinearProgress } from 'material-ui'
 
 import style from './RegisterForm.scss'
 
-import { register, setPasswordStrength } from 'redux/modules/auth'
+import { register, setPasswordStrength } from '../modules/Auth'
 
 export class RegisterForm extends React.Component {
   constructor () {

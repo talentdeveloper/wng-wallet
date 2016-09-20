@@ -6,10 +6,11 @@ import { useRouterHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
-import makeRoutes from './routes'
-import Root from './containers/Root'
-import configureStore from './redux/configureStore'
-import { isLocalhost } from '../wallet.config.json'
+import createRoutes from './routes'
+import AppContainer from 'containers/AppContainer'
+
+import configureStore from './redux/createStore'
+import { isLocalhost } from 'wallet.config.json'
 
 import { getVersion } from 'redux/modules/site'
 
@@ -42,11 +43,13 @@ setInterval(() => {
 // Now that we have the Redux store, we can create our routes. We provide
 // the store to the route definitions so that routes have access to it for
 // hooks such as `onEnter`.
-const routes = makeRoutes(store)
+const routes = createRoutes(store)
+
+console.log(routes)
 
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
-  <Root history={history} routes={routes} store={store} />,
+  <AppContainer history={history} routes={routes} store={store} />,
   document.getElementById('root')
 )

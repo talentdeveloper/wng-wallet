@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import { connect } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import { Row, Col } from 'react-flexgrid'
 import {
   Card,
@@ -9,9 +8,9 @@ import {
 } from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
-import RegisterForm from 'components/RegisterForm'
+import RegisterForm from '../forms/RegisterForm'
 
-export class RegisterView extends React.Component {
+export class Register extends React.Component {
   render () {
     const {
       intl: {
@@ -44,15 +43,9 @@ export class RegisterView extends React.Component {
   }
 }
 
-RegisterView.propTypes = {
+Register.propTypes = {
   intl: PropTypes.object.isRequired,
   registerError: PropTypes.string.isRequired
 }
 
-export default injectIntl(connect((state) => {
-  const { registerError } = state.auth
-
-  return {
-    registerError
-  }
-})(RegisterView))
+export default Register

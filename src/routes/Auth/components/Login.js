@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import { connect } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import { Row, Col } from 'react-flexgrid'
 import {
   Card,
@@ -10,9 +9,9 @@ import {
 } from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
-import LoginForm from 'components/LoginForm'
+import LoginForm from '../forms/LoginForm'
 
-export class LoginView extends React.Component {
+export class Login extends React.Component {
   render () {
     const {
       intl: {
@@ -63,20 +62,11 @@ export class LoginView extends React.Component {
   }
 }
 
-LoginView.propTypes = {
+Login.propTypes = {
   intl: PropTypes.object.isRequired,
   loginError: PropTypes.string.isRequired,
   registerSuccess: PropTypes.bool.isRequired,
   connectionError: PropTypes.bool.isRequired
 }
 
-export default injectIntl(connect((state) => {
-  const { loginError, registerSuccess } = state.auth
-  const { connectionError } = state.site
-
-  return {
-    loginError,
-    registerSuccess,
-    connectionError
-  }
-})(LoginView))
+export default Login

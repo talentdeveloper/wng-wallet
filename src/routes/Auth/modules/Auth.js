@@ -17,7 +17,7 @@ import {
 import { getTransactions } from 'redux/modules/transaction'
 import { connectionError } from 'redux/modules/site'
 import { get, post, sendRequest } from 'redux/utils/api'
-import { coin } from '../../../wallet.config.json'
+import { coin } from 'wallet.config.json'
 
 export const LOGIN = 'LOGIN'
 export const login = (data) => {

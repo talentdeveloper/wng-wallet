@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions'
 import { sendRequest } from 'redux/utils/api'
 import { convertToNQT } from 'redux/utils/nrs'
 
-import { getAccount } from 'redux/modules/auth'
+import { getAccount } from 'routes/Auth/modules/Auth'
 
 export const SET_STEP = 'SET_STEP'
 export const setStep = createAction(SET_STEP)

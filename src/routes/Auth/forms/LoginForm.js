@@ -10,7 +10,11 @@ import {
 
 import style from './LoginForm.scss'
 
-import { login, toggleImportBackup, setBackupFile } from 'redux/modules/auth'
+import {
+  login,
+  toggleImportBackup,
+  setBackupFile
+} from '../modules/Auth'
 
 export class LoginForm extends React.Component {
   constructor () {

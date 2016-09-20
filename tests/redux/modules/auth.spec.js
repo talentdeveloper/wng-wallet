@@ -5,7 +5,7 @@ import {
   register,
   initialState,
   default as authReducer
-} from 'redux/modules/auth'
+} from 'routes/Auth/modules/Auth'
 
 describe('(Redux Module) Auth', () => {
   it('Should export a constant LOGIN', () => {

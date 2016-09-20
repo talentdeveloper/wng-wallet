@@ -13,7 +13,7 @@ import InputIcon from 'material-ui/svg-icons/file/file-download'
 import OutputIcon from 'material-ui/svg-icons/file/file-upload'
 
 import { showModal } from 'redux/modules/transaction'
-import { showReceiveModal, hideReceiveModal } from 'redux/modules/auth'
+import { showReceiveModal, hideReceiveModal } from 'routes/Auth/modules/Auth'
 import { convertToNXT } from 'redux/utils/nrs'
 
 import PageTitle from 'components/PageTitle'
