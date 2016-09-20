@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage, FormattedNumber, injectIntl } from 'react-intl'
 import { reduxForm } from 'redux-form'
-import { Row, Col } from 'react-flexgrid'
+import { Row, Col } from 'react-flexbox-grid'
 import {
   RaisedButton,
   TextField

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Row, Col } from 'react-flexgrid'
+import { Row, Col } from 'react-flexbox-grid'
 import {
   Card,
   CardTitle,
@@ -36,7 +36,7 @@ export class Login extends React.Component {
     return (
       <PageTitle pageName={pageName}>
         <Row>
-          <Col xs={12} sm={8} smOffset={2} md={6} mdOffset={3}>
+          <Col xs={12} sm={8} md={6} smOffset={2} mdOffset={3}>
             <Card>
               <CardTitle
                 title={formatMessage({ id: pageName })}

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Row, Col } from 'react-flexgrid'
+import { Row, Col } from 'react-flexbox-grid'
 import {
   Card,
   CardTitle,

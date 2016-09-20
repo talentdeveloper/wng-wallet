@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Dialog, FlatButton } from 'material-ui'
-import { Row, Col } from 'react-flexgrid'
+import { Row, Col } from 'react-flexbox-grid'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import QRCode from 'qrcode.react'
 

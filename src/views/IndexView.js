@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
-import { Row, Col } from 'react-flexgrid'
+import { Row, Col } from 'react-flexbox-grid'
 import {
   Card,
   CardTitle,
