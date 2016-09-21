@@ -53,7 +53,7 @@ export class SettingsView extends React.Component {
 
 SettingsView.propTypes = {
   intl: PropTypes.object.isRequired,
-  encryptedSecretPhrase: PropTypes.string.isRequired
+  encryptedSecretPhrase: PropTypes.object.isRequired
 }
 
 export default injectIntl(connect((state) => {
