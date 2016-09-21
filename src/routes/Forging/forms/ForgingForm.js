@@ -5,7 +5,7 @@ import { Row, Col } from 'react-flexbox-grid'
 import { RaisedButton } from 'material-ui'
 import { TextField } from 'redux-form-material-ui'
 
-import ForgerNodeMenu from 'components/Forging/ForgerNodeMenu'
+import ForgerNodeMenu from '../components/ForgerNodeMenu'
 
 import formStyle from 'components/Form.scss'
 

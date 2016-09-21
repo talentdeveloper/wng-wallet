@@ -1,5 +1,7 @@
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
+
 import AuthRoute from './Auth'
+import ForgingRoute from './Forging'
 
 import IndexView from 'views/IndexView'
 import AccountsView from 'views/AccountsView'
@@ -24,32 +26,28 @@ const requireAdmin = (store) => (nextState, replace) => {
 
 export const createRoutes = (store) => ({
   component: CoreLayout,
-  childRoutes: [
-    {
-      onEnter: requireAuth(store),
-      component: IndexView,
-      path: '/'
-    },
-    {
-      onEnter: requireAdmin(store),
-      component: AccountsView,
-      path: '/accounts'
-    },
-    {
-      onEnter: requireAuth(store),
-      component: AccountsView,
-      path: '/accounts'
-    },
-    {
-      onEnter: requireAuth(store),
-      component: SettingsView,
-      path: '/settings'
-    },
-    {
-      onEnter: requireAuth(store),
-      component: ForgingView,
-      path: '/forging'
-    },
+  childRoutes: [{
+    onEnter: requireAuth(store),
+    childRoutes: [
+      ForgingRoute(store), {
+        onEnter: requireAuth(store),
+        component: IndexView,
+        path: '/'
+      }, {
+        onEnter: requireAdmin(store),
+        component: AccountsView,
+        path: '/accounts'
+      }, {
+        onEnter: requireAuth(store),
+        component: AccountsView,
+        path: '/accounts'
+      }, {
+        onEnter: requireAuth(store),
+        component: SettingsView,
+        path: '/settings'
+      }
+    ]
+  },
     AuthRoute(store)
   ]
 })

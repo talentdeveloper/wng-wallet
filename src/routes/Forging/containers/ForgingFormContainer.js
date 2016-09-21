@@ -8,7 +8,7 @@ import {
   setForgerNode
 } from 'redux/modules/forging'
 
-import ForgingForm from './ForgingForm'
+import ForgingForm from '../forms/ForgingForm'
 
 const mapActionCreators = (dispatch) => ({
   startForging,
