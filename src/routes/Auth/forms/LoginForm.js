@@ -1,20 +1,15 @@
 import React, { PropTypes } from 'react'
-import { injectIntl } from 'react-intl'
 import { Link } from 'react-router'
-import { reduxForm } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 import {
   Checkbox,
-  RaisedButton,
-  TextField
+  RaisedButton
 } from 'material-ui'
+import {
+  TextField
+} from 'redux-form-material-ui'
 
 import style from './LoginForm.scss'
-
-import {
-  login,
-  toggleImportBackup,
-  setBackupFile
-} from '../modules/Auth'
 
 export class LoginForm extends React.Component {
   constructor () {
@@ -46,8 +41,9 @@ export class LoginForm extends React.Component {
   }
 
   handleSubmit (data, dispatch) {
-    data.isAdmin = this.props.isAdmin
-    dispatch(login(data))
+    const { isAdmin, login } = this.props
+    data.isAdmin = isAdmin
+    login(data)
   }
 
   render () {
@@ -55,44 +51,34 @@ export class LoginForm extends React.Component {
       intl: {
         formatMessage
       },
-      fields: {
-        username,
-        email,
-        password
-      },
       importBackup,
-      handleSubmit
+      handleSubmit,
+      invalid
     } = this.props
-
-    const error = (field) => {
-      return field.touched && field.error ? formatMessage({ id: field.error }) : null
-    }
-
-    const hasError = username.error || email.error || password.error
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
-        <TextField
+        <Field
+          name='username'
+          component={TextField}
           hintText={formatMessage({ id: 'username' })}
           floatingLabelText={formatMessage({ id: 'username' })}
-          errorText={error(username)}
-          fullWidth
-          {...username} />
+          fullWidth />
         <br />
-        <TextField
+        <Field
+          name='email'
+          component={TextField}
           hintText={formatMessage({ id: 'email' })}
           floatingLabelText={formatMessage({ id: 'email' })}
-          errorText={error(email)}
-          fullWidth
-          {...email} />
+          fullWidth />
         <br />
-        <TextField
+        <Field
+          name='password'
+          component={TextField}
           type='password'
           hintText={formatMessage({ id: 'password' })}
           floatingLabelText={formatMessage({ id: 'password' })}
-          errorText={error(password)}
-          fullWidth
-          {...password} />
+          fullWidth />
         <br />
         <br />
         <Checkbox
@@ -106,7 +92,7 @@ export class LoginForm extends React.Component {
             type='submit'
             primary
             label={formatMessage({ id: 'submit' })}
-            disabled={Boolean(hasError)} />
+            disabled={invalid} />
           <Link to='register' className={style.registerButton}>
             {formatMessage({ id: 'register' })}
           </Link>
@@ -118,49 +104,37 @@ export class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   intl: PropTypes.object.isRequired,
-  fields: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   toggleImportBackup: PropTypes.func.isRequired,
   setBackupFile: PropTypes.func.isRequired,
   importBackup: PropTypes.bool.isRequired,
+  invalid: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool
 }
 
-const validate = values => {
+const validate = (values, state) => {
+  const { formatMessage } = state.intl
   const errors = {}
 
+  const requiredErrorText = formatMessage({ id: 'required_error' })
+
   if (!values.username) {
-    errors.username = 'required_error'
+    errors.username = requiredErrorText
   }
 
   if (!values.email) {
-    errors.email = 'required_error'
+    errors.email = requiredErrorText
   }
 
   if (!values.password) {
-    errors.password = 'required_error'
+    errors.password = requiredErrorText
   }
 
   return errors
 }
 
-export default injectIntl(
-  reduxForm({
-    form: 'login',
-    fields: ['username', 'email', 'password'],
-    validate
-  }, (state) => ({
-    initialValues: {
-      username: state.auth.username,
-      email: state.auth.email
-    },
-    importBackup: state.auth.importBackup
-  }), (dispatch) => ({
-    toggleImportBackup: () => {
-      dispatch(toggleImportBackup())
-    },
-    setBackupFile: (file) => {
-      dispatch(setBackupFile(file))
-    }
-  }))(LoginForm)
-)
+export default reduxForm({
+  form: 'login',
+  validate
+})(LoginForm)

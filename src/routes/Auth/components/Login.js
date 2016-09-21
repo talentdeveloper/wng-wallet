@@ -9,7 +9,7 @@ import {
 } from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
-import LoginForm from '../forms/LoginForm'
+import LoginFormContainer from '../containers/LoginFormContainer'
 
 export class Login extends React.Component {
   render () {
@@ -48,7 +48,7 @@ export class Login extends React.Component {
                 {registerSuccess && <div>
                   <FormattedMessage id='successfully_registered' />
                 </div>}
-                <LoginForm isAdmin={isAdmin} />
+                <LoginFormContainer isAdmin={isAdmin} />
               </CardText>
             </Card>
           </Col>
