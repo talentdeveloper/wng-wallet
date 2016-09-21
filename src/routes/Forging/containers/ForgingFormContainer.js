@@ -6,7 +6,7 @@ import {
   startForging,
   stopForging,
   setForgerNode
-} from 'redux/modules/forging'
+} from '../modules/Forging'
 
 import ForgingForm from '../forms/ForgingForm'
 

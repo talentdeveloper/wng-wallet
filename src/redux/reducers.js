@@ -5,10 +5,11 @@ import { responsiveStateReducer as browser } from 'redux-responsive'
 
 import intl from 'redux/modules/intl'
 import account from 'redux/modules/account'
-import auth from 'routes/Auth/modules/Auth'
 import site from 'redux/modules/site'
 import transaction from 'redux/modules/transaction'
-import forging from 'redux/modules/forging'
+
+import auth from 'routes/Auth/modules/Auth'
+import forging from 'routes/Forging/modules/Forging'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({

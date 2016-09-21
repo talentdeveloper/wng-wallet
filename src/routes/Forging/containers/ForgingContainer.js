@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 
-import { getForging } from 'redux/modules/forging'
+import { getForging } from '../modules/Forging'
 import { convertToNXT } from 'redux/utils/nrs'
 
 import Forging from '../components/Forging'
