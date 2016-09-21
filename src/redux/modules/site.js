@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions'
-import { isLocalhost, coin } from '../../../wallet.config.json'
+import { isLocalhost, coin } from 'wallet.config.json'
 import { version } from '../../../package.json'
 
 import { get } from 'redux/utils/api'

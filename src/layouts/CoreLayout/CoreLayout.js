@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react'
-import { Grid, Row } from 'react-flexgrid'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-import 'react-flexgrid/lib/flexgrid.css'
 import '../../styles/core.scss'
 
 import Header from './Header'
@@ -18,17 +16,17 @@ const theme = getMuiTheme({
   }
 })
 
+import style from './CoreLayout.scss'
+
 function CoreLayout ({ children }) {
   return (
     <MuiThemeProvider muiTheme={theme}>
       <PageTitle pageName='home'>
         <Header />
-        <Grid fluid style={{ paddingTop: 40, paddingBottom: 20 }}>
-          <Row>
-            <Sidebar />
-            {children}
-          </Row>
-        </Grid>
+        <div className={style.mainContainer}>
+          <Sidebar />
+          {children}
+        </div>
         <Footer />
       </PageTitle>
     </MuiThemeProvider>

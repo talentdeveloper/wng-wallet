@@ -1,36 +1,20 @@
 import React, { PropTypes } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import { reduxForm } from 'redux-form'
-import {
-  FlatButton,
-  RaisedButton,
-  TextField
-} from 'material-ui'
+import { FormattedMessage } from 'react-intl'
+import { reduxForm, Field, propTypes } from 'redux-form'
+import { FlatButton, RaisedButton } from 'material-ui'
+import { TextField } from 'redux-form-material-ui'
 
-import {
-  hideModal,
-  setStep,
-  sendMoney,
-  getTransactions
-} from 'redux/modules/transaction'
 import NxtAddress from 'redux/utils/nxtAddress'
 
 import formStyle from './Form.scss'
 
 export class SendForm extends React.Component {
-  constructor () {
-    super()
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.onHide = this.onHide.bind(this)
-    this.onNextStep = this.onNextStep.bind(this)
-    this.onPreviousStep = this.onPreviousStep.bind(this)
+  handleSubmit = (data) => {
+    const { sendMoney } = this.props
+    sendMoney(data)
   }
 
-  handleSubmit (data, dispatch) {
-    dispatch(sendMoney(data))
-  }
-
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     const { getTransactions, isSending, sendSuccess } = nextProps
 
     if (this.props.isSending && !isSending && sendSuccess) {
@@ -38,35 +22,31 @@ export class SendForm extends React.Component {
     }
   }
 
-  onNextStep (step) {
+  onNextStep = (step) => {
     const { setStep } = this.props
     setStep(1)
   }
 
-  onPreviousStep (step) {
+  onPreviousStep = (step) => {
     const { setStep } = this.props
     setStep(0)
   }
 
-  onHide () {
+  onHide = () => {
     const { hideModal } = this.props
     hideModal()
   }
 
   render () {
     const {
-      intl: {
-        formatMessage
-      },
-      fields: {
-        recipient,
-        amount
-      },
+      intl: { formatMessage },
       handleSubmit,
       isSending,
       sendSuccess,
       sendError,
-      sendStep
+      sendStep,
+      formValues,
+      invalid
     } = this.props
 
     if (sendSuccess) {
@@ -80,27 +60,23 @@ export class SendForm extends React.Component {
       </div>
     }
 
-    const error = (field) => {
-      return field.touched && field.error ? formatMessage({ id: field.error }) : null
-    }
-
-    const disableButton = recipient.error || amount.error || isSending
+    const disableButton = invalid || isSending
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
         {sendStep === 0 && <div>
-          <TextField
+          <Field
+            name='recipient'
+            component={TextField}
             floatingLabelText={formatMessage({ id: 'recipient' })}
-            errorText={error(recipient)}
-            fullWidth
-            {...recipient} />
+            fullWidth />
           <br />
-          <TextField
+          <Field
+            name='amount'
+            component={TextField}
             type='number'
             floatingLabelText={formatMessage({ id: 'amount' })}
-            errorText={error(amount)}
-            fullWidth
-            {...amount} />
+            fullWidth />
           <br />
           <div className={formStyle.actions}>
             <FlatButton
@@ -119,11 +95,11 @@ export class SendForm extends React.Component {
           : <p>
             <FormattedMessage
               id='confirm_send_money_amount'
-              values={{ amount: amount.value }} />
+              values={{ amount: formValues.amount }} />
             <br />
             <FormattedMessage
               id='confirm_send_money_account'
-              values={{ recipient: recipient.value }} />
+              values={{ recipient: formValues.recipient }} />
           </p>}
           <div className={formStyle.actions}>
             <FlatButton
@@ -142,9 +118,9 @@ export class SendForm extends React.Component {
 }
 
 SendForm.propTypes = {
+  ...propTypes,
   intl: PropTypes.object.isRequired,
-  fields: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  formValues: PropTypes.object,
   hideModal: PropTypes.func.isRequired,
   getTransactions: PropTypes.func.isRequired,
   setStep: PropTypes.func.isRequired,
@@ -154,63 +130,30 @@ SendForm.propTypes = {
   sendStep: PropTypes.number.isRequired
 }
 
-const validate = values => {
+const validate = (values, state) => {
+  const { formatMessage } = state.intl
   const errors = {}
 
+  const requiredErrorText = formatMessage({ id: 'required_error' })
+  const invalidAddressText = formatMessage({ id: 'invalid_address' })
+
   if (!values.recipient) {
-    errors.recipient = 'required_error'
+    errors.recipient = requiredErrorText
   } else {
     const nxtAddress = new NxtAddress()
     if (!nxtAddress.set(values.recipient)) {
-      errors.recipient = 'invalid_address'
+      errors.recipient = invalidAddressText
     }
   }
 
   if (!values.amount) {
-    errors.amount = 'required_error'
+    errors.amount = requiredErrorText
   }
 
   return errors
 }
 
-export default injectIntl(
-  reduxForm({
-    form: 'transaction',
-    fields: ['recipient', 'amount'],
-    validate
-  },
-
-  (state) => {
-    const {
-      isSending,
-      sendStep,
-      sendSuccess,
-      sendError,
-      recipient
-    } = state.transaction
-
-    return {
-      isSending,
-      sendStep,
-      sendSuccess,
-      sendError,
-      initialValues: {
-        recipient
-      }
-    }
-  },
-
-  (dispatch) => {
-    return {
-      hideModal: () => {
-        dispatch(hideModal())
-      },
-      setStep: (step) => {
-        dispatch(setStep(step))
-      },
-      getTransactions: () => {
-        dispatch(getTransactions())
-      }
-    }
-  })(SendForm)
-)
+export default reduxForm({
+  form: 'transaction',
+  validate
+})(SendForm)
