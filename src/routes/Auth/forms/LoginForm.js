@@ -1,13 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { reduxForm, Field } from 'redux-form'
-import {
-  Checkbox,
-  RaisedButton
-} from 'material-ui'
-import {
-  TextField
-} from 'redux-form-material-ui'
+import { reduxForm, Field, propTypes } from 'redux-form'
+import { Checkbox, RaisedButton } from 'material-ui'
+import { TextField } from 'redux-form-material-ui'
 
 import style from './LoginForm.scss'
 
@@ -40,7 +35,7 @@ export class LoginForm extends React.Component {
     toggleImportBackup()
   }
 
-  handleSubmit (data, dispatch) {
+  handleSubmit (data) {
     const { isAdmin, login } = this.props
     data.isAdmin = isAdmin
     login(data)
@@ -48,9 +43,7 @@ export class LoginForm extends React.Component {
 
   render () {
     const {
-      intl: {
-        formatMessage
-      },
+      intl: { formatMessage },
       importBackup,
       handleSubmit,
       invalid
@@ -103,13 +96,12 @@ export class LoginForm extends React.Component {
 }
 
 LoginForm.propTypes = {
+  ...propTypes,
   intl: PropTypes.object.isRequired,
   login: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   toggleImportBackup: PropTypes.func.isRequired,
   setBackupFile: PropTypes.func.isRequired,
   importBackup: PropTypes.bool.isRequired,
-  invalid: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool
 }
 

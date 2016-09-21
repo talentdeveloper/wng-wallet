@@ -8,7 +8,7 @@ import {
 } from 'material-ui'
 
 import PageTitle from 'components/PageTitle'
-import RegisterForm from '../forms/RegisterForm'
+import RegisterFormContainer from '../containers/RegisterFormContainer'
 
 export class Register extends React.Component {
   render () {
@@ -33,7 +33,7 @@ export class Register extends React.Component {
                 {registerError && <div style={{ color: 'red' }}>
                   <FormattedMessage id={registerError} />
                 </div>}
-                <RegisterForm />
+                <RegisterFormContainer />
               </CardText>
             </Card>
           </Col>
