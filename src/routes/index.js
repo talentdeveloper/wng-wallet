@@ -6,7 +6,6 @@ import ForgingRoute from './Forging'
 import IndexView from 'views/IndexView'
 import AccountsView from 'views/AccountsView'
 import SettingsView from 'views/SettingsView'
-import ForgingView from 'views/ForgingView'
 
 const requireAuth = (store) => (nextState, replace) => {
   const loggedIn = store.getState().auth.account.secretPhrase !== ''
