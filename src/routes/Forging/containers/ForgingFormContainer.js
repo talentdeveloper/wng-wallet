@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { injectIntl } from 'react-intl'
 import { getFormValues, change } from 'redux-form'
 
@@ -11,8 +12,10 @@ import {
 import ForgingForm from '../forms/ForgingForm'
 
 const mapActionCreators = (dispatch) => ({
-  startForging,
-  stopForging,
+  ...bindActionCreators({
+    startForging,
+    stopForging
+  }, dispatch),
   setForgerNode: (value) => {
     dispatch(setForgerNode(value))
     dispatch(change('forging', 'node', value))
