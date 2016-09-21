@@ -4,8 +4,7 @@ import AuthRoute from './Auth'
 import HomeRoute from './Home'
 import AccountsRoute from './Accounts'
 import ForgingRoute from './Forging'
-
-import SettingsView from 'views/SettingsView'
+import SettingsRoute from './Settings'
 
 export const requireAuth = (store) => (nextState, replace) => {
   const loggedIn = store.getState().auth.account.secretPhrase !== ''
@@ -25,18 +24,12 @@ export const requireAdmin = (store) => (nextState, replace) => {
 
 export const createRoutes = (store) => ({
   component: CoreLayout,
-  childRoutes: [{
-    onEnter: requireAuth(store),
-    childRoutes: [{
-      onEnter: requireAuth(store),
-      component: SettingsView,
-      path: '/settings'
-    }]
-  },
+  childRoutes: [
     AuthRoute(store),
     HomeRoute(store),
     AccountsRoute(store),
-    ForgingRoute(store)
+    ForgingRoute(store),
+    SettingsRoute(store)
   ]
 })
 
