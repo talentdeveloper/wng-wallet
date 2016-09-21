@@ -1,13 +1,13 @@
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 
 import AuthRoute from './Auth'
+import AccountsRoute from './Accounts'
 import ForgingRoute from './Forging'
 
 import IndexView from 'views/IndexView'
-import AccountsView from 'views/AccountsView'
 import SettingsView from 'views/SettingsView'
 
-const requireAuth = (store) => (nextState, replace) => {
+export const requireAuth = (store) => (nextState, replace) => {
   const loggedIn = store.getState().auth.account.secretPhrase !== ''
 
   if (!loggedIn) {
@@ -15,7 +15,7 @@ const requireAuth = (store) => (nextState, replace) => {
   }
 }
 
-const requireAdmin = (store) => (nextState, replace) => {
+export const requireAdmin = (store) => (nextState, replace) => {
   const { isAdmin } = store.getState().auth
 
   if (!isAdmin) {
@@ -27,27 +27,19 @@ export const createRoutes = (store) => ({
   component: CoreLayout,
   childRoutes: [{
     onEnter: requireAuth(store),
-    childRoutes: [
-      ForgingRoute(store), {
-        onEnter: requireAuth(store),
-        component: IndexView,
-        path: '/'
-      }, {
-        onEnter: requireAdmin(store),
-        component: AccountsView,
-        path: '/accounts'
-      }, {
-        onEnter: requireAuth(store),
-        component: AccountsView,
-        path: '/accounts'
-      }, {
-        onEnter: requireAuth(store),
-        component: SettingsView,
-        path: '/settings'
-      }
-    ]
+    childRoutes: [{
+      onEnter: requireAuth(store),
+      component: IndexView,
+      path: '/'
+    }, {
+      onEnter: requireAuth(store),
+      component: SettingsView,
+      path: '/settings'
+    }]
   },
-    AuthRoute(store)
+    AuthRoute(store),
+    AccountsRoute(store),
+    ForgingRoute(store)
   ]
 })
 

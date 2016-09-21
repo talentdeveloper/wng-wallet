@@ -3,9 +3,11 @@ import { get } from 'redux/utils/api'
 
 export const GET_ACCOUNTS = 'GET_ACCOUNTS'
 export const getAccounts = () => {
+  console.log('get accounts')
   return (dispatch, getState) => {
+    console.log('get accoutns')
     const { secretPhrase } = getState().auth.account
-    const { search, limit, offset } = getState().account
+    const { search, limit, offset } = getState().accounts
     const token = generateToken('admin', secretPhrase)
 
     const data = {
