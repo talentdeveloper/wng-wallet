@@ -17,7 +17,7 @@ import { showReceiveModal, hideReceiveModal } from 'routes/Auth/modules/Auth'
 import { convertToNXT } from 'redux/utils/nrs'
 
 import PageTitle from 'components/PageTitle'
-import SendForm from 'components/SendForm'
+import SendFormContainer from 'components/SendFormContainer'
 import ReceiveModal from 'components/ReceiveModal'
 import TransactionModal from 'components/TransactionModal'
 import TransactionsListContainer from 'components/Transaction/TransactionsListContainer'
@@ -94,7 +94,7 @@ export class IndexView extends React.Component {
           handleClose={handleReceiveClose}
           accountRS={accountRS}
           publicKey={publicKey} />
-        <TransactionModal show={showModal} title={modalTitle} form={<SendForm />} />
+        <TransactionModal show={showModal} title={modalTitle} form={<SendFormContainer />} />
         <GetNewVersionModal />
       </PageTitle>
     )
