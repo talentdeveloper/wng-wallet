@@ -1,10 +1,10 @@
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 
 import AuthRoute from './Auth'
+import HomeRoute from './Home'
 import AccountsRoute from './Accounts'
 import ForgingRoute from './Forging'
 
-import IndexView from 'views/IndexView'
 import SettingsView from 'views/SettingsView'
 
 export const requireAuth = (store) => (nextState, replace) => {
@@ -29,15 +29,12 @@ export const createRoutes = (store) => ({
     onEnter: requireAuth(store),
     childRoutes: [{
       onEnter: requireAuth(store),
-      component: IndexView,
-      path: '/'
-    }, {
-      onEnter: requireAuth(store),
       component: SettingsView,
       path: '/settings'
     }]
   },
     AuthRoute(store),
+    HomeRoute(store),
     AccountsRoute(store),
     ForgingRoute(store)
   ]

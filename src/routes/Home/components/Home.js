@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react'
-import { injectIntl } from 'react-intl'
-import { connect } from 'react-redux'
 import { Row, Col } from 'react-flexbox-grid'
 import {
   Card,
@@ -12,10 +10,6 @@ import {
 import InputIcon from 'material-ui/svg-icons/file/file-download'
 import OutputIcon from 'material-ui/svg-icons/file/file-upload'
 
-import { showModal } from 'redux/modules/transaction'
-import { showReceiveModal, hideReceiveModal } from 'routes/Auth/modules/Auth'
-import { convertToNXT } from 'redux/utils/nrs'
-
 import PageTitle from 'components/PageTitle'
 import SendFormContainer from 'components/SendFormContainer'
 import ReceiveModal from 'components/ReceiveModal'
@@ -23,7 +17,7 @@ import TransactionModal from 'components/TransactionModal'
 import TransactionsListContainer from 'components/Transaction/TransactionsListContainer'
 import GetNewVersionModal from 'components/GetNewVersionModal'
 
-export class IndexView extends React.Component {
+export class Home extends React.Component {
   _onSendClick = () => {
     const { onSendClick } = this.props
 
@@ -101,7 +95,7 @@ export class IndexView extends React.Component {
   }
 }
 
-IndexView.propTypes = {
+Home.propTypes = {
   intl: PropTypes.object.isRequired,
   accountRS: PropTypes.string.isRequired,
   balance: PropTypes.string.isRequired,
@@ -114,40 +108,4 @@ IndexView.propTypes = {
   handleReceiveClose: PropTypes.func.isRequired
 }
 
-export default injectIntl(connect((state) => {
-  const {
-    accountRS,
-    publicKey
-  } = state.auth.account
-  const {
-    showModal,
-    modalTitle
-  } = state.transaction
-
-  const {
-    showReceiveModal
-  } = state.auth
-
-  const balance = convertToNXT(state.auth.account.unconfirmedBalanceNQT)
-
-  return {
-    accountRS,
-    balance,
-    publicKey,
-    showModal,
-    showReceiveModal,
-    modalTitle
-  }
-}, (dispatch) => {
-  return {
-    onSendClick: () => {
-      dispatch(showModal())
-    },
-    onReceiveClick: () => {
-      dispatch(showReceiveModal())
-    },
-    handleReceiveClose: () => {
-      dispatch(hideReceiveModal())
-    }
-  }
-})(IndexView))
+export default Home
