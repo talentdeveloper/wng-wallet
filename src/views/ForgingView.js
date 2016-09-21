@@ -1,6 +1,4 @@
-import React, { PropTypes } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import { connect } from 'react-redux'
+import React from 'react'
 import { Row, Col } from 'react-flexbox-grid'
 import PageTitle from 'components/PageTitle'
 import ForgingContainer from 'components/Forging/ForgingContainer'
@@ -20,15 +18,4 @@ export class ForgingView extends React.Component {
   }
 }
 
-ForgingView.propTypes = {
-  intl: PropTypes.object.isRequired,
-  encryptedSecretPhrase: PropTypes.string.isRequired
-}
-
-export default injectIntl(connect((state) => {
-  const { encryptedSecretPhrase } = state.auth.account
-
-  return {
-    encryptedSecretPhrase
-  }
-})(ForgingView))
+export default ForgingView

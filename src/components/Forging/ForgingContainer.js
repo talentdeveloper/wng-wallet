@@ -11,7 +11,7 @@ import {
 import { getForging } from 'redux/modules/forging'
 import { convertToNXT } from 'redux/utils/nrs'
 
-import ForgingForm from 'components/Forging/ForgingForm'
+import ForgingFormContainer from 'components/Forging/ForgingFormContainer'
 import ForgingStatus from 'components/Forging/ForgingStatus'
 
 export class ForgingContainer extends React.Component {
@@ -43,7 +43,7 @@ export class ForgingContainer extends React.Component {
                   <FormattedMessage id='forging_help' />
                 </p>
               </div>
-              <ForgingForm />
+              <ForgingFormContainer />
             </Col>
           </Row>
         </CardText>
@@ -62,7 +62,7 @@ ForgingContainer.propTypes = {
 
 export default injectIntl(connect(state => {
   const { status } = state.forging
-  const node = state.form.forging && state.form.forging.node.value || state.forging.defaultNode
+  const node = state.form.forging && state.form.forging.values.node || state.forging.defaultNode
   const forgedBalance = convertToNXT(state.auth.account.forgedBalanceNQT)
 
   return {

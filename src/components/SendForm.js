@@ -49,8 +49,6 @@ export class SendForm extends React.Component {
       invalid
     } = this.props
 
-    console.log(formValues)
-
     if (sendSuccess) {
       return <div>
         <p><FormattedMessage id='successfully_send' /></p>
@@ -122,7 +120,7 @@ export class SendForm extends React.Component {
 SendForm.propTypes = {
   ...propTypes,
   intl: PropTypes.object.isRequired,
-  formValues: PropTypes.object.isRequired,
+  formValues: PropTypes.object,
   hideModal: PropTypes.func.isRequired,
   getTransactions: PropTypes.func.isRequired,
   setStep: PropTypes.func.isRequired,

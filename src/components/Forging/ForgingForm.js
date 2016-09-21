@@ -1,29 +1,16 @@
 import React, { PropTypes } from 'react'
-import { FormattedMessage, FormattedNumber, injectIntl } from 'react-intl'
-import { reduxForm } from 'redux-form'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
+import { reduxForm, Field, propTypes } from 'redux-form'
 import { Row, Col } from 'react-flexbox-grid'
-import {
-  RaisedButton,
-  TextField
-} from 'material-ui'
-
-import {
-  startForging,
-  stopForging,
-  setForgerNode
-} from 'redux/modules/forging'
+import { RaisedButton } from 'material-ui'
+import { TextField } from 'redux-form-material-ui'
 
 import ForgerNodeMenu from 'components/Forging/ForgerNodeMenu'
 
 import formStyle from 'components/Form.scss'
 
-export class SendForm extends React.Component {
-  constructor () {
-    super()
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleSubmit (data) {
+export class ForgingForm extends React.Component {
+  handleSubmit = (data) => {
     const { status, stopForging, startForging } = this.props
     if (status === 'is_forging') {
       return stopForging(data)
@@ -34,20 +21,18 @@ export class SendForm extends React.Component {
   render () {
     const {
       intl: { formatMessage },
-      fields: { node },
       handleSubmit,
       setForgerNode,
       nodes,
       status,
       effectiveBalance,
-      coinName
+      coinName,
+      defaultNode,
+      formValues,
+      invalid
     } = this.props
 
-    const error = (field) => {
-      return field.touched && field.error ? formatMessage({ id: field.error }) : null
-    }
-
-    const disableButton = node.error || effectiveBalance < 2000
+    const disableButton = invalid || effectiveBalance < 2000
     const buttonText = status === 'is_forging'
       ? formatMessage({ id: 'stop_forging' })
       : formatMessage({ id: 'start_forging' })
@@ -58,15 +43,15 @@ export class SendForm extends React.Component {
           <Col xs={12} md={6}>
             <ForgerNodeMenu
               onChange={setForgerNode}
-              selectedNode={node.value}
+              selectedNode={formValues ? formValues.node : defaultNode}
               nodes={nodes} />
           </Col>
           <Col xs={12} md={6}>
-            <TextField
+            <Field
+              name='node'
+              component={TextField}
               floatingLabelText={formatMessage({ id: 'manual_forging_node' })}
-              errorText={error(node)}
-              fullWidth
-              {...node} />
+              fullWidth />
           </Col>
         </Row>
         <br />
@@ -86,9 +71,10 @@ export class SendForm extends React.Component {
   }
 }
 
-SendForm.propTypes = {
+ForgingForm.propTypes = {
+  ...propTypes,
   intl: PropTypes.object.isRequired,
-  fields: PropTypes.object.isRequired,
+  formValues: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   startForging: PropTypes.func.isRequired,
   stopForging: PropTypes.func.isRequired,
@@ -99,37 +85,18 @@ SendForm.propTypes = {
   coinName: PropTypes.string.isRequired
 }
 
-const validate = values => {
+const validate = (values, state) => {
+  const { formatMessage } = state.intl
   const errors = {}
 
   if (!values.node) {
-    errors.node = 'required_error'
-  } else {
+    errors.node = formatMessage({ id: 'required_error' })
   }
 
   return errors
 }
 
-export default injectIntl(reduxForm({
+export default reduxForm({
   form: 'forging',
-  fields: ['node'],
   validate
-}, (state) => ({
-  initialValues: {
-    node: state.forging.defaultNode
-  },
-  status: state.forging.status,
-  effectiveBalance: state.auth.account.effectiveBalance,
-  coinName: state.site.coinName,
-  nodes: state.forging.nodes
-}), (dispatch) => ({
-  startForging: (data) => {
-    dispatch(startForging(data))
-  },
-  stopForging: (data) => {
-    dispatch(stopForging(data))
-  },
-  setForgerNode: (node) => {
-    dispatch(setForgerNode(node))
-  }
-}))(SendForm))
+})(ForgingForm)
